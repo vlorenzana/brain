@@ -1,0 +1,25 @@
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+#eclipse and maven Files
+
+*/target/
+*/test-output/
+.classpath
+.project
+*/.settings
+/target/
+.settings/
+dependency-reduced-pom.xml
+test-output/
+.gitignore.swp
+../apachecxf-client-archetype/.settings/*
+.classpath
