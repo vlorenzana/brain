@@ -7,12 +7,12 @@ import javafx.stage.Stage;
 
 public class ScreensFramework extends Application {
 
-  public static String SCREEN1ID = "main";
-  public static String SCREEN1FILE = "Screen1.fxml";
-  public static String SCREEN2ID = "screen2";
-  public static String SCREEN2FILE = "Screen2.fxml";
-  public static String SCREEN3ID = "screen3";
-  public static String SCREEN3FILE = "Screen3.fxml";
+  public static final String SCREEN1ID = "main";
+  public static final String SCREEN1FILE = "Screen1.fxml";
+  public static final String SCREEN2ID = "screen2";
+  public static final String SCREEN2FILE = "Screen2.fxml";
+  public static final String SCREEN3ID = "screen3";
+  public static final String SCREEN3FILE = "Screen3.fxml";
   
   @Override
   public void start(Stage primaryStage) throws Exception {

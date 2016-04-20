@@ -57,8 +57,8 @@ public class PdesReportController implements Initializable, ControlledScreen {
   private UrlPd                       urlPd;
 
   public void goPropertiesScreen(ActionEvent event) {
-    myController.loadScreen(WeekReportMain.properties, WeekReportMain.propertiesFile);
-    myController.setScreen(WeekReportMain.properties);
+    myController.loadScreen(WeekReportMain.PROPERTIES, WeekReportMain.PROPERTIES_FILE);
+    myController.setScreen(WeekReportMain.PROPERTIES);
   }
 
   public static Popup createPopup(final String message) {

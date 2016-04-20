@@ -75,7 +75,7 @@ public class WeekTable implements Serializable {
       nbsp = cadVal.charAt(0);
     }
 
-    if (cadVal == null || "".equals(cadVal) || cadVal.isEmpty() || nbsp == 160) {
+    if ("".equals(cadVal) || cadVal.isEmpty() || nbsp == 160) {
       return "";
     } else {
       return cadVal;
@@ -89,7 +89,7 @@ public class WeekTable implements Serializable {
       nbsp = cadVal.charAt(0);
     }
 
-    if (cadVal == null || "".equals(cadVal) || cadVal.isEmpty() || nbsp == 160) {
+    if ("".equals(cadVal) || cadVal.isEmpty() || nbsp == 160) {
       return 0.0;
     }
     return Double.parseDouble(cadVal);
