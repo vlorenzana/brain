@@ -29,13 +29,13 @@
                         <RowConstraints />
 							</rowConstraints>
 							<children>
-								<Label text="Proyecto: " />
-								<Label fx:id="projectName" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+								<Label styleClass="item-label" textFill="WHITE" text="Proyecto: " />
+								<Label fx:id="projectName" styleClass="item-label" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-								<Label text="Puerto: " GridPane.rowIndex="1" />
-								<Label fx:id="port" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+								<Label text="Puerto: " styleClass="item-label" textFill="WHITE" GridPane.rowIndex="1" />
+								<Label fx:id="port" styleClass="item-label" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-								<Label text="Tipo de Reporte" GridPane.rowIndex="2" />
+								<Label text="Tipo de Reporte" styleClass="item-label" textFill="WHITE" GridPane.rowIndex="2" />
 								<ComboBox fx:id="cbxTipoReportId" prefHeight="25.0" prefWidth="130.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
 									<items>
 										<FXCollections fx:factory="observableArrayList">
@@ -47,7 +47,7 @@
 						</GridPane>
 						<ButtonBar layoutX="54.0" layoutY="250.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" styleClass="default">
 							<buttons>
-								<Button defaultButton="true" fx:id="btnProperties" onAction="#goPropertiesScreen" text="Editar" styleClass="default"/>
+								<Button defaultButton="true" fx:id="btnProperties" mnemonicParsing="false" onAction="#goPropertiesScreen" text="Editar"/>
 							</buttons>
 							<buttons>
 								<Button defaultButton="true" fx:id="btnReportId" text="Generar" styleClass="default" />

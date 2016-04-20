@@ -43,7 +43,7 @@ public class WeekReportMain extends Application {
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Monkey Brain");
-		scene.getStylesheets().add("/styles/JMetroLightTheme.css");
+		scene.getStylesheets().add("/styles/login.css");
 		primaryStage.show();
 	}
 
