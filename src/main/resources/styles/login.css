@@ -149,11 +149,10 @@ and open the template in the editor.
 }
  
 .item-title{
-    -fx-font-size: 11pt;
+    -fx-font-size: 15pt;
     -fx-font-family: "Segoe UI Semibold";
     -fx-text-fill: white;
-    -fx-opacity: 0.6;
-      
+    -fx-font-weight: bold;
 }
 
 .item-label{
@@ -161,6 +160,14 @@ and open the template in the editor.
     -fx-font-family: "Segoe UI Semibold";
     -fx-text-fill: white;
 }
+
+.item-label-bold{
+    -fx-font-size: 11pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+ 
  
 /*******************************************************************************
  *                                                                             *
@@ -579,13 +586,23 @@ and open the template in the editor.
  ******************************************************************************/
 
 .text-field{
-    -fx-skin: "herudi.style.MetroTextFieldSkin";
+    -fx-background-radius: 0, 0;
+    -fx-background-color: #2e3436;
+    -fx-border-color: black;
+    -fx-background-insets: 0;
+    -fx-prompt-text-fill: #818181;
+    -fx-highlight-fill: #008287; /* TODO: this probably is the "active" color" */
+    -fx-highlight-text-fill: white;
+    -fx-text-fill: black;
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 14px;
 }
 
 .text-input{
     -fx-background-radius: 0, 0;
-    -fx-background-color: white;
-    -fx-border-color: white;
+    -fx-background-color: #e2e2e2;
+    -fx-border-color: #2b569a;
+    -fx-border-width: 5px ; 
     -fx-background-insets: 0;
     -fx-prompt-text-fill: #818181;
     -fx-highlight-fill: #008287; /* TODO: this probably is the "active" color" */
@@ -597,13 +614,13 @@ and open the template in the editor.
 }
 
 .text-input:hover{
-    -fx-background-color: #e2e2e2;
+    -fx-background-color: white;
 }
 
 .text-input:focused{
     -fx-background-color: #5c5c5c, white;
 
-    -fx-text-fill: blue;
+    -fx-text-fill: black;
 }
 
 /*.text-input > Pane{*/
@@ -839,7 +856,7 @@ and open the template in the editor.
 }
  
 .combo-box-base:hover {
-    -fx-background-color: #d3d7cf;
+    -fx-background-color: #f3f3f3;
      
 }
  

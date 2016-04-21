@@ -29,13 +29,13 @@
                         <RowConstraints />
 							</rowConstraints>
 							<children>
-								<Label styleClass="item-label" textFill="WHITE" text="Proyecto: " />
+								<Label styleClass="item-label-bold" textFill="WHITE" text="Proyecto: " />
 								<Label fx:id="projectName" styleClass="item-label" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-								<Label text="Puerto: " styleClass="item-label" textFill="WHITE" GridPane.rowIndex="1" />
+								<Label text="Puerto: " styleClass="item-label-bold" textFill="WHITE" GridPane.rowIndex="1" />
 								<Label fx:id="port" styleClass="item-label" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-								<Label text="Tipo de Reporte" styleClass="item-label" textFill="WHITE" GridPane.rowIndex="2" />
+								<Label text="Tipo de Reporte" styleClass="item-label-bold" textFill="WHITE" GridPane.rowIndex="2" />
 								<ComboBox fx:id="cbxTipoReportId" prefHeight="25.0" prefWidth="130.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
 									<items>
 										<FXCollections fx:factory="observableArrayList">
