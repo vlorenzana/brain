@@ -9,61 +9,58 @@ import java.util.List;
  */
 public class Report {
 
-  private WeekTable        weekTable;
-  private PerformanceTable performanceTable;
-  private InfoReportTable  generalTable;
-  private SizeTable        sizeTable;
-  private List<String>     tasksInProgress;
+	private WeekReportTable weekReportTable;
+	private PerformanceReportTable performanceReportTable;
+	private InfoReportTable infoReportTable;
+	private SizeReportTable sizeReportTable;
+	private List<String> tasksInProgress;
 
-  public Report(InfoReportTable gTable, WeekTable weekTable, PerformanceTable performanceTable,
-      SizeTable sizeTable, List<String> tasksInProgress) {
-    this.generalTable = gTable;
-    this.weekTable = weekTable;
-    this.performanceTable = performanceTable;
-    this.sizeTable = sizeTable;
-    this.tasksInProgress = tasksInProgress;
-  }
+	public Report(InfoReportTable gTable, WeekReportTable weekTable, PerformanceReportTable performanceTable,
+			SizeReportTable sizeTable, List<String> tasksInProgress) {
+		this.infoReportTable = gTable;
+		this.weekReportTable = weekTable;
+		this.performanceReportTable = performanceTable;
+		this.sizeReportTable = sizeTable;
+		this.tasksInProgress = tasksInProgress;
+	}
 
+	public WeekReportTable getWeekReportTable() {
+		return weekReportTable;
+	}
 
-  public PerformanceTable getPerformanceTable() {
-    return performanceTable;
-  }
+	public void setWeekReportTable(WeekReportTable weekReportTable) {
+		this.weekReportTable = weekReportTable;
+	}
 
-  public void setPerformanceTable(PerformanceTable performanceTable) {
-    this.performanceTable = performanceTable;
-  }
+	public PerformanceReportTable getPerformanceReportTable() {
+		return performanceReportTable;
+	}
 
-  public WeekTable getWeekTable() {
-    return weekTable;
-  }
+	public void setPerformanceReportTable(PerformanceReportTable performanceReportTable) {
+		this.performanceReportTable = performanceReportTable;
+	}
 
-  public void setWeekTable(WeekTable weekTable) {
-    this.weekTable = weekTable;
-  }
+	public InfoReportTable getInfoReportTable() {
+		return infoReportTable;
+	}
 
-  public InfoReportTable getGeneralTable() {
-    return generalTable;
-  }
+	public void setInfoReportTable(InfoReportTable infoReportTable) {
+		this.infoReportTable = infoReportTable;
+	}
 
-  public void setGeneralTable(InfoReportTable generalTable) {
-    this.generalTable = generalTable;
-  }
+	public SizeReportTable getSizeReportTable() {
+		return sizeReportTable;
+	}
 
-  public SizeTable getSizeTable() {
-    return sizeTable;
-  }
+	public void setSizeReportTable(SizeReportTable sizeReportTable) {
+		this.sizeReportTable = sizeReportTable;
+	}
 
-  public void setSizeTable(SizeTable sizeTable) {
-    this.sizeTable = sizeTable;
-  }
+	public List<String> getTasksInProgress() {
+		return tasksInProgress;
+	}
 
-
-  public List<String> getTasksInProgress() {
-    return tasksInProgress;
-  }
-
-
-  public void setTasksInProgress(List<String> tasksInProgress) {
-    this.tasksInProgress = tasksInProgress;
-  }
+	public void setTasksInProgress(List<String> tasksInProgress) {
+		this.tasksInProgress = tasksInProgress;
+	}
 }

@@ -8,7 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.danimaniarqsoft.brain.pdes.model.SizeTable;
+import com.danimaniarqsoft.brain.pdes.model.SizeReportTable;
 import com.danimaniarqsoft.brain.util.UrlPd;
 
 /**
@@ -26,10 +26,10 @@ public class OverallMetricsDAO {
         .header("Referer", urlPd.getOveralMetricsUrl().toString()).get();
   }
 
-  public SizeTable findSizeTable(String xpathQuery) {
+  public SizeReportTable findSizeTable(String xpathQuery) {
     Elements overallMetricsElements = overallMetrics.select(xpathQuery);
     Element sizeTable = overallMetricsElements.get(1);
     sizeTable.addClass("table table-bordered table-striped table-responsive");
-    return new SizeTable(sizeTable.toString());
+    return new SizeReportTable(sizeTable.toString());
   }
 }

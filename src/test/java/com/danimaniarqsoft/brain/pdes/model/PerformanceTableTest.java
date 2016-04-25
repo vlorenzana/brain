@@ -16,9 +16,9 @@ import com.danimaniarqsoft.brain.pdes.service.WeekReportService;
 public class PerformanceTableTest {
 	@Test
 	public void test() throws IOException, URISyntaxException {
-		WeekTable table = deSerializeWeekTable();
+		WeekReportTable table = deSerializeWeekTable();
 //		serializeWeekTable(table);
-		PerformanceTable pTable = WeekReportService.computeData(table);
+		PerformanceReportTable pTable = WeekReportService.computeData(table);
 		System.out.println(pTable.toString());
 	}
 
@@ -26,7 +26,7 @@ public class PerformanceTableTest {
 
 	}
 
-	public static WeekTable deSerializeWeekTable() throws URISyntaxException {
+	public static WeekReportTable deSerializeWeekTable() throws URISyntaxException {
 		URL resource = PerformanceTableTest.class.getClassLoader().getResource("testTable.ser");
 		File file = new File(resource.toURI());
 		FileInputStream fis = null;
@@ -34,7 +34,7 @@ public class PerformanceTableTest {
 		try {
 			fis = new FileInputStream(file);
 			in = new ObjectInputStream(fis);
-			WeekTable p = (WeekTable) in.readObject();
+			WeekReportTable p = (WeekReportTable) in.readObject();
 			in.close();
 			return p;
 		} catch (Exception ex) {
@@ -42,7 +42,7 @@ public class PerformanceTableTest {
 		}
 	}
 
-	public static void serializeWeekTable(WeekTable table) throws IOException {
+	public static void serializeWeekTable(WeekReportTable table) throws IOException {
 		FileOutputStream fileOut = new FileOutputStream("testTable.ser");
 		ObjectOutputStream out = new ObjectOutputStream(fileOut);
 		out.writeObject(table);

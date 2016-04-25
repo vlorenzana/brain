@@ -13,10 +13,10 @@ import org.jsoup.select.Elements;
 
 import com.danimaniarqsoft.brain.dao.OverallMetricsDAO;
 import com.danimaniarqsoft.brain.pdes.model.InfoReportTable;
-import com.danimaniarqsoft.brain.pdes.model.PerformanceTable;
+import com.danimaniarqsoft.brain.pdes.model.PerformanceReportTable;
 import com.danimaniarqsoft.brain.pdes.model.Report;
-import com.danimaniarqsoft.brain.pdes.model.SizeTable;
-import com.danimaniarqsoft.brain.pdes.model.WeekTable;
+import com.danimaniarqsoft.brain.pdes.model.SizeReportTable;
+import com.danimaniarqsoft.brain.pdes.model.WeekReportTable;
 import com.danimaniarqsoft.brain.util.ContextUtil;
 import com.danimaniarqsoft.brain.util.DateUtils;
 import com.danimaniarqsoft.brain.util.UrlPd;
@@ -41,7 +41,7 @@ public class WeekReportService {
    */
   public static Report createReport(final UrlPd urlPd) throws IOException, URISyntaxException {
     Document doc = Jsoup.connect(urlPd.getWeekReportUrl().toString()).get();
-    WeekTable table = new WeekTable(doc);
+    WeekReportTable table = new WeekReportTable(doc);
     Element element = doc.select("body table tbody tr td.left").get(1);
     String parse = element.text();
     String toDateReportString = DateUtils.convertPdesDate(DateUtils.extractDate(parse));
@@ -52,16 +52,16 @@ public class WeekReportService {
     gTable.setReportedPeriod("Del " + DateUtils.convertDateToString(fromDateReportDate) + " al "
         + DateUtils.convertDateToString(toDateReportDate));
     OverallMetricsDAO omDAO = new OverallMetricsDAO(urlPd);
-    SizeTable sizeTable = omDAO.findSizeTable("body div form table");
+    SizeReportTable sizeTable = omDAO.findSizeTable("body div form table");
     List<String> tasksInProgress = findTasksInProgress(urlPd);
-    PerformanceTable pTable = computeData(table);
+    PerformanceReportTable pTable = computeData(table);
     // Otros calculos
     gTable.setStatus(ContextUtil.computeStatus(pTable.getVgDiff()));
     return new Report(gTable, table, pTable, sizeTable, tasksInProgress);
   }
 
 
-  public static PerformanceTable computeData(WeekTable table) {
+  public static PerformanceReportTable computeData(WeekReportTable table) {
     String vg = computeVg(table);
     String vgDiff = computeVgDiff(table);
     String vgFalta = computeVgFalta(table);
@@ -73,7 +73,7 @@ public class WeekReportService {
     String vgNoRe = computeVgNotPerformed(vhxH, hsTareasTerm);
     String recup = computeRecoveryWeeks(table);
 
-    return PerformanceTable.getBuilder().withVg(vg).withVgDiff(vgDiff).withVgFalta(vgFalta)
+    return PerformanceReportTable.getBuilder().withVg(vg).withVgDiff(vgDiff).withVgFalta(vgFalta)
         .withTaskHours(horasTarea).withTaskClosed(tareaCerradas)
         .withHoursNotFinished(Double.toString(hsTareasTerm)).withWeekHrsNotFinished(semHrTarNoTerm)
         .withVgPerHour(Double.toString(vhxH)).withVgNotPerformed(vgNoRe).withRecovery(recup)
@@ -91,36 +91,36 @@ public class WeekReportService {
     return tasksInProgress;
   }
 
-  public static String computeVg(WeekTable table) {
+  public static String computeVg(WeekReportTable table) {
     return Double.toString(table.getDoubleProperty(1, 4));
   }
 
-  public static String computeVgDiff(WeekTable table) {
+  public static String computeVgDiff(WeekReportTable table) {
     return Double.toString(table.getDoubleProperty(1, 4) - table.getDoubleProperty(1, 3));
   }
 
 
-  public static String computeVgFalta(WeekTable table) {
+  public static String computeVgFalta(WeekReportTable table) {
     return Double.toString((1 - table.getDoubleProperty(1, 5)) * 100);
   }
 
-  public static String computeTaskHours(WeekTable table) {
+  public static String computeTaskHours(WeekReportTable table) {
     return Double.toString(table.getDoubleProperty(1, 1));
   }
 
-  public static String computeClosedTask(WeekTable table) {
+  public static String computeClosedTask(WeekReportTable table) {
     return Double.toString((table.getDoubleProperty(3, 2) * 100) - 100);
   }
 
-  public static double computeHoursTaskNotFinished(WeekTable table) {
+  public static double computeHoursTaskNotFinished(WeekReportTable table) {
     return table.getDoubleProperty(1, 1) - table.getDoubleProperty(3, 1);
   }
 
-  public static String computeWeekhrsTaskNotFinished(WeekTable table, double hsTareasTerm) {
+  public static String computeWeekhrsTaskNotFinished(WeekReportTable table, double hsTareasTerm) {
     return Double.toString(hsTareasTerm / table.getDoubleProperty(2, 1));
   }
 
-  public static double computeVgXh(WeekTable table) {
+  public static double computeVgXh(WeekReportTable table) {
     return table.getDoubleProperty(1, 4) / table.getDoubleProperty(3, 1);
   }
 
@@ -128,7 +128,7 @@ public class WeekReportService {
     return Double.toString(vhxH * hsTareasTerm);
   }
 
-  public static String computeRecoveryWeeks(WeekTable table) {
+  public static String computeRecoveryWeeks(WeekReportTable table) {
     return Double.toString((table.getDoubleProperty(1, 3)
         - table.getDoubleProperty(1, 4)) / table.getDoubleProperty(2, 4));
   }

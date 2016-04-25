@@ -2,7 +2,7 @@ package com.danimaniarqsoft.brain.pdes.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class PerformanceTable {
+public class PerformanceReportTable {
 
   private String vg;
   private String vgDiff;
@@ -15,12 +15,12 @@ public class PerformanceTable {
   private String vgNotPerformed;
   private String recovery;
 
-  private PerformanceTable() {
+  private PerformanceReportTable() {
 
   }
 
   public static PerformanceTableBuilder getBuilder() {
-    return new PerformanceTableBuilder(new PerformanceTable());
+    return new PerformanceTableBuilder(new PerformanceReportTable());
   }
 
   public String getVg() {
@@ -115,9 +115,9 @@ public class PerformanceTable {
    *
    */
   public static class PerformanceTableBuilder {
-    private PerformanceTable pt;
+    private PerformanceReportTable pt;
 
-    public PerformanceTableBuilder(PerformanceTable pt) {
+    public PerformanceTableBuilder(PerformanceReportTable pt) {
       this.pt = pt;
     }
 
@@ -171,7 +171,7 @@ public class PerformanceTable {
       return this;
     }
 
-    public PerformanceTable build() {
+    public PerformanceReportTable build() {
       return this.pt;
     }
   }

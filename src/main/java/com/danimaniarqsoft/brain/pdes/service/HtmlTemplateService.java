@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.danimaniarqsoft.brain.pdes.exceptions.ReportException;
-import com.danimaniarqsoft.brain.pdes.model.PerformanceTable;
-import com.danimaniarqsoft.brain.pdes.model.SizeTable;
+import com.danimaniarqsoft.brain.pdes.model.PerformanceReportTable;
+import com.danimaniarqsoft.brain.pdes.model.SizeReportTable;
 import com.danimaniarqsoft.brain.pdes.service.context.ReportContext;
 import com.danimaniarqsoft.brain.util.TemplateUtil;
 import com.danimaniarqsoft.brain.util.ZipUtils;
@@ -45,7 +45,7 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
 		try {
 			mainTemplate = CFG.getTemplate("templates/mainLayout.html");
 			HashMap<String, Object> data = new HashMap<>();
-			data.put("gn", context.getReport().getGeneralTable());
+			data.put("gn", context.getReport().getInfoReportTable());
 			TemplateUtil.saveTemplate(mainTemplate, CFG, data, "index.html", context.getOutputFile());
 		} catch (IOException e) {
 			throw new ReportException("createIndexFile", e);
@@ -54,7 +54,7 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
 
 	@Override
 	protected void createSizeFile(ReportContext context) throws ReportException {
-		SizeTable sizeTable = context.getReport().getSizeTable();
+		SizeReportTable sizeTable = context.getReport().getSizeReportTable();
 		Map<String, Object> templateData = new HashMap<>();
 		templateData.put("sizeTable", sizeTable.getData().toString());
 		TemplateUtil.saveTemplate(mainTemplate, CFG, templateData, "size.html", context.getOutputFile());
@@ -96,9 +96,9 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
 	@Override
 	protected void createWeekResumeFile(ReportContext context) throws ReportException {
 		Map<String, Object> templateData = new HashMap<>();
-		for (int i = 0; i < context.getReport().getWeekTable().getNumRows(); i++) {
-			for (int j = 0; j < context.getReport().getWeekTable().getNumCols(); j++) {
-				templateData.put("data" + i + "" + j, context.getReport().getWeekTable().getStringProperty(i, j));
+		for (int i = 0; i < context.getReport().getWeekReportTable().getNumRows(); i++) {
+			for (int j = 0; j < context.getReport().getWeekReportTable().getNumCols(); j++) {
+				templateData.put("data" + i + "" + j, context.getReport().getWeekReportTable().getStringProperty(i, j));
 			}
 		}
 		TemplateUtil.saveTemplate(mainTemplate, CFG, templateData, "weekResume.html", context.getOutputFile());
@@ -114,7 +114,7 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
 
 	@Override
 	protected void createPerformanceFile(ReportContext context) throws ReportException {
-		PerformanceTable pt = context.getReport().getPerformanceTable();
+		PerformanceReportTable pt = context.getReport().getPerformanceReportTable();
 		Map<String, Object> templateData = new HashMap<>();
 		templateData.put("pTable", pt);
 		TemplateUtil.saveTemplate(mainTemplate, CFG, templateData, "performance.html", context.getOutputFile());
