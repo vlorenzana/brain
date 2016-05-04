@@ -5,8 +5,6 @@ import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.danimaniarqsoft.brain.main.WeekReportMain;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -94,7 +92,7 @@ public class ScreensController extends StackPane {
 			}
 			return true;
 		} else {
-			LOGGER.info("screen hasn't been loaded!!! \n");
+			LOGGER.info("No se logró cargar la pantalla\n");
 			return false;
 		}
 
@@ -114,7 +112,7 @@ public class ScreensController extends StackPane {
 	// collection of screens
 	public boolean unloadScreen(String name) {
 		if (screens.remove(name) == null) {
-			System.out.println("Screen didn't exist");
+			LOGGER.info("La pantalla no existe");
 			return false;
 		} else {
 			return true;
