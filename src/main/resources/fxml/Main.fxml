@@ -48,10 +48,10 @@
             </GridPane>
             <ButtonBar layoutX="54.0" layoutY="250.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" styleClass="default">
               <buttons>
-                <Button fx:id="btnProperties" defaultButton="true" mnemonicParsing="false" onAction="#goPropertiesScreen" text="Editar" />
+                <Button fx:id="btnProperties" mnemonicParsing="false" onAction="#goPropertiesScreen" text="Editar" />
               </buttons>
               <buttons>
-                <Button fx:id="btnReportId" defaultButton="true" text="Generar" />
+                <Button fx:id="btnReportId" text="Generar" />
               </buttons>
             </ButtonBar>
           </children>

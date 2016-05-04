@@ -10,10 +10,10 @@
 	<children>
 		<SplitPane layoutX="153.0" layoutY="70.0" prefHeight="300.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<items>
-				<AnchorPane styleClass="background" minHeight="0.0" minWidth="0.0" prefHeight="298.0" prefWidth="737.0">
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="298.0" prefWidth="737.0" styleClass="background">
 					<children>
-						<Label fx:id="propertiesText" styleClass="item-title" layoutX="104.0" layoutY="51.0" text="Datos de Configuración" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
-						<GridPane layoutX="43.0" layoutY="104.0" prefHeight="75.0" prefWidth="331.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="62.0" AnchorPane.topAnchor="30.0">
+						<Label fx:id="propertiesText" layoutX="104.0" layoutY="51.0" styleClass="item-title" text="Datos de Configuración" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+						<GridPane layoutX="43.0" layoutY="67.0" prefHeight="71.0" prefWidth="351.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="42.0" AnchorPane.topAnchor="67.0">
 							<columnConstraints>
 								<ColumnConstraints hgrow="SOMETIMES" maxWidth="456.0" minWidth="0.0" prefWidth="144.0" />
 								<ColumnConstraints hgrow="SOMETIMES" maxWidth="598.0" minWidth="8.0" prefWidth="153.0" />
@@ -24,8 +24,8 @@
                         <RowConstraints />
 							</rowConstraints>
 							<children>
-								<Label styleClass="item-label" textFill="WHITE" text="Proyecto: " />
-								<Label styleClass="item-label" textFill="WHITE" text="Puerto:" GridPane.rowIndex="1" />
+								<Label styleClass="item-label" text="Proyecto: " textFill="WHITE" />
+								<Label styleClass="item-label" text="Puerto:" textFill="WHITE" GridPane.rowIndex="1" />
 
 								<TextField fx:id="projectName" prefColumnCount="90" prefHeight="15.0" prefWidth="209.0" GridPane.columnIndex="1" />
 								<TextField fx:id="port" prefColumnCount="5" prefHeight="15.0" prefWidth="343.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />

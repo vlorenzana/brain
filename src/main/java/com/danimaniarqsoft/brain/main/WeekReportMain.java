@@ -45,7 +45,7 @@ public class WeekReportMain extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Monkey Brain");
 		primaryStage.getIcons().add(new Image("images/monkey.png"));
-		scene.getStylesheets().add("/styles/login.css");
+		scene.getStylesheets().add("/styles/brain.css");
 		primaryStage.show();
 	}
 
