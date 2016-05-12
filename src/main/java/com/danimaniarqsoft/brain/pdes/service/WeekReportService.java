@@ -22,6 +22,8 @@ import com.danimaniarqsoft.brain.util.ContextUtil;
 import com.danimaniarqsoft.brain.util.DateUtils;
 import com.danimaniarqsoft.brain.util.UrlPd;
 
+import freemarker.template.utility.DateUtil;
+
 /**
  * WeekReportService
  * 
@@ -46,14 +48,13 @@ public class WeekReportService {
 		Element element = doc.select("body table tbody tr td.left").get(1);
 		String parse = element.text();
 		String reportDate = DateUtils.extractDate(parse);
-		DateTimeFormatter dtf = DateUtils.inferDateTimeFormatter(reportDate);
-		String toDateReportString = DateUtils.convertPdesDate(reportDate, dtf);
-		Date toDateReportDate = dtf.parseDateTime(toDateReportString).toDate();
+		String toDateReportString = DateUtils.convertPdesDate(reportDate);
+		Date toDateReportDate = DateUtils.convertStringToDate(toDateReportString);
 		Date fromDateReportDate = DateUtils.moveDays(toDateReportDate, -6);
 		Document mainData = Jsoup.connect(urlPd.getGeneralReportUrl().toString()).get();
-		InfoReportTable gTable = new InfoReportTable(mainData, dtf);
-		gTable.setReportedPeriod("Del " + DateUtils.convertDateToString(fromDateReportDate, dtf) + " al "
-				+ DateUtils.convertDateToString(toDateReportDate, dtf));
+		InfoReportTable gTable = new InfoReportTable(mainData);
+		gTable.setReportedPeriod("Del " + DateUtils.convertDateToString(fromDateReportDate) + " al "
+				+ DateUtils.convertDateToString(toDateReportDate));
 		OverallMetricsDAO omDAO = new OverallMetricsDAO(urlPd);
 		SizeReportTable sizeTable = omDAO.findSizeTable("body div form table");
 		List<String> tasksInProgress = findTasksInProgress(urlPd);

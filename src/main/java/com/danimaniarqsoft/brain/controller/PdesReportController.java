@@ -15,6 +15,7 @@ import com.danimaniarqsoft.brain.pdes.service.PersonalReportService;
 import com.danimaniarqsoft.brain.pdes.service.context.ReportContext;
 import com.danimaniarqsoft.brain.util.Constants;
 import com.danimaniarqsoft.brain.util.ContextUtil;
+import com.danimaniarqsoft.brain.util.DateUtils;
 import com.danimaniarqsoft.brain.util.PropertyFileUtils;
 import com.danimaniarqsoft.brain.util.UrlPd;
 
@@ -53,6 +54,7 @@ public class PdesReportController implements Initializable, ControlledScreen {
 	private ComboBox<TipoReporte> cbxTipoReportId;
 	@FXML
 	private ObservableList<TipoReporte> tipoReportList = FXCollections.observableArrayList();
+
 	private UrlPd urlPd;
 
 	public void goPropertiesScreen(ActionEvent event) {
@@ -73,14 +75,14 @@ public class PdesReportController implements Initializable, ControlledScreen {
 	}
 
 	public static void showPopupMessage(final String message, final Stage stage) {
-    final Popup popup = createPopup(message);
-    popup.setOnShown(handle -> configPopup(popup, stage));
-    popup.show(stage);
-  }
-	
-	private static void configPopup(Popup popup, Stage stage){
+		final Popup popup = createPopup(message);
+		popup.setOnShown(handle -> configPopup(popup, stage));
+		popup.show(stage);
+	}
+
+	private static void configPopup(Popup popup, Stage stage) {
 		popup.setX(stage.getX() + stage.getWidth() / 2 - popup.getWidth() / 2);
-        popup.setY(stage.getY() + stage.getHeight() / 2 - popup.getHeight() / 2);
+		popup.setY(stage.getY() + stage.getHeight() / 2 - popup.getHeight() / 2);
 	}
 
 	@Override
@@ -97,8 +99,8 @@ public class PdesReportController implements Initializable, ControlledScreen {
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		tipoReportList.add(new TipoReporte(Constants.PERSONAL_REPORT, "Reporte Personal"));
-		tipoReportList.add(new TipoReporte(Constants.TEAM_REPORT, "Reporte de Equipo"));
+		tipoReportList.add(new TipoReporte(Constants.FIST_SELECTION, "ES"));
+		tipoReportList.add(new TipoReporte(Constants.SECOND_SELECTION, "EN"));
 		cbxTipoReportId.setItems(tipoReportList);
 		cbxTipoReportId.getSelectionModel().selectFirst();
 		urlPd = PropertyFileUtils.loadUrlContext();
@@ -113,6 +115,11 @@ public class PdesReportController implements Initializable, ControlledScreen {
 				@Override
 				public Boolean call() {
 					try {
+						if (cbxTipoReportId.getSelectionModel().getSelectedIndex() == Constants.FIST_SELECTION) {
+							DateUtils.setEn(false);
+						} else {
+							DateUtils.setEn(true);
+						}
 						ReportContext context = new ReportContext();
 						context.setUrlPd(urlPd);
 						PersonalReportService.getInstance().createReport(context);

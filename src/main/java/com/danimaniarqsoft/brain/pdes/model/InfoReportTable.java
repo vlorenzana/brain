@@ -20,13 +20,13 @@ public class InfoReportTable {
 	private String status;
 	private String dateForecast;
 
-	public InfoReportTable(Document doc, DateTimeFormatter dtf) {
+	public InfoReportTable(Document doc) {
 		Elements elements = doc.select("body table[name=STATS]");
-		extractInfo(elements, dtf);
+		extractInfo(elements);
 	}
 
-	private void extractInfo(Elements elements, DateTimeFormatter dtf) {
-		this.dateReport = DateUtils.convertDateToString(new Date(), dtf);
+	private void extractInfo(Elements elements) {
+		this.dateReport = DateUtils.convertDateToString(new Date());
 		Element dateEndPlannedElement = elements.get(0).getAllElements().get(5);
 		this.setDateEndPlanned(dateEndPlannedElement.text());
 		this.setDateForecast(readForeCast(elements));

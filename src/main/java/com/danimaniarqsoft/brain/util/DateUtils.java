@@ -39,6 +39,7 @@ import net.objectlab.kit.datecalc.joda.LocalDateKitCalculatorsFactory;
  */
 public class DateUtils {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DateUtils.class);
+	private static boolean isEn = true;
 
 	private static final DateTimeFormatter PDES_EN_TIME_FORMATTER = DateTimeFormat
 			.forPattern(Constants.PDES_EN_DATE_FORMAT_PATTERN);
@@ -105,8 +106,8 @@ public class DateUtils {
 	 *            la fecha que se desea convertir
 	 * @return la cadena representativa de la fecha
 	 */
-	public static String convertDateToString(Date dateToFormat, DateTimeFormatter dtf) {
-		return dtf.print(new DateTime(dateToFormat));
+	public static String convertDateToString(Date dateToFormat) {
+		return getCurrentDateFormater().print(new DateTime(dateToFormat));
 	}
 
 	/**
@@ -121,8 +122,8 @@ public class DateUtils {
 	 *            la fecha que se desea convertir.
 	 * @return la fecha
 	 */
-	public static Date convertStringToDate(String dateString, DateTimeFormatter dtf) {
-		return dtf.parseDateTime(dateString).toDate();
+	public static Date convertStringToDate(String dateString) {
+		return getCurrentDateFormater().parseDateTime(dateString).toDate();
 	}
 
 	public static Date moveDaysWithHolidays(Date initialDate, int days) {
@@ -142,29 +143,8 @@ public class DateUtils {
 		}
 	}
 
-	public static DateTimeFormatter inferDateTimeFormatter(String date) {
-		Date pdesDate = tryPdesEn(date);
-		if (pdesDate == null) {
-			return PDES_EN_TIME_FORMATTER;
-		}
-		return PDES_ES_TIME_FORMATTER;
-	}
-
-	public static String convertPdesDate(String date, DateTimeFormatter dtf) {
-		Date pdesDate = tryPdesEn(date);
-		if (pdesDate == null) {
-			pdesDate = tryPdesEs(date);
-		}
-		return convertDateToString(pdesDate,dtf);
-	}
-
-	public static Date tryPdesEn(String date) {
-		try {
-			return PDES_EN_TIME_FORMATTER.parseDateTime(date).toDate();
-		} catch (Exception e) {
-			LOGGER.info("tryPdesEn", e);
-		}
-		return null;
+	public static String convertPdesDate(String date) {
+		return convertDateToString(getCurrentDateFormater().parseDateTime(date).toDate());
 	}
 
 	public static Date tryPdesEs(String date) {
@@ -180,4 +160,19 @@ public class DateUtils {
 		return PDES_TIME_FOLDER_DATE_FORMAT.print(new DateTime(dateToFormat));
 	}
 
+	private static DateTimeFormatter getCurrentDateFormater() {
+		if (isEn) {
+			return PDES_EN_TIME_FORMATTER;
+		} else {
+			return PDES_ES_TIME_FORMATTER;
+		}
+	}
+
+	public static boolean isEn() {
+		return isEn;
+	}
+
+	public static void setEn(boolean isEn) {
+		DateUtils.isEn = isEn;
+	}
 }

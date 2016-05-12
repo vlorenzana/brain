@@ -19,15 +19,14 @@ public class Constants {
 	public static final String REPORT_EV_QUERY = "tl=auto&labelFilterAuto=t&pathFilterAuto=t&charts&showChart=pdash.ev.";
 	public static final String OUTPUT_FORMAT = "%-40s : %-20s ";
 	public static final String BODY_EVCHARITEM_IMG = "body .evChartItem img";
-
-	public final static String DATE_FORMAT_PATTERN = "dd/MM/yyyy";
+	
 	public static final String PDES_EN_DATE_FORMAT_PATTERN = "MM/dd/yy";
 	public static final String PDES_ES_DATE_FORMAT_PATTERN = "dd/MM/yy";
 	public static final String PDES_FOLDER_DATE_FORMAT = "yyyyMMdd";
 
 	// Type of report
-	public static final int PERSONAL_REPORT = 1;
-	public static final int TEAM_REPORT = 2;
+	public static final int FIST_SELECTION = 0;
+	public static final int SECOND_SELECTION = 1;
 
 	private Constants() {
 
