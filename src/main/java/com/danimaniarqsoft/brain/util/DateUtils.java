@@ -40,8 +40,6 @@ import net.objectlab.kit.datecalc.joda.LocalDateKitCalculatorsFactory;
 public class DateUtils {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DateUtils.class);
 
-	private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat
-			.forPattern(Constants.DATE_FORMAT_PATTERN);
 	private static final DateTimeFormatter PDES_EN_TIME_FORMATTER = DateTimeFormat
 			.forPattern(Constants.PDES_EN_DATE_FORMAT_PATTERN);
 	private static final DateTimeFormatter PDES_ES_TIME_FORMATTER = DateTimeFormat
@@ -107,8 +105,8 @@ public class DateUtils {
 	 *            la fecha que se desea convertir
 	 * @return la cadena representativa de la fecha
 	 */
-	public static String convertDateToString(Date dateToFormat) {
-		return DATE_TIME_FORMATTER.print(new DateTime(dateToFormat));
+	public static String convertDateToString(Date dateToFormat, DateTimeFormatter dtf) {
+		return dtf.print(new DateTime(dateToFormat));
 	}
 
 	/**
@@ -123,8 +121,8 @@ public class DateUtils {
 	 *            la fecha que se desea convertir.
 	 * @return la fecha
 	 */
-	public static Date convertStringToDate(String dateString) {
-		return DATE_TIME_FORMATTER.parseDateTime(dateString).toDate();
+	public static Date convertStringToDate(String dateString, DateTimeFormatter dtf) {
+		return dtf.parseDateTime(dateString).toDate();
 	}
 
 	public static Date moveDaysWithHolidays(Date initialDate, int days) {
@@ -144,12 +142,20 @@ public class DateUtils {
 		}
 	}
 
-	public static String convertPdesDate(String date) {
+	public static DateTimeFormatter inferDateTimeFormatter(String date) {
+		Date pdesDate = tryPdesEn(date);
+		if (pdesDate == null) {
+			return PDES_EN_TIME_FORMATTER;
+		}
+		return PDES_ES_TIME_FORMATTER;
+	}
+
+	public static String convertPdesDate(String date, DateTimeFormatter dtf) {
 		Date pdesDate = tryPdesEn(date);
 		if (pdesDate == null) {
 			pdesDate = tryPdesEs(date);
 		}
-		return convertDateToString(pdesDate);
+		return convertDateToString(pdesDate,dtf);
 	}
 
 	public static Date tryPdesEn(String date) {

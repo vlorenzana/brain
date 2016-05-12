@@ -2,6 +2,7 @@ package com.danimaniarqsoft.brain.pdes.model;
 
 import java.util.Date;
 
+import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -19,13 +20,13 @@ public class InfoReportTable {
 	private String status;
 	private String dateForecast;
 
-	public InfoReportTable(Document doc) {
+	public InfoReportTable(Document doc, DateTimeFormatter dtf) {
 		Elements elements = doc.select("body table[name=STATS]");
-		extractInfo(elements);
+		extractInfo(elements, dtf);
 	}
 
-	private void extractInfo(Elements elements) {
-		this.dateReport = DateUtils.convertDateToString(new Date());
+	private void extractInfo(Elements elements, DateTimeFormatter dtf) {
+		this.dateReport = DateUtils.convertDateToString(new Date(), dtf);
 		Element dateEndPlannedElement = elements.get(0).getAllElements().get(5);
 		this.setDateEndPlanned(dateEndPlannedElement.text());
 		this.setDateForecast(readForeCast(elements));
