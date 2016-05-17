@@ -14,7 +14,7 @@ public class RulePerformance extends RuleBase {
 
 	@Override
 	public boolean evaluate() {
-		return false;
+		return "".equals(data.getVgDiff());
 	}
 
 	@Override

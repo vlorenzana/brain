@@ -20,9 +20,9 @@ public class ReportContext {
   private File   outputFile;
 
   public ReportContext() {
-    File outputFile = new File(Constants.REPORT_FOLDER + DateUtils.getDateFolderForma(new Date()));
-    outputFile.mkdirs();
-    this.outputFile = outputFile;
+    File newOutputFile = new File(Constants.REPORT_FOLDER + DateUtils.getDateFolderForma(new Date()));
+    newOutputFile.mkdirs();
+    this.outputFile = newOutputFile;
   }
 
   public Report getReport() {

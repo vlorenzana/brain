@@ -46,8 +46,8 @@ public class PropertiesController implements Initializable, ControlledScreen {
   }
 
   public void goMainScreen(ActionEvent event) {
-    myController.loadScreen(WeekReportMain.MAIN, WeekReportMain.MAIN_FILE);
-    myController.setScreen(WeekReportMain.MAIN);
+    myController.loadScreen(WeekReportMain.MAIN_SCREEN, WeekReportMain.MAIN_FILE);
+    myController.setScreen(WeekReportMain.MAIN_SCREEN);
   }
 
   @Override

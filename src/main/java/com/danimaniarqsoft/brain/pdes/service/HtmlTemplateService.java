@@ -56,7 +56,7 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
 	protected void createSizeFile(ReportContext context) throws ReportException {
 		SizeReportTable sizeTable = context.getReport().getSizeReportTable();
 		Map<String, Object> templateData = new HashMap<>();
-		templateData.put("sizeTable", sizeTable.getData().toString());
+		templateData.put("sizeTable", sizeTable.getData());
 		TemplateUtil.saveTemplate(mainTemplate, CFG, templateData, "size.html", context.getOutputFile());
 
 	}

@@ -22,7 +22,7 @@ public class WeekReportMain extends Application {
 	private static final Logger LOGGER = LoggerFactory.getLogger(WeekReportMain.class);
 	private Stage primaryStage;
 
-	public static final String MAIN = "main";
+	public static final String MAIN_SCREEN = "main";
 	public static final String MAIN_FILE = "/fxml/Main.fxml";
 	public static final String PROPERTIES = "Properties";
 	public static final String PROPERTIES_FILE = "/fxml/Properties.fxml";
@@ -36,9 +36,9 @@ public class WeekReportMain extends Application {
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		ScreensController mainContainer = new ScreensController();
-		mainContainer.loadScreen(WeekReportMain.MAIN, WeekReportMain.MAIN_FILE);
+		mainContainer.loadScreen(WeekReportMain.MAIN_SCREEN, WeekReportMain.MAIN_FILE);
 		mainContainer.loadScreen(WeekReportMain.PROPERTIES, WeekReportMain.PROPERTIES_FILE);
-		mainContainer.setScreen(WeekReportMain.MAIN);
+		mainContainer.setScreen(WeekReportMain.MAIN_SCREEN);
 		Group root = new Group();
 		root.getChildren().addAll(mainContainer);
 		Scene scene = new Scene(root);

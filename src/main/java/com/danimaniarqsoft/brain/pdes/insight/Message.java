@@ -8,7 +8,7 @@ package com.danimaniarqsoft.brain.pdes.insight;
  */
 public class Message {
 	private MessageType messageType = MessageType.DEFAULT;
-	private String message;
+	private String text;
 
 	private Message() {
 
@@ -26,12 +26,12 @@ public class Message {
 		this.messageType = type;
 	}
 
-	public String getMessage() {
-		return message;
+	public String getText() {
+		return text;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	public static class Builder {
@@ -58,7 +58,7 @@ public class Message {
 		}
 
 		public Message build() {
-			message.setMessage(sb.toString());
+			message.setText(sb.toString());
 			return message;
 		}
 	}

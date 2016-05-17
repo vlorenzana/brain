@@ -1,21 +1,14 @@
 package com.danimaniarqsoft.brain.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.danimaniarqsoft.brain.main.WeekReportMain;
 import com.danimaniarqsoft.brain.pdes.exceptions.ReportException;
 import com.danimaniarqsoft.brain.pdes.model.TipoReporte;
-import com.danimaniarqsoft.brain.pdes.service.PersonalReportService;
-import com.danimaniarqsoft.brain.pdes.service.context.ReportContext;
+import com.danimaniarqsoft.brain.tasks.GenerateReportTask;
 import com.danimaniarqsoft.brain.util.Constants;
-import com.danimaniarqsoft.brain.util.ContextUtil;
-import com.danimaniarqsoft.brain.util.DateUtils;
 import com.danimaniarqsoft.brain.util.PropertyFileUtils;
 import com.danimaniarqsoft.brain.util.UrlPd;
 
@@ -23,7 +16,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -31,13 +23,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class PdesReportController implements Initializable, ControlledScreen {
-	private static final Logger LOGGER = LoggerFactory.getLogger(PdesReportController.class);
 
 	ScreensController myController;
 	@FXML
@@ -76,13 +65,11 @@ public class PdesReportController implements Initializable, ControlledScreen {
 
 	public static void showPopupMessage(final String message, final Stage stage) {
 		final Popup popup = createPopup(message);
-		popup.setOnShown(handle -> configPopup(popup, stage));
+		popup.setOnShown(handle -> {
+			popup.setX(stage.getX() + stage.getWidth() / 2 - popup.getWidth() / 2);
+			popup.setY(stage.getY() + stage.getHeight() / 2 - popup.getHeight() / 2);
+		});
 		popup.show(stage);
-	}
-
-	private static void configPopup(Popup popup, Stage stage) {
-		popup.setX(stage.getX() + stage.getWidth() / 2 - popup.getWidth() / 2);
-		popup.setY(stage.getY() + stage.getHeight() / 2 - popup.getHeight() / 2);
 	}
 
 	@Override
@@ -111,26 +98,7 @@ public class PdesReportController implements Initializable, ControlledScreen {
 			alert.setTitle("PDES Reporter");
 			alert.setHeaderText("Reporte Semanal");
 			alert.setContentText("Generando...");
-			Task<Boolean> task = new Task<Boolean>() {
-				@Override
-				public Boolean call() {
-					try {
-						if (cbxTipoReportId.getSelectionModel().getSelectedIndex() == Constants.FIST_SELECTION) {
-							DateUtils.setEn(false);
-						} else {
-							DateUtils.setEn(true);
-						}
-						ReportContext context = new ReportContext();
-						context.setUrlPd(urlPd);
-						PersonalReportService.getInstance().createReport(context);
-					} catch (Exception e) {
-						ContextUtil.saveExceptionToDisk(e, Constants.FILE_ERROR_TXT, new File("./"));
-					}
-					LOGGER.info(
-							"Thanks for using danimaniarqsoft solutions, visit my web page at www.danimanicp.com for further news");
-					return true;
-				}
-			};
+			Task<Boolean> task = new GenerateReportTask(cbxTipoReportId.getSelectionModel().getSelectedIndex(), urlPd);
 			task.setOnRunning((e) -> alert.show());
 			task.setOnSucceeded((e) -> {
 				alert.hide();

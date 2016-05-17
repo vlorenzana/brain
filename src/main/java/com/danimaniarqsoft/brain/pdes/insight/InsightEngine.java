@@ -14,11 +14,7 @@ import com.danimaniarqsoft.brain.pdes.insight.rules.Rule;
  *
  */
 public class InsightEngine {
-	private PriorityQueue<Rule> rules = new PriorityQueue<Rule>(3);
-
-	public InsightEngine() {
-
-	}
+	private PriorityQueue<Rule> rules = new PriorityQueue<>(3);
 
 	public List<Message> execute() {
 		List<Message> messages = new ArrayList<>();

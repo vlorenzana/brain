@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.danimaniarqsoft.brain.dao.OverallMetricsDAO;
+import com.danimaniarqsoft.brain.pdes.exceptions.ReportException;
 import com.danimaniarqsoft.brain.pdes.model.InfoReportTable;
 import com.danimaniarqsoft.brain.pdes.model.PerformanceReportTable;
 import com.danimaniarqsoft.brain.pdes.model.Report;
@@ -21,8 +21,6 @@ import com.danimaniarqsoft.brain.pdes.model.WeekReportTable;
 import com.danimaniarqsoft.brain.util.ContextUtil;
 import com.danimaniarqsoft.brain.util.DateUtils;
 import com.danimaniarqsoft.brain.util.UrlPd;
-
-import freemarker.template.utility.DateUtil;
 
 /**
  * WeekReportService
@@ -42,26 +40,30 @@ public class WeekReportService {
 	 * @throws IOException
 	 * @throws URISyntaxException
 	 */
-	public static Report createReport(final UrlPd urlPd) throws IOException, URISyntaxException {
-		Document doc = Jsoup.connect(urlPd.getWeekReportUrl().toString()).get();
-		WeekReportTable table = new WeekReportTable(doc);
-		Element element = doc.select("body table tbody tr td.left").get(1);
-		String parse = element.text();
-		String reportDate = DateUtils.extractDate(parse);
-		String toDateReportString = DateUtils.convertPdesDate(reportDate);
-		Date toDateReportDate = DateUtils.convertStringToDate(toDateReportString);
-		Date fromDateReportDate = DateUtils.moveDays(toDateReportDate, -6);
-		Document mainData = Jsoup.connect(urlPd.getGeneralReportUrl().toString()).get();
-		InfoReportTable gTable = new InfoReportTable(mainData);
-		gTable.setReportedPeriod("Del " + DateUtils.convertDateToString(fromDateReportDate) + " al "
-				+ DateUtils.convertDateToString(toDateReportDate));
-		OverallMetricsDAO omDAO = new OverallMetricsDAO(urlPd);
-		SizeReportTable sizeTable = omDAO.findSizeTable("body div form table");
-		List<String> tasksInProgress = findTasksInProgress(urlPd);
-		PerformanceReportTable pTable = computeData(table);
-		// Otros calculos
-		gTable.setStatus(ContextUtil.computeStatus(pTable.getVgDiff()));
-		return new Report(gTable, table, pTable, sizeTable, tasksInProgress);
+	public static Report createReport(final UrlPd urlPd) throws ReportException {
+		try {
+			Document doc = Jsoup.connect(urlPd.getWeekReportUrl().toString()).get();
+			WeekReportTable table = new WeekReportTable(doc);
+			Element element = doc.select("body table tbody tr td.left").get(1);
+			String parse = element.text();
+			String reportDate = DateUtils.extractDate(parse);
+			String toDateReportString = DateUtils.convertPdesDate(reportDate);
+			Date toDateReportDate = DateUtils.convertStringToDate(toDateReportString);
+			Date fromDateReportDate = DateUtils.moveDays(toDateReportDate, -6);
+			Document mainData = Jsoup.connect(urlPd.getGeneralReportUrl().toString()).get();
+			InfoReportTable gTable = new InfoReportTable(mainData);
+			gTable.setReportedPeriod("Del " + DateUtils.convertDateToString(fromDateReportDate) + " al "
+					+ DateUtils.convertDateToString(toDateReportDate));
+			OverallMetricsDAO omDAO = new OverallMetricsDAO(urlPd);
+			SizeReportTable sizeTable = omDAO.findSizeTable("body div form table");
+			List<String> tasksInProgress = findTasksInProgress(urlPd);
+			PerformanceReportTable pTable = computeData(table);
+			gTable.setStatus(ContextUtil.computeStatus(pTable.getVgDiff()));
+			return new Report(gTable, table, pTable, sizeTable, tasksInProgress);
+		} catch (Exception e) {
+			throw new ReportException("createReport", e);
+		}
+
 	}
 
 	public static PerformanceReportTable computeData(WeekReportTable table) {
@@ -85,7 +87,7 @@ public class WeekReportService {
 	private static List<String> findTasksInProgress(UrlPd urlPd) throws IOException, URISyntaxException {
 		Document doc = Jsoup.connect(urlPd.getWeekReportUrl().toString()).get();
 		Elements task = doc.select("[name=dueTask]").get(0).select("td.left");
-		List<String> tasksInProgress = new ArrayList<String>();
+		List<String> tasksInProgress = new ArrayList<>();
 		for (Element element : task) {
 			tasksInProgress.add(element.text());
 		}

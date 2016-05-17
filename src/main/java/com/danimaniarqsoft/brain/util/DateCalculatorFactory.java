@@ -40,10 +40,10 @@ public class DateCalculatorFactory {
 
   private static DateCalculator<LocalDate> getConfiguration() {
     DateCalculator<LocalDate> dateCalculator;
-    Set<LocalDate> holidays = new HashSet<LocalDate>();
+    Set<LocalDate> holidays = new HashSet<>();
     holidays.add(new LocalDate(2009, 12, 25));
     DefaultHolidayCalendar<LocalDate> holidayCalendar =
-        new DefaultHolidayCalendar<LocalDate>(holidays);
+        new DefaultHolidayCalendar<>(holidays);
     LocalDateKitCalculatorsFactory.getDefaultInstance().registerHolidays("example",
         holidayCalendar);
     dateCalculator = LocalDateKitCalculatorsFactory.getDefaultInstance()
