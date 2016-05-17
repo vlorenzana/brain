@@ -22,9 +22,10 @@ public class ZipUtils {
 	private static void extractFile(ZipInputStream in, File outdir, String name) throws IOException {
 		byte[] buffer = new byte[BUFFER_SIZE];
 		BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File(outdir, name)));
-		int count = -1;
-		while ((count = in.read(buffer)) != -1)
+		int count;
+		while ((count = in.read(buffer)) != -1) {
 			out.write(buffer, 0, count);
+		}
 		out.close();
 	}
 
@@ -60,11 +61,6 @@ public class ZipUtils {
 					mkdirs(outdir, name);
 					continue;
 				}
-				/*
-				 * this part is necessary because file entry can come before
-				 * directory entry where is file located i.e.: /foo/foo.txt
-				 * /foo/
-				 */
 				dir = dirpart(name);
 				if (dir != null)
 					mkdirs(outdir, dir);
