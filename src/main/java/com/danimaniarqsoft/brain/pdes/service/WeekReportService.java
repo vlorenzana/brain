@@ -86,12 +86,18 @@ public class WeekReportService {
 
 	private static List<String> findTasksInProgress(UrlPd urlPd) throws IOException, URISyntaxException {
 		Document doc = Jsoup.connect(urlPd.getWeekReportUrl().toString()).get();
-		Elements task = doc.select("[name=dueTask]").get(0).select("td.left");
-		List<String> tasksInProgress = new ArrayList<>();
-		for (Element element : task) {
-			tasksInProgress.add(element.text());
+		Elements tasksList = doc.select("[name=dueTask]");
+		if (tasksList.size() > 0) {
+			Elements task = doc.select("[name=dueTask]").get(0).select("td.left");
+			List<String> tasksInProgress = new ArrayList<>();
+			for (Element element : task) {
+				tasksInProgress.add(element.text());
+			}
+			return tasksInProgress;
+		} else {
+			return new ArrayList<>();
 		}
-		return tasksInProgress;
+
 	}
 
 	public static String computeVg(WeekReportTable table) {
