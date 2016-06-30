@@ -7,6 +7,10 @@ public class DateCalculator {
 	}
 
 	public static double convertDate(String date) {
+		if(data==null) 
+		{
+			return Double.NaN;
+		}
 		String[] dateone = date.split(":");
 		int hours = Integer.parseInt(dateone[0]);
 		double minutes = Double.parseDouble(dateone[1]) / 60;
