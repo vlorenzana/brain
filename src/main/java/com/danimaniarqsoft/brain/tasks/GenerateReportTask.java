@@ -14,11 +14,11 @@ import com.danimaniarqsoft.brain.util.UrlPd;
 
 import javafx.concurrent.Task;
 
-public class GenerateReportTask extends Task<Boolean> {
+public final class GenerateReportTask extends Task<Boolean> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenerateReportTask.class);
 
-	private int selectedIndex;
-	private UrlPd urlPd;
+	private final int selectedIndex;
+	private final UrlPd urlPd;
 
 	public GenerateReportTask(int selectedIndex, UrlPd urlPd) {
 		this.selectedIndex = selectedIndex;
@@ -26,7 +26,7 @@ public class GenerateReportTask extends Task<Boolean> {
 	}
 
 	@Override
-	protected Boolean call() throws Exception {
+	protected final Boolean call() throws Exception {
 		try {
 			if (selectedIndex == Constants.FIST_SELECTION) {
 				DateUtils.setEn(false);
