@@ -29,14 +29,9 @@ public class PersonalReportService extends AbstractReportTemplate {
 
 	}
 
-	public static PersonalReportService getInstance() {
-		if (instance == null) {
-			synchronized (PersonalReportService.class) {
-				if (instance == null) {
-					instance = new PersonalReportService();
-				}
-			}
-		}
+	public static synchronized PersonalReportService getInstance() {
+		if (instance == null) 
+                    instance = new PersonalReportService();				
 		return instance;
 	}
 
