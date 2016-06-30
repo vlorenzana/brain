@@ -7,7 +7,7 @@ public class DateCalculator {
 	}
 
 	public static double convertDate(String date) {
-		if(data==null) 
+		if(date==null) 
 		{
 			return Double.NaN;
 		}
