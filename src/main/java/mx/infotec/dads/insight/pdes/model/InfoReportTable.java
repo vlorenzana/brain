@@ -44,7 +44,7 @@ public class InfoReportTable {
 		Element dateForecast = elements.get(0).getAllElements().get(278);
 		return dateForecast.text();
 	    } else {
-		return "";
+		return "N/A";
 	    }
 	} catch (Exception e) {
 	    LOGGER.info("readForeCast", e);
