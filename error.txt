@@ -1,0 +1,13 @@
+Please send this log to: daniel.cortes@infotec.mx
+
+java.lang.NullPointerException
+	at mx.infotec.dads.insight.pdes.model.Report.getTasksNextWeekToHTML(Report.java:95)
+	at mx.infotec.dads.insight.pdes.service.HtmlTemplateService.createTaskProgressFile(HtmlTemplateService.java:101)
+	at mx.infotec.dads.insight.pdes.service.AbstractHtmlTemplate.saveHtmlReport(AbstractHtmlTemplate.java:48)
+	at mx.infotec.dads.insight.pdes.service.PersonalReportService.createWeekReport(PersonalReportService.java:49)
+	at mx.infotec.dads.insight.pdes.service.AbstractReportTemplate.createReport(AbstractReportTemplate.java:92)
+	at mx.infotec.dads.insight.tasks.GenerateReportTask.call(GenerateReportTask.java:44)
+	at mx.infotec.dads.insight.tasks.GenerateReportTask.call(GenerateReportTask.java:23)
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)

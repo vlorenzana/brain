@@ -17,12 +17,16 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
@@ -99,6 +103,7 @@ public class PdesReportController implements Initializable, ControlledScreen {
 	urlPd = PropertyFileUtils.loadUrlContext();
 	projectName.setText(urlPd.getProjectName());
 	port.setText(urlPd.getPort());
+        
 	btnReportId.setOnAction(event -> {
 	    Alert alert = new Alert(AlertType.INFORMATION);
 	    alert.setTitle("PDES Reporter");
@@ -109,6 +114,26 @@ public class PdesReportController implements Initializable, ControlledScreen {
 	    task.setOnSucceeded(e -> {
 		alert.hide();
 		alert.close();
+                WizardController controler=new WizardController();
+        Stage stage = new Stage();
+        try
+        {
+            Parent root = FXMLLoader.load(controler.getClass().getResource("/fxml/wizard.fxml"));
+            stage.setScene(new Scene(root));
+            stage.setTitle("Análisis de reporte");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.show();
+        }
+        catch(IOException ioe)
+        {
+            ioe.printStackTrace();
+            Alert alert2= new Alert(AlertType.INFORMATION);
+	    alert2.setTitle("PDES Reporter");
+	    alert2.setHeaderText("Reporte Semanal");
+	    alert2.setContentText(ioe.getMessage());
+        }
+
+                
 	    });
 	    task.setOnFailed(e -> {
 		alert.hide();

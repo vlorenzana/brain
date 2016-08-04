@@ -17,6 +17,7 @@ import mx.infotec.dads.insight.util.UrlPd;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -51,6 +52,10 @@ public class PropertiesController implements Initializable, ControlledScreen {
 	props.setProperty(Constants.PROPERTY_PROJECT, projectName.getText());
 	PropertyFileUtils.saveProperties(props);
 	messageLabel.setText("Datos Guardados!");
+        Alert alert=new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Propiedades");
+        alert.setContentText("Datos Guardados!");
+        alert.show();
     }
 
     public void goMainScreen(ActionEvent event) {

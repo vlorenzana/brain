@@ -52,6 +52,14 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
 	    mainTemplate = CFG.getTemplate("templates/mainLayout.html");
 	    HashMap<String, Object> data = new HashMap<>();
 	    data.put("gn", context.getReport().getInfoReportTable());
+            Map<String, Object> templateData = new HashMap<>();
+            for (int i = 0; i < context.getReport().getWeekReportTable().getNumRows(); i++) {
+                for (int j = 0; j < context.getReport().getWeekReportTable().getNumCols(); j++) {
+                    data.put("data" + i + "" + j, context.getReport().getWeekReportTable().getStringProperty(i, j));
+                }
+            }
+            PerformanceReportTable pt = context.getReport().getPerformanceReportTable();	
+            data.put("pTable", pt);
 	    TemplateUtil.saveTemplate(mainTemplate, CFG, data, "index.html", context.getOutputFile());
 	} catch (IOException e) {
 	    throw new ReportException("createIndexFile", e);
@@ -88,7 +96,9 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
     @Override
     protected void createTaskProgressFile(ReportContext context) throws ReportException {
 	HashMap<String, Object> data = new HashMap<>();
-	data.put("tasks", context.getReport().getTasksInProgress());
+	data.put("tasks", context.getReport().getTasksInProgressToHTml());
+        data.put("taskcompleted", context.getReport().getTasksCompletedToHTML());
+        data.put("tasknext", context.getReport().getTasksNextWeekToHTML());
 	TemplateUtil.saveTemplate(mainTemplate, CFG, data, "taskProgressChart.html", context.getOutputFile());
     }
 

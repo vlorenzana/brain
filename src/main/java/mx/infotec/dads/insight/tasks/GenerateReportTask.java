@@ -13,6 +13,14 @@ import mx.infotec.dads.insight.util.DateUtils;
 import mx.infotec.dads.insight.util.UrlPd;
 
 import javafx.concurrent.Task;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import mx.infotec.dads.insight.controller.ScreensController;
+import mx.infotec.dads.insight.controller.WizardController;
 
 /**
  * Tarea para generar el reporte
@@ -25,10 +33,11 @@ public class GenerateReportTask extends Task<Boolean> {
 
     private int selectedIndex;
     private UrlPd urlPd;
-
+    private ScreensController screensController;
     public GenerateReportTask(int selectedIndex, UrlPd urlPd) {
 	this.selectedIndex = selectedIndex;
 	this.urlPd = urlPd;
+        this.screensController = screensController;
     }
 
     @Override

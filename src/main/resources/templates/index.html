@@ -40,3 +40,209 @@
 		</div>
 	</div>
 </div>
+
+<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>Resumen de la semana</h2>
+			<ul class="nav navbar-right panel_toolbox"></ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+			<table name="summary" class="table table-responsive table-striped">
+				<tbody>
+					<tr>
+						<td></td>
+						<td class="header" colspan="3">Direct Hours</td>
+						<td></td>
+						<td class="header" colspan="3">Earned Value</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td class="header">Plan</td>
+						<td class="header">Actual</td>
+						<td class="header">Actual/Plan</td>
+						<td></td>
+						<td class="header">Plan</td>
+						<td class="header">Actual</td>
+						<td class="header">Actual/Plan</td>
+					</tr>
+					<tr>
+						<td class="left">This Week</td>
+						<td class="data">${data00}</td>
+						<td class="data">${data01}</td>
+						<td class="data">${data02}</td>
+						<td></td>
+						<td class="data">${data03}</td>
+						<td class="data">${data04}</td>
+						<td class="data">${data05}</td>
+					</tr>
+					<tr class="alt">
+						<td>To Date</td>
+						<td class="data">${data10}</td>
+						<td class="data">${data11}</td>
+						<td class="data">${data12}</td>
+						<td></td>
+						<td class="data">${data13}</td>
+						<td class="data">${data14}</td>
+						<td class="data">${data15}</td>
+					</tr>
+					<tr>
+						<td>Average per Week To Date</td>
+						<td class="data">${data20}</td>
+						<td class="data">${data21}</td>
+						<td class="data">${data22}</td>
+						<td></td>
+						<td class="data">${data23}</td>
+						<td class="data">${data24}</td>
+						<td class="data">${data25}</td>
+					</tr>
+					<tr class="alt">
+						<td>Completed Tasks To Date</td>
+						<td class="data">${data30}</td>
+						<td class="data">${data31}</td>
+						<td class="data">${data32}</td>
+						<td></td>
+						<td class="data">${data33}</td>
+						<td class="data">${data34}</td>
+						<td class="data">${data35}</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+</div>
+<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>
+				Valor Ganado<small></small>
+			</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+			<a href="reportImages/ev.png"> <img src="reportImages/ev.png"
+				alt="..." class="img-container"></a>
+		</div>
+	</div>
+</div>
+
+
+<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>
+				Valor Ganado (Tendencia)<small></small>
+			</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+			<a href="reportImages/evTrend.png"> <img
+				src="reportImages/evTrend.png" alt="..." class="img-container"></a>
+		</div>
+	</div>
+</div>
+
+<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>
+				Horas Acumuladas<small></small>
+			</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+			<a href="reportImages/directHours.png"> <img
+				src="reportImages/directHours.png" alt="..." class="img-container"></a>
+		</div>
+	</div>
+</div>
+<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>
+				Tendencias de Horas<small></small>
+			</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+			<a href="reportImages/directTimeTrend.png"> <img
+				src="reportImages/directTimeTrend.png" alt="..."
+				class="img-container"></a>
+		</div>
+	</div>
+</div>
+
+<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+                    <h2>M&eacute;tricas de Desempe&ntilde;o</h2>
+			<ul class="nav navbar-right panel_toolbox"></ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+
+			<table name="performanceTable" border="1" class="table table-bordered table-striped table-responsive">
+				<tbody>
+					<tr>
+						<td></td>
+						<td class="header">Valor</td>
+						<td class="header">Metrica</td>
+					</tr>
+					<tr>
+						<td>Valor Ganado (VG)</td>
+						<td class="data">${pTable.vg}</td>
+						<td>%</td>
+					</tr>
+					<tr class="alt">
+						<td>Diferencia (VG)</td>
+						<td class="data">${pTable.vgDiff}</td>
+						<td>Puntos</td>
+					</tr>
+					<tr>
+						<td>Falta</td>
+						<td class="data">${pTable.vgFalta}</td>
+						<td>%</td>
+					</tr>
+					<tr class="alt">
+						<td>Horas Tarea</td>
+						<td class="data">${pTable.taskHours}</td>
+						<td>Horas</td>
+					</tr>
+					<tr>
+						<td>Tareas Cerradas Sobre/SubEstimadas</td>
+						<td class="data">${pTable.taskClosed}</td>
+						<td>%</td>
+					</tr>
+					<tr class="alt">
+						<td>Horas en tareas no terminadas</td>
+						<td class="data">${pTable.hoursNotFinished}</td>
+						<td>Horas</td>
+					</tr>
+					<tr>
+						<td>Semanas de Hs en tareas no terminadas</td>
+						<td class="data">${pTable.weekHrsNotFinished}</td>
+						<td>Semanas</td>
+					</tr>
+					<tr class="alt">
+						<td>VG/H</td>
+						<td class="data">${pTable.vgPerHour}</td>
+						<td>Puntos/Hora</td>
+					</tr>
+					<tr>
+						<td>VG no realizado</td>
+						<td class="data">${pTable.vgNotPerformed}</td>
+						<td>Puntos</td>
+					</tr>
+					<tr class="alt">
+						<td>Recuperaci&oacute;n</td>
+						<td class="data">${pTable.recovery}</td>
+						<td>Semanas</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+</div>

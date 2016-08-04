@@ -20,6 +20,7 @@ import mx.infotec.dads.insight.pdes.model.SizeReportTable;
 import mx.infotec.dads.insight.pdes.model.WeekReportTable;
 import mx.infotec.dads.insight.util.ContextUtil;
 import mx.infotec.dads.insight.util.DateUtils;
+import mx.infotec.dads.insight.util.DoubleUtils;
 import mx.infotec.dads.insight.util.UrlPd;
 
 /**
@@ -29,6 +30,8 @@ import mx.infotec.dads.insight.util.UrlPd;
  *
  */
 public class WeekReportService {
+    
+    
     private WeekReportService() {
 
     }
@@ -57,9 +60,12 @@ public class WeekReportService {
 	    OverallMetricsDAO omDAO = new OverallMetricsDAO(urlPd);
 	    SizeReportTable sizeTable = omDAO.findSizeTable("body div form table");
 	    List<String> tasksInProgress = findTasksInProgress(urlPd);
+            List<String> tasksCompleted = findTasksCompleted(urlPd);
+            List<String> tasksNextWeek = findTasksNext(urlPd);
+            
 	    PerformanceReportTable pTable = computeData(table);
 	    gTable.setStatus(ContextUtil.computeStatus(pTable.getVgDiff()));
-	    return new Report(gTable, table, pTable, sizeTable, tasksInProgress);
+	    return new Report(gTable, table, pTable, sizeTable, tasksInProgress,tasksCompleted,tasksNextWeek);
 	} catch (Exception e) {
 	    throw new ReportException("createReport", e);
 	}
@@ -80,8 +86,8 @@ public class WeekReportService {
 
 	return PerformanceReportTable.getBuilder().withVg(vg).withVgDiff(vgDiff).withVgFalta(vgFalta)
 		.withTaskHours(horasTarea).withTaskClosed(tareaCerradas)
-		.withHoursNotFinished(Double.toString(hsTareasTerm)).withWeekHrsNotFinished(semHrTarNoTerm)
-		.withVgPerHour(Double.toString(vhxH)).withVgNotPerformed(vgNoRe).withRecovery(recup).build();
+		.withHoursNotFinished(DoubleUtils.formatToDigits(hsTareasTerm)).withWeekHrsNotFinished(semHrTarNoTerm)
+		.withVgPerHour(DoubleUtils.formatToDigits(vhxH)).withVgNotPerformed(vgNoRe).withRecovery(recup).build();
     }
 
     private static List<String> findTasksInProgress(UrlPd urlPd) throws IOException, URISyntaxException {
@@ -99,25 +105,58 @@ public class WeekReportService {
 	}
 
     }
+    private static List<String> findTasksCompleted(UrlPd urlPd) throws IOException, URISyntaxException {
+	Document doc = Jsoup.connect(urlPd.getWeekReportUrl().toString()).get();
+	Elements tasksList = doc.select("[name=compTask]");
+	if (!tasksList.isEmpty()) {
+	    Elements task = doc.select("[name=compTask]").get(0).select("td.left");
+	    List<String> taskCompleted = new ArrayList<>();
+	    for (Element element : task) {
+		taskCompleted.add(element.text());
+	    }
+	    return taskCompleted;
+	} else {
+	    return new ArrayList<>();
+	}
+
+    }
+    private static List<String> findTasksNext(UrlPd urlPd) throws IOException, URISyntaxException {
+	Document doc = Jsoup.connect(urlPd.getWeekReportUrl().toString()).get();
+	Elements tasksList = doc.select("[name=dueTask]");
+	if (!tasksList.isEmpty()) {
+            List<String> taskNextWeek = new ArrayList<>();
+            if(doc.select("[name=dueTask]").size()>1)
+            {
+                Elements task = doc.select("[name=dueTask]").get(1).select("td.left");                
+                for (Element element : task) {
+                    taskNextWeek.add(element.text());
+                }
+            }
+	    return taskNextWeek;
+	} else {
+	    return new ArrayList<>();
+	}
+
+    }
 
     public static String computeVg(WeekReportTable table) {
-	return Double.toString(table.getDoubleProperty(1, 4));
+	return DoubleUtils.formatToDigits(table.getDoubleProperty(1, 4));
     }
 
     public static String computeVgDiff(WeekReportTable table) {
-	return Double.toString(table.getDoubleProperty(1, 4) - table.getDoubleProperty(1, 3));
+	return DoubleUtils.formatToDigits(table.getDoubleProperty(1, 4) - table.getDoubleProperty(1, 3));
     }
 
     public static String computeVgFalta(WeekReportTable table) {
-	return Double.toString((1 - table.getDoubleProperty(1, 5)) * 100);
+	return DoubleUtils.formatToDigits((1 - table.getDoubleProperty(1, 5)) * 100);
     }
 
     public static String computeTaskHours(WeekReportTable table) {
-	return Double.toString(table.getDoubleProperty(1, 1));
+	return DoubleUtils.formatToDigits(table.getDoubleProperty(1, 1));
     }
 
     public static String computeClosedTask(WeekReportTable table) {
-	return Double.toString((table.getDoubleProperty(3, 2) * 100) - 100);
+	return DoubleUtils.formatToDigits((table.getDoubleProperty(3, 2) * 100) - 100);
     }
 
     public static double computeHoursTaskNotFinished(WeekReportTable table) {
@@ -125,7 +164,7 @@ public class WeekReportService {
     }
 
     public static String computeWeekhrsTaskNotFinished(WeekReportTable table, double hsTareasTerm) {
-	return Double.toString(hsTareasTerm / table.getDoubleProperty(2, 1));
+	return DoubleUtils.formatToDigits(hsTareasTerm / table.getDoubleProperty(2, 1));
     }
 
     public static double computeVgXh(WeekReportTable table) {
@@ -133,11 +172,11 @@ public class WeekReportService {
     }
 
     public static String computeVgNotPerformed(double vhxH, double hsTareasTerm) {
-	return Double.toString(vhxH * hsTareasTerm);
+	return DoubleUtils.formatToDigits(vhxH * hsTareasTerm);
     }
 
     public static String computeRecoveryWeeks(WeekReportTable table) {
-	return Double.toString(
+	return DoubleUtils.formatToDigits(
 		(table.getDoubleProperty(1, 3) - table.getDoubleProperty(1, 4)) / table.getDoubleProperty(2, 4));
     }
 
