@@ -12,6 +12,7 @@
 package mx.infotec.dads.insight.util;
 
 import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -191,5 +192,37 @@ public class DateUtils {
             time="0:00";
         }
         return time;
+    }
+    private static Calendar init(Date date)
+    {
+         Calendar calDate=Calendar.getInstance();
+         calDate.setTime(date);
+         calDate.set(Calendar.MINUTE, 1);
+         calDate.set(Calendar.SECOND, 0);
+         calDate.set(Calendar.HOUR, 0);
+         return calDate;
+    }
+    public static boolean betweenWeek(Date date,Date endWeek)
+    {
+        Calendar init=Calendar.getInstance();                    
+        init.setTime(endWeek);
+        init.add(Calendar.DATE, -7);
+        Date initWeek=init.getTime();
+        return between(date, initWeek, endWeek);
+    }
+    public static Date getDateFromHTML(String date)
+    {
+        return DateUtils.convertStringToDate(DateUtils.extractDate(date));  
+    }
+    public static boolean between(Date date,Date ini,Date end)
+    {
+        Calendar calDate=init(date);
+        Calendar calInit=init(ini);
+        Calendar calEnd=init(end);        
+        if((calDate.before(calEnd) || calDate.equals(calEnd)) && (calDate.after(calInit) || calDate.equals(calInit)))
+        {
+            return true;        
+        }
+        return false;
     }
 }

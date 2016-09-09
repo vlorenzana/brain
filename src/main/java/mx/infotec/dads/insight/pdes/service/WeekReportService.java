@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +23,7 @@ import mx.infotec.dads.insight.pdes.model.InfoReportTable;
 import mx.infotec.dads.insight.pdes.model.PQIElement;
 import mx.infotec.dads.insight.pdes.model.PerformanceReportTable;
 import mx.infotec.dads.insight.pdes.model.PhaseTime;
-import mx.infotec.dads.insight.pdes.model.ProductsFinished;
+import mx.infotec.dads.insight.pdes.model.Product;
 import mx.infotec.dads.insight.pdes.model.TaskWithProblem;
 import mx.infotec.dads.insight.pdes.model.Report;
 import mx.infotec.dads.insight.pdes.model.SizeReportTable;
@@ -33,7 +33,10 @@ import mx.infotec.dads.insight.util.Constants;
 import static mx.infotec.dads.insight.util.Constants.FILTER_FINISHED;
 import mx.infotec.dads.insight.util.ContextUtil;
 import mx.infotec.dads.insight.util.DateUtils;
+import static mx.infotec.dads.insight.util.DateUtils.betweenWeek;
+import static mx.infotec.dads.insight.util.DateUtils.getDateFromHTML;
 import mx.infotec.dads.insight.util.DoubleUtils;
+import mx.infotec.dads.insight.util.ProductComparator;
 import mx.infotec.dads.insight.util.UrlPd;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 import org.jsoup.Connection;
@@ -60,6 +63,7 @@ public class WeekReportService {
      */
     public static Report createReport(File output,final UrlPd urlPd) throws ReportException {
 	try {
+            Date endWeek=getStartReport(urlPd);
             removeFilter(FILTER_FINISHED, urlPd);
             removeFilterByPath(urlPd);            
 	    Document doc = Jsoup.connect(urlPd.getWeekReportUrl().toString()).get();
@@ -84,9 +88,9 @@ public class WeekReportService {
 	    PerformanceReportTable pTable = computeData(table);
 	    gTable.setStatus(ContextUtil.computeStatus(pTable.getVgDiff()));
             List<TaskWithProblem> taskProblems=findTaksWithProblems(urlPd);
-            List<ProductsFinished> productsFinished=findProductsFinished(urlPd);
+            List<Product> productsFinished=findProductsToDate(urlPd,endWeek);
             List<PhaseTime> timeTableFinished=getTimeTableFinished(urlPd);
-            List<PQIElement> tablePQI=createTablePQI(urlPd,output,productsFinished);
+            List<PQIElement> tablePQI=createTablePQI(urlPd,output,productsFinished,endWeek);
             
 	    return new Report(gTable, table, pTable, sizeTable, tasksInProgress,tasksCompleted,tasksNextWeek,taskProblems,productsFinished,timeTableFinished,tablePQI);
 	} catch (Exception e) {
@@ -260,16 +264,7 @@ public class WeekReportService {
         {
             Element h2=elements.get(0);
             String text=h2.textNodes().get(0).text().trim();
-            int pos=text.lastIndexOf(" ");
-            if(pos>0)
-            {
-                char c=(char)160;
-                String dateString=text.substring(pos).trim();  
-                StringBuilder sb=new StringBuilder(dateString);
-                int pos2=dateString.indexOf(c);
-                sb.replace(pos2, dateString.length()-1, "");
-                return DateUtils.convertStringToDate(DateUtils.extractDate(sb.toString()));
-            }
+            return getDateFromHTML(text);           
         }
         return new Date();
     }
@@ -290,14 +285,9 @@ public class WeekReportService {
         }
         return getPath;
     }
-    private static List<ProductsFinished> findProductsFinished(UrlPd urlPd) throws IOException, URISyntaxException,ReportException
-    {        
-        Date end=getStartReport(urlPd);
-        Calendar endCal=Calendar.getInstance();
-        endCal.setTime(end);
-        endCal.add(Calendar.DATE, -7);
-        Date init=endCal.getTime();
-        List<ProductsFinished> findProductsFinished=new ArrayList<>();        
+    private static List<Product> findProductsToDate(UrlPd urlPd,Date endWeek) throws IOException, URISyntaxException,ReportException
+    {   
+        List<Product> findProductsFinished=new ArrayList<>();        
         Map<String,TaskInfo> products=new HashMap<>();
         Document doc = Jsoup.connect(urlPd.getSummary().toString()).get();
         Elements renglones=doc.select("body table[name=TASK] tr");
@@ -310,22 +300,49 @@ public class WeekReportService {
                 String parentId=id.substring(0,id.lastIndexOf("-"));
                 String productName=tr.child(0).child(0).ownText();
                 String type=tr.child(1).ownText();
-                String date=tr.child(7).ownText();
+                String planned=tr.child(5).ownText(); // plannedDate
+                String finished=tr.child(7).ownText().trim(); // endDate
                 String hito=tr.child(8).ownText();
 
                 //System.out.println("date: "+date);
 
-                if(type.isEmpty() && !date.isEmpty())
+                if(type.isEmpty() && !planned.isEmpty())
                 {
                     products.remove(parentId);
-                    Date finished = DateUtils.convertStringToDate(DateUtils.extractDate(date));
-                    if((finished.after(init) || finished.equals(init)) && (finished.before(end) || finished.equals(end)))
+                    Date plannedDate = DateUtils.convertStringToDate(DateUtils.extractDate(planned));                    
+                    if(plannedDate.before(endWeek) || plannedDate.equals(endWeek))
                     {                        
                         TaskInfo task=new TaskInfo();
                         task.id=id;
-                        task.productName=productName;
+                        task.productName=escapeHtml4(productName);
                         task.hito=hito;                        
+                        task.endDate=finished;
+                        task.endDate=finished;
+                        task.plannedDate=planned;
+                        task.status="before";
                         products.put(id, task);
+                    }
+                    if(!finished.isEmpty())
+                    {
+                        Date finishedDate = DateUtils.convertStringToDate(DateUtils.extractDate(finished));                    
+                        if(finishedDate.before(endWeek) || finishedDate.equals(endWeek))
+                        {
+                            TaskInfo task=new TaskInfo();
+                            task.id=id;
+                            task.productName=escapeHtml4(productName);
+                            task.hito=hito;  
+                            task.endDate=finished;
+                            task.plannedDate=planned;
+                            if(betweenWeek(finishedDate, endWeek))
+                            {
+                                task.status="finishedToDate";
+                            }
+                            else
+                            {
+                                task.status="finished";
+                            }                            
+                            products.put(id, task);
+                        }
                     }
                 }
             }
@@ -333,16 +350,20 @@ public class WeekReportService {
         for(String key : products.keySet())
         {
             TaskInfo info=products.get(key);
-            ProductsFinished product=new ProductsFinished();
+            Product product=new Product();
             product.name=info.productName;
+            product.setFinishDate(info.endDate);
+            product.setPlannedDate(info.plannedDate);
             String path=getPath(info.id, doc);
             if(path.startsWith("/"))
             {
                 path=path.substring(1);
             }
             product.path=path;
+            product.status=info.status;
             findProductsFinished.add(product);
         }
+        Collections.sort(findProductsFinished, new ProductComparator());
         return findProductsFinished;
     }
     private static BufferedImage getImage(UrlPd urlPd,int index) throws IOException, URISyntaxException,ReportException 
@@ -370,42 +391,145 @@ public class WeekReportService {
         }
         return null;
     }
-    
-    private static List<PQIElement> createTablePQI(UrlPd urlPd,File output,List<ProductsFinished> products) throws ReportException,URISyntaxException
+    private static Double getPQIProductPlanned(UrlPd urlPd) throws ReportException,URISyntaxException,IOException
+    {       
+        
+        //http://localhost:2468/Proyecto/Coaches+2016//reports/table.class?chart=radar&qf=quality%2FestProfile.rpt planeada
+        //http://localhost:2468/Proyecto/Coaches+2016//reports/table.class?chart=radar&qf=quality%2FactProfile.rpt actual
+        
+        return getPQIProductActual(urlPd,"quality%2FestProfile.rpt");
+    }
+    private static Double getPQIProductActual(UrlPd urlPd) throws ReportException,URISyntaxException,IOException
+    {       
+        
+        //http://localhost:2468/Proyecto/Coaches+2016//reports/table.class?chart=radar&qf=quality%2FestProfile.rpt planeada
+        //http://localhost:2468/Proyecto/Coaches+2016//reports/table.class?chart=radar&qf=quality%2FactProfile.rpt actual
+        
+        return getPQIProductActual(urlPd,"quality%2FactProfile.rpt");
+    }
+    private static Double getPQIProductActual(UrlPd urlPd,String param) throws ReportException,URISyntaxException,IOException
+    {
+        Document doc = Jsoup.connect(urlPd.getURLPQITable().toString()+param).get();
+        Elements rows=doc.select("table tr");
+        
+        for(int i=1;i<rows.size();i++)
+        {
+            List<Double> values=new ArrayList<>();
+            Element tr=rows.get(i);
+            for(int j=1;j<tr.children().size();j++)
+            {
+                Element node=tr.child(j);
+                String data=node.text();
+                try
+                {
+                    Double doubleData=Double.parseDouble(data);
+                    values.add(doubleData);
+                }
+                catch(NumberFormatException nfe)
+                {
+                    values.add(Double.NaN);
+                }
+            }            
+            if(hasPQI(values))
+            {
+                
+                double design_Code=values.get(0)>1?1.0:values.get(0);
+                double rev_design=values.get(4)*2>1?1.0:values.get(4)*2;
+                double rev_code=values.get(1)*2>1?1.0:values.get(1)*2;
+                double defectos_comp=values.get(2);
+                double defectos_test=values.get(2);
+                double def_comp_index=0;
+                double def_test_index=0;
+                if(defectos_comp==0)
+                {
+                    def_comp_index=1;
+                }
+                else
+                {
+                    def_comp_index=20/(10+defectos_comp);
+                    def_comp_index=def_comp_index>1 ? 1 : def_comp_index;
+                }
+                
+                if(defectos_test==0)
+                {
+                    def_test_index=1;
+                }
+                else
+                {
+                    def_test_index=10/(5+defectos_test);
+                    def_test_index=def_test_index>1 ? 1 : def_test_index;
+                }
+                double pqi=design_Code*rev_design*rev_code*def_comp_index*def_test_index;
+                return pqi;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        return null;        
+    }
+    private static boolean hasPQI(List<Double> data)
+    {
+        if(data.size()!=5)
+        {
+            return false;
+        }
+        for(Double d : data)
+        {
+            if(Double.isNaN(d))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    private static List<PQIElement> createTablePQI(UrlPd urlPd,File output,List<Product> products,Date endWeek) throws ReportException,URISyntaxException
     {
         List<PQIElement> createTablePQI=new ArrayList<>();
         try
         {        
             int index=0;
-            for(ProductsFinished product : products)
+            for(Product product : products)
             {
-                addFilterByPath(product.path, urlPd);
-                
-                               
-                PQIElement element=new PQIElement();
-                element.pathToProduct=escapeHtml4(product.path);
-                createTablePQI.add(element);
-                element.pqi_actual=0.38;
-                element.pqi_planned=0.80;
-                element.imagePQIActual="";
-                element.imagePQIPlanned="";
-                if(element.pqi_actual<=0.4)
+                if(!product.finishDate.isEmpty())
                 {
-                    element.style="color:red;";
-                }
-                BufferedImage pqi_planned=getImage(urlPd,0); 
-                if(pqi_planned!=null)
-                {                    
-                    String name="pqi_planned_"+index;
-                    element.imagePQIPlanned=Constants.REPORT_IMG_FOLDER+"/"+name+".png";
-                    ContextUtil.saveImageToDisk(pqi_planned, output, name);                
-                }
-                BufferedImage pqi_actual=getImage(urlPd,1);
-                if(pqi_actual!=null)
-                {                    
-                    String name="pqi_actual_"+index;
-                    element.imagePQIActual=Constants.REPORT_IMG_FOLDER+"/"+name+".png";
-                    ContextUtil.saveImageToDisk(pqi_actual, output, name);                
+                    Date finished=getDateFromHTML(product.finishDate);                    
+                    if(betweenWeek(finished,endWeek))                        
+                    {
+                        index++;
+                        addFilterByPath(product.path, urlPd);                        
+                        Double pqi_planned=getPQIProductPlanned(urlPd);
+                        Double pqi_actual=getPQIProductActual(urlPd);
+                        if(pqi_actual!=null && pqi_planned!=null)
+                        {
+                            PQIElement element=new PQIElement();
+                            element.pathToProduct=escapeHtml4(product.path);
+                            createTablePQI.add(element);
+                            element.pqi_actual=pqi_actual;
+                            element.pqi_planned=pqi_planned;
+                            element.imagePQIActual="";
+                            element.imagePQIPlanned="";
+                            if(element.pqi_actual<=0.4)
+                            {
+                                element.style="color:red;";
+                            }
+                            BufferedImage pqi_planned_image=getImage(urlPd,0); 
+                            if(pqi_planned_image!=null)
+                            {                    
+                                String name="pqi_planned_"+index;
+                                element.imagePQIPlanned=Constants.REPORT_IMG_FOLDER+"/"+name+".png";
+                                ContextUtil.saveImageToDisk(pqi_planned_image, output, name);                
+                            }
+                            BufferedImage pqi_actual_image=getImage(urlPd,1);
+                            if(pqi_actual_image!=null)
+                            {                    
+                                String name="pqi_actual_"+index;
+                                element.imagePQIActual=Constants.REPORT_IMG_FOLDER+"/"+name+".png";
+                                ContextUtil.saveImageToDisk(pqi_actual_image, output, name);                
+                            }
+                        }
+                    }
                 }
             }        
         }
@@ -463,6 +587,7 @@ public class WeekReportService {
                 String taskName=tr.child(0).ownText();
                 String used=tr.child(5).ownText().replace('%', ' ').trim();
                 String left=tr.child(10).ownText();
+                String date=tr.child(6).ownText();
                 if(!taskName.isEmpty())
                 {
                     if(!used.isEmpty())
@@ -471,14 +596,14 @@ public class WeekReportService {
                         if(iUsed>100)
                         {
                             //tasks.add(taskName);
-                            TaskWithProblem task=new TaskWithProblem(taskName,tr.child(7).text());
+                            TaskWithProblem task=new TaskWithProblem(taskName,tr.child(7).text(),date);
                             findProductsWithProblems.add(task);
 
                         }
                     }
                     else if(left.startsWith("-"))
                     {
-                        TaskWithProblem task=new TaskWithProblem(taskName,tr.child(7).text());
+                        TaskWithProblem task=new TaskWithProblem(taskName,tr.child(7).text(),date);
                         findProductsWithProblems.add(task);
 
                     }

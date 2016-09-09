@@ -19,7 +19,7 @@ public class Report {
     private List<String> tasksCompleted;
     private List<String> tasksNextWeek;
     private List<TaskWithProblem> taskProblems;
-    private List<ProductsFinished> productsFinished;
+    private List<Product> products;
     private List<PhaseTime> timeTableFinished;
     private List<PQIElement> tablePQI;
 
@@ -27,7 +27,7 @@ public class Report {
     
 
     public Report(InfoReportTable gTable, WeekReportTable weekTable, PerformanceReportTable performanceTable,
-	    SizeReportTable sizeTable, List<String> tasksInProgress,List<String> tasksCompleted,List<String> tasksNextWeek,List<TaskWithProblem> taskProblems,List<ProductsFinished> productsFinished,
+	    SizeReportTable sizeTable, List<String> tasksInProgress,List<String> tasksCompleted,List<String> tasksNextWeek,List<TaskWithProblem> taskProblems,List<Product> productsFinished,
             List<PhaseTime> timeTableFinished,List<PQIElement> tablePQI) {
 	this.infoReportTable = gTable;
 	this.weekReportTable = weekTable;
@@ -37,7 +37,7 @@ public class Report {
         this.tasksCompleted = tasksCompleted;
         this.tasksNextWeek = tasksNextWeek;
         this.taskProblems=taskProblems;
-        this.productsFinished=productsFinished;
+        this.products=productsFinished;
         this.timeTableFinished=timeTableFinished;
         this.tablePQI=tablePQI;
     }
@@ -57,12 +57,12 @@ public class Report {
         this.timeTableFinished = timeTableFinished;
     }
     
-    public List<ProductsFinished> getProductsFinished() {
-        return productsFinished;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setProductsFinished(List<ProductsFinished> productsFinished) {
-        this.productsFinished = productsFinished;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
     public WeekReportTable getWeekReportTable() {
 	return weekReportTable;

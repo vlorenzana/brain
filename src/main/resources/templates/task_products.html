@@ -13,6 +13,9 @@
                             Tarea
                         </th>
                         <th>
+                            Fecha Planeada
+                        </th>
+                        <th>
                             Hito
                         </th>
                         </tr>
@@ -20,6 +23,9 @@
                         <tr>
                             <td>
                                ${task_problem.name}
+                            </td>
+                            <td>
+                               ${task_problem.date}
                             </td>
                             <td>
                                ${task_problem.hito}
@@ -86,7 +92,7 @@
 	<div class="x_panel">
 		<div class="x_title">
 			<h2>
-                            Tabla de productos terminados<small></small>
+                            Tabla de productos<small></small>
 			</h2>
 			<div class="clearfix"></div>
 		</div>
@@ -94,12 +100,21 @@
                     <table id="table_products" border="1" class="table table-bordered table-striped table-responsive">
                         <tr>
                             <th>Producto</th>
+                            <th>Fecha Planeada</th>
+                            <th>Fecha Terminado</th>
                             <th>URL</th>
                         </tr>
                         <#list products as product>
-                        <tr>
+                        <tr status="${product.status}">
                             <td>${product.name}</td>
-                            <td><a href="#">Url de evidencia</a></td>
+                            <td>${product.plannedDate}</td>
+                            <td>${product.finishDate}</td>
+                            <#if product.status=="finishedToDate">
+                            <td><a href="#">URL de evidencia(opcional)</a></td>
+                            <#else>
+                            <td></td>
+                            </#if>
+                            
                         </tr>
                         </#list>                         
                     </table>

@@ -14,10 +14,20 @@ import org.apache.commons.lang3.StringEscapeUtils;
 public class TaskWithProblem {
     public String name;
     public String hito;
-    public TaskWithProblem(String name,String hito)
+    public String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+    public TaskWithProblem(String name,String hito,String date)
     {
-       this.setName(name);
-       this.setHito(hito);       
+       setName(name);
+       setHito(hito);       
+       setDate(date);       
     }
     public String getName() {
         return name;

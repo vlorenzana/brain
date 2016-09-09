@@ -5,9 +5,6 @@
  */
 package mx.infotec.dads.insight.pdes.model;
 
-import mx.infotec.dads.insight.pdes.model.URLProduct;
-import mx.infotec.dads.insight.pdes.model.RoleDefinition;
-import mx.infotec.dads.insight.pdes.model.InfoPQI;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -132,14 +129,16 @@ public class DataInformation {
         for(int i=1;i<table.size();i++)
         {
             Element tr=table.get(i);
-            String product=tr.child(0).text();
-            
-            String url=tr.child(1).text();
-            URLProduct productURL=new URLProduct();
-            productURL.product=unescapeHtml4(product);
-            productURL.url=url;
-            loadTable.add(productURL);
-            
+            String status=tr.attr("status");
+            if("finishedToDate".equalsIgnoreCase(status))
+            {
+                String product=tr.child(0).text();            
+                String url=tr.child(3).text();
+                URLProduct productURL=new URLProduct();
+                productURL.product=unescapeHtml4(product);
+                productURL.url=url;
+                loadTable.add(productURL);
+            }
         }
         return loadTable;
     }

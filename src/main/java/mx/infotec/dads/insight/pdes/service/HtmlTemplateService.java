@@ -88,14 +88,14 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
 
     @Override
     protected void createExternalCommitmentsFile(ReportContext context) throws ReportException {
-	TemplateUtil.saveTemplate(mainTemplate, CFG, new HashMap<String, Object>(), "extCommitmentsChart.html",
-		context.getOutputFile());
+	/*TemplateUtil.saveTemplate(mainTemplate, CFG, new HashMap<String, Object>(), "extCommitmentsChart.html",
+		context.getOutputFile());*/
     }
 
     @Override
     protected void createHoursFile(ReportContext context) throws ReportException {
-	TemplateUtil.saveTemplate(mainTemplate, CFG, new HashMap<String, Object>(), "hrsChart.html",
-		context.getOutputFile());
+	/*TemplateUtil.saveTemplate(mainTemplate, CFG, new HashMap<String, Object>(), "hrsChart.html",
+		context.getOutputFile());*/
     }
 
     @Override
@@ -105,7 +105,7 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
         data.put("taskcompleted", context.getReport().getTasksCompletedToHTML());
         data.put("tasknext", context.getReport().getTasksNextWeekToHTML());
         data.put("task_problems", context.getReport().getTaskProblems());
-        data.put("products", context.getReport().getProductsFinished());
+        data.put("products", context.getReport().getProducts());
         data.put("timetable", context.getReport().getTimeTableFinished());
         data.put("sizeTable", context.getReport().getSizeReportTable().getData());
 	TemplateUtil.saveTemplate(mainTemplate, CFG, data, PAGE_TASK_PRODUCTS, context.getOutputFile());
@@ -113,8 +113,8 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
 
     @Override
     protected void createVgFile(ReportContext context) throws ReportException {
-	TemplateUtil.saveTemplate(mainTemplate, CFG, new HashMap<String, Object>(), "vgChart.html",
-		context.getOutputFile());
+	/*TemplateUtil.saveTemplate(mainTemplate, CFG, new HashMap<String, Object>(), "vgChart.html",
+		context.getOutputFile());*/
 
     }
 
@@ -139,16 +139,16 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
 
     @Override
     protected void createPerformanceFile(ReportContext context) throws ReportException {
-	PerformanceReportTable pt = context.getReport().getPerformanceReportTable();
+	/*PerformanceReportTable pt = context.getReport().getPerformanceReportTable();
 	Map<String, Object> templateData = new HashMap<>();
 	templateData.put("pTable", pt);
-	TemplateUtil.saveTemplate(mainTemplate, CFG, templateData, "performance.html", context.getOutputFile());
+	TemplateUtil.saveTemplate(mainTemplate, CFG, templateData, "performance.html", context.getOutputFile());*/
     }
 
     @Override
     protected void createMilestonesFile(ReportContext context) throws ReportException {
-	TemplateUtil.saveTemplate(mainTemplate, CFG, new HashMap<String, Object>(), "milestonesChart.html",
-		context.getOutputFile());
+	/*TemplateUtil.saveTemplate(mainTemplate, CFG, new HashMap<String, Object>(), "milestonesChart.html",
+		context.getOutputFile());*/
     }
 
     @Override

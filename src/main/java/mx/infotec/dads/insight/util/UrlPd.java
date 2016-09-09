@@ -193,6 +193,15 @@ public class UrlPd {
 	}
     }
     
+    public URI getURLPQITable() throws ReportException {
+	try {
+	    return URIUtils.createURI(scheme, host, Integer.parseInt(port),
+		    projectName + Constants.REPORT_TABLE, "chart=radar&qf=", null);
+	} catch (NumberFormatException | URISyntaxException e) {
+	    throw new ReportException("getDirectTimeTrendUrl", e);
+	}
+    }
+    
     public String getDestURI() throws ReportException {
 	return projectName+"//cms/TSP/indiv_plan_summary?frame=content&section=50";
     }
