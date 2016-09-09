@@ -1,0 +1,270 @@
+<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>
+				Tabla de tareas en problemas<small></small>
+			</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+                    <table border="1" class="table table-bordered table-striped table-responsive">
+                        <tr>
+                        <th>
+                            Tarea
+                        </th>
+                        <th>
+                            Hito
+                        </th>
+                        </tr>
+                        <#list task_problems as task_problem>
+                        <tr>
+                            <td>
+                               ${task_problem.name}
+                            </td>
+                            <td>
+                               ${task_problem.hito}
+                            </td>
+                        </tr>
+                        </#list>
+                    </table>
+		</div>
+	</div>
+</div>
+<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>
+                            Gr&aacute;fica de tareas en progreso<small></small>
+			</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+                    <a href="reportImages/inPogressTasks.png"> <img
+				src="reportImages/inPogressTasks.png" alt="..."
+				class="img-container"></a>
+                    
+		</div>
+	</div>
+</div>
+<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>
+                            Tabla de tareas de la siguiente semana<small></small>
+			</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+                   <table border="1" class="table table-bordered table-striped table-responsive">
+                        <tr>
+                            <th>Tarea</th>
+                        </tr>
+                        <#list tasknext as task>
+                        
+                        <tr>
+                            <td>${task}</td>
+                        </tr>
+                        </#list>                        
+                    </table>
+		</div>
+	</div>
+</div>
+<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>
+                            Interpretaci&oacute;n de tareas<small></small>
+			</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+                    <p id="int_Taks">Aqu&iacute; va la Interpretaci&oacute;n de tareas</p>
+		</div>
+	</div>
+</div>
+<div>
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>
+                            Tabla de productos terminados<small></small>
+			</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+                    <table id="table_products" border="1" class="table table-bordered table-striped table-responsive">
+                        <tr>
+                            <th>Producto</th>
+                            <th>URL</th>
+                        </tr>
+                        <#list products as product>
+                        <tr>
+                            <td>${product.name}</td>
+                            <td><a href="#">Url de evidencia</a></td>
+                        </tr>
+                        </#list>                         
+                    </table>
+		</div>
+	</div>
+</div>
+
+
+<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+                    <h2>Tabla de Tama&nacute;os</h2>
+			<ul class="nav navbar-right panel_toolbox"></ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+		${sizeTable}
+		</div>
+	</div>
+</div>
+<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+                    <h2>Tabla de tiempos en fase (Terminados)</h2>
+			<ul class="nav navbar-right panel_toolbox"></ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+		<!--<a href="reportImages/tiempo_fase.png"> <img
+				src="reportImages/tiempo_fase.png" alt="Tiempo de Correcci&oacute;n de Defectos por Tipo" class="img-container"></a>-->
+                
+                <table border="1" class="table table-bordered table-striped table-responsive">
+                    <tr>
+                        <th>
+                            Fase
+                        </th>
+                        <th>
+                            Tiempo Planeado
+                        </th>
+                        <th>
+                            Tiempo Actual
+                        </th>
+                    </tr>
+                    <#list timetable as row>
+                    <tr>
+                        <td>${row.name}</td>
+                        <td>${row.plannedTime}</td>
+                        <td>${row.actualTime}</td>
+                    </tr>
+                    </#list> 
+                </table>
+		</div>
+	</div>
+</div>
+
+<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+                    <h2>Interpretaci&oacute;n de la tabla de Tama&nacute;os</h2>
+			<ul class="nav navbar-right panel_toolbox"></ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+                    <p id="int_Size">Aqu&iacute; va la Interpretaci&oacute;n de la tabla de Tama&nacute;os</p>
+		</div>
+	</div>
+</div>
+<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+                    <h2>Interpretaci&oacute;n de la tabla de tiempos en fase</h2>
+			<ul class="nav navbar-right panel_toolbox"></ul>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+                    <p id="int_Time">Aqu&iacute; va la Interpretaci&oacute;n de la tabla de tiempos en fase</p>
+		</div>
+	</div>
+</div>
+
+<!--<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>
+				Tareas en Progreso<small></small>
+			</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+			<a href="reportImages/inPogressTasks.png"> <img
+				src="reportImages/inPogressTasks.png" alt="..."
+				class="img-container"></a>
+		</div>
+	</div>
+</div>
+<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>
+				Tareas en Progreso<small></small>
+			</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+			<table name="performanceTable" border="1"
+				class="table table-bordered table-striped table-responsive">
+				<tbody>
+					<#list tasks as task>
+					<tr>
+						<td class="data">${task}</td>
+					</tr>
+					</#list>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>
+				Tareas Completadas<small></small>
+			</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+			<table name="performanceTable" border="1"
+				class="table table-bordered table-striped table-responsive">
+				<tbody>
+					<#list taskcompleted as task>
+					<tr>
+						<td class="data">${task}</td>
+					</tr>
+					</#list>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="col-md-6 col-sm-6 col-xs-12">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>
+				Tareas siguiente semana<small></small>
+			</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+			<table name="performanceTable" border="1"
+				class="table table-bordered table-striped table-responsive">
+				<tbody>
+					<#list tasknext as task>
+					<tr>
+						<td class="data">${task}</td>
+					</tr>
+					</#list>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>-->
+
+
+
+
+
+

@@ -11,6 +11,7 @@
  */
 package mx.infotec.dads.insight.util;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -174,5 +175,21 @@ public class DateUtils {
 
     public static void setEn(boolean isEn) {
 	DateUtils.isEn = isEn;
+    }
+    public static String convertDecimalToTime(String time)
+    {
+        DecimalFormat df=new DecimalFormat("00");
+        if(!time.isEmpty() && !time.equals("0"))
+        {
+            Double timeMinutes=Double.parseDouble(time);
+            int hours=timeMinutes.intValue()/60;
+            double min=((timeMinutes/60)-hours)*60;
+            time=hours+":"+df.format(min);
+        }
+        if("0".equals(time))
+        {
+            time="0:00";
+        }
+        return time;
     }
 }

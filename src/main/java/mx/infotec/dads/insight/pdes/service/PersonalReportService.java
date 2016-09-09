@@ -44,7 +44,7 @@ public class PersonalReportService extends AbstractReportTemplate {
     @Override
     protected void createWeekReport(ReportContext context) throws ReportException {
 	try {
-	    Report report = WeekReportService.createReport(context.getUrlPd());
+	    Report report = WeekReportService.createReport(context.getOutputFile(),context.getUrlPd());
 	    context.setReport(report);
 	    HtmlTemplateService.getInstance().saveHtmlReport(context);
 	    ContextUtil.saveJsonFormat(context);

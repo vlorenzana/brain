@@ -1,0 +1,60 @@
+[
+    {"id":"planning",
+        "title":"Planning manager",
+        "responsabilities":[
+            "Dar seguimiento al plan de trabajo (Asegurarse de que todas las personas registraron sus datos antes de hacer el reporte semanal)",
+            "Generar el Reporte semanal del estatus del equipo",
+            "Verificar y/o realizar modificaciones al plan del equipo"
+            ]
+        },
+    {"id":"process","title":"Process Manager",
+        "responsabilities":[
+            "Dar seguimiento al plan de trabajo (Asegurarse de que todas las personas registraron sus datos antes de hacer el reporte semanal)",
+            "Generar el Reporte semanal del estatus del equipo",
+            "Verificar y/o realizar modificaciones al plan del equipo"
+            ]
+        },
+    {"id":"quality","title":"QualityManager",
+        "responsabilities":[
+            "Dar seguimiento al plan de trabajo (Asegurarse de que todas las personas registraron sus datos antes de hacer el reporte semanal)",
+            "Generar el Reporte semanal del estatus del equipo",
+            "Verificar y/o realizar modificaciones al plan del equipo"
+            ]
+        },
+    {"id":"test","title":"Test Manager",
+        "responsabilities":[
+            "Dar seguimiento al plan de trabajo (Asegurarse de que todas las personas registraron sus datos antes de hacer el reporte semanal)",
+            "Generar el Reporte semanal del estatus del equipo",
+            "Verificar y/o realizar modificaciones al plan del equipo"
+            ]
+        },
+    {"id":"design","title":"Design Manager",
+        "responsabilities":[
+            "Estándar de diseño (Conseguir el de la organización y en su defecto Elaborar, Validar, Comunicar, Asesorar)",
+            "Validar generación y uso de Checklists de Diseño",
+            "Verificar que se realizan revisiones e inspecciones de los productos de diseño",
+            "Validar generación de elementos de diseño  (Validar que se generen los documentos de diseño acordados y conforme al estándar)"
+            ]
+        },
+    {"id":"implementation","title":"Implementation Manager",
+        "responsabilities":[
+            "Dar seguimiento al plan de trabajo (Asegurarse de que todas las personas registraron sus datos antes de hacer el reporte semanal)",
+            "Generar el Reporte semanal del estatus del equipo",
+            "Verificar y/o realizar modificaciones al plan del equipo"
+            ]
+    },
+    {"id":"customer","title":"Customer Interface",
+        "responsabilities":[
+            "Administrar cambios a los requerimientos",
+            "Administrar Matriz de requerimientos",
+            "Coordinación de Contacto con el Cliente"
+            ]
+        },
+    {"id":"support","title":"Support Manager",
+        "responsabilities":[
+            "Dar seguimiento al plan de trabajo (Asegurarse de que todas las personas registraron sus datos antes de hacer el reporte semanal)",
+            "Generar el Reporte semanal del estatus del equipo",
+            "Verificar y/o realizar modificaciones al plan del equipo"
+            ]
+        }
+]

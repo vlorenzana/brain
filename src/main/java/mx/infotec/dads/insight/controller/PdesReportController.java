@@ -1,5 +1,6 @@
 package mx.infotec.dads.insight.controller;
 
+import mx.infotec.dads.insight.pdes.model.DataInformation;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -29,6 +30,8 @@ import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.util.Builder;
+import javafx.util.BuilderFactory;
 
 /**
  * PdesReportController, Controlador principal de la aplicaciÃ³n
@@ -114,14 +117,28 @@ public class PdesReportController implements Initializable, ControlledScreen {
 	    task.setOnSucceeded(e -> {
 		alert.hide();
 		alert.close();
-                WizardController controler=new WizardController();
+                
+                
+                
+                
+                
         Stage stage = new Stage();
         try
         {
-            Parent root = FXMLLoader.load(controler.getClass().getResource("/fxml/wizard.fxml"));
+            String path=((GenerateReportTask)task).getPathToReport();
+            WizardController controler=new WizardController();
+            FXMLLoader loader=new FXMLLoader(WizardController.class.getResource("/fxml/wizard.fxml"));            
+            loader.setController(controler);
+            Parent root = loader.load();            
+            controler=loader.getController();
+            controler.setPathToReport(path);
+            controler.setDataToFill(new DataInformation(path));            
+            controler.init();
             stage.setScene(new Scene(root));
             stage.setTitle("Análisis de reporte");
             stage.initModality(Modality.WINDOW_MODAL);
+            
+            //controler.setPathToReport(((GenerateReportTask)task).getPathToReport());
             stage.show();
         }
         catch(IOException ioe)

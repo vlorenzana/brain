@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -7,25 +9,164 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.infotec.dads.insight.controller.WizardController">
+<AnchorPane id="AnchorPane" minHeight="600.0" minWidth="100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <bottom>
-            <BorderPane prefHeight="52.0" prefWidth="800.0" BorderPane.alignment="CENTER">
-               <right>
-                  <Button id="save" fx:id="save" mnemonicParsing="false" onAction="#onSaveAction" text="Guardar" BorderPane.alignment="CENTER" />
-               </right>
-               <padding>
-                  <Insets right="30.0" />
-               </padding>
-            </BorderPane>
+            <HBox>
+               <children>
+                  <BorderPane prefHeight="36.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+                     <right>
+                        <Button id="save" fx:id="save" mnemonicParsing="false" text="Guardar" BorderPane.alignment="CENTER" />
+                     </right>
+                     <padding>
+                        <Insets right="30.0" />
+                     </padding>
+                  </BorderPane>
+               </children>
+            </HBox>
          </bottom>
          <center>
             <BorderPane fx:id="panelContainerDocument" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <left>
-                  <TreeView id="treeOptions" fx:id="treeview" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-               </left>
-            </BorderPane>
+               <center>
+                  <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+                    <tabs>
+                      <Tab text="Plan Calendario">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <BorderPane layoutX="112.0" layoutY="53.0" prefHeight="519.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <left>
+                                          <Pane prefHeight="635.0" prefWidth="357.0" BorderPane.alignment="CENTER">
+                                             <children>
+                                                <Label layoutX="5.0" layoutY="4.0" text="Interpretación Plan Calendario" />
+                                                <TextArea fx:id="textAreaIntPlan" layoutX="8.0" layoutY="33.0" prefHeight="102.0" prefWidth="342.0" />
+                                                <Label layoutX="8.0" layoutY="143.0" text="Plan de acción" />
+                                                <TableView fx:id="tablePlanAccion" editable="true" layoutX="5.0" layoutY="166.0" prefHeight="124.0" prefWidth="346.0">
+                                                  <columns>
+                                                    <TableColumn fx:id="columnPlanAccion" prefWidth="334.0" sortable="false" text="Plan de acción" />
+                                                  </columns>
+                                                </TableView>
+                                                <Button fx:id="btnAddPlanAccion" layoutX="241.0" layoutY="139.0" mnemonicParsing="false" text="Agregar renglon" />
+                                                <Label layoutX="4.0" layoutY="288.0" prefHeight="33.0" prefWidth="234.0" text="Interpretación Compromisos Externos" wrapText="true" />
+                                                <TextArea fx:id="textAreaComp_Ext" layoutX="7.0" layoutY="314.0" prefHeight="88.0" prefWidth="344.0" />
+                                                <Label layoutX="7.0" layoutY="402.0" prefHeight="20.0" prefWidth="200.0" text="Interpretación Hitos" wrapText="true" />
+                                                <TextArea fx:id="textArea_Hitos" layoutX="8.0" layoutY="433.0" prefHeight="77.0" prefWidth="343.0" />
+                                                <Button fx:id="btnDeletePlanAccion" layoutX="122.0" layoutY="139.0" mnemonicParsing="false" text="Eliminar renglon" />
+                                             </children>
+                                          </Pane>
+                                       </left>
+                                       <center>
+                                          <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                             <center>
+                                                <WebView fx:id="webViewPlan" prefHeight="320.0" prefWidth="475.0" BorderPane.alignment="CENTER" />
+                                             </center>
+                                          </BorderPane>
+                                       </center>
+                                    </BorderPane>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                        <Tab text="Tareas y Productos">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <BorderPane layoutX="112.0" layoutY="53.0" prefHeight="519.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <center>
+                                          <WebView fx:id="webViewTasksProducts" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                       </center>
+                                       <left>
+                                          <Pane prefHeight="535.0" prefWidth="421.0" BorderPane.alignment="CENTER">
+                                             <children>
+                                                <Label layoutX="7.0" layoutY="14.0" text="Interpretación de tareas" />
+                                                <TextArea fx:id="textArea_IntTaks" layoutX="5.0" layoutY="46.0" prefHeight="62.0" prefWidth="407.0" />
+                                                <TableView fx:id="tableProductsURL" editable="true" layoutX="8.0" layoutY="133.0" prefHeight="202.0" prefWidth="406.0">
+                                                  <columns>
+                                                    <TableColumn fx:id="columnProduct" prefWidth="215.0" text="Producto" />
+                                                    <TableColumn fx:id="columnURL" minWidth="1.0" prefWidth="190.0" text="URL" />
+                                                  </columns>
+                                                </TableView>
+                                                <Label layoutX="7.0" layoutY="114.0" text="Productos Terminados" />
+                                                <TextArea fx:id="textArea_IntSize" layoutX="8.0" layoutY="367.0" prefHeight="62.0" prefWidth="407.0" />
+                                                <Label layoutX="8.0" layoutY="342.0" text="Interpretación de la tabla de Tamańos" />
+                                                <Label layoutX="8.0" layoutY="436.0" text="nterpretación de la tabla de tiempos en fase" />
+                                                <TextArea fx:id="textArea_IntTime" layoutX="7.0" layoutY="459.0" prefHeight="62.0" prefWidth="407.0" />
+                                             </children>
+                                          </Pane>
+                                       </left>
+                                    </BorderPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab text="Calidad">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <BorderPane layoutX="175.0" layoutY="94.0" prefHeight="535.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <left>
+                                          <Pane prefHeight="535.0" prefWidth="423.0" BorderPane.alignment="CENTER">
+                                             <children>
+                                                <Label layoutX="8.0" layoutY="2.0" text="Interpretación del estado de la Calidad" />
+                                                <TextArea fx:id="textArea_Quality" layoutX="5.0" layoutY="25.0" prefHeight="126.0" prefWidth="409.0" />
+                                                <TableView fx:id="tablePQI" editable="true" layoutX="4.0" layoutY="187.0" prefHeight="324.0" prefWidth="412.0">
+                                                  <columns>
+                                                    <TableColumn fx:id="tableColumnProductPQI" prefWidth="198.0" text="Producto" />
+                                                      <TableColumn fx:id="tableColumnProductPQIAction" prefWidth="210.0" text="Acciones a realizar" />
+                                                  </columns>
+                                                </TableView>
+                                                <Label layoutX="8.0" layoutY="159.0" text="PQI por producto y Acciones" />
+                                             </children>
+                                          </Pane>
+                                       </left>
+                                       <center>
+                                          <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                             <center>
+                                                <WebView fx:id="webViewQuality" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                             </center>
+                                          </BorderPane>
+                                       </center>
+                                    </BorderPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab text="Reporte de Roles">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <BorderPane layoutX="214.0" layoutY="70.0" prefHeight="519.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <top>
+                                          <GridPane fx:id="gridRoles" BorderPane.alignment="CENTER">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                          </GridPane>
+                                       </top>
+                                       <center>
+                                          <TableView fx:id="tableRoles" editable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                            <columns>
+                                                <TableColumn fx:id="columnRoleDesc" prefWidth="102.0" text="Role" />
+                                              <TableColumn fx:id="columnResp" prefWidth="182.0" text="Responsabilidad" />
+                                              <TableColumn fx:id="columnStatus" prefWidth="583.0" text="Actividades ejercidas - Estado " />
+                                            </columns>
+                                          </TableView>
+                                       </center></BorderPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                    </tabs>
+                  </TabPane>
+               </center></BorderPane>
          </center>
       </BorderPane>
    </children>

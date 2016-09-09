@@ -151,6 +151,51 @@ public class UrlPd {
 	    throw new ReportException("getDirectTimeTrendUrl", e);
 	}
     }
+    public URI getPhaseTime() throws ReportException {
+	try {
+	    return URIUtils.createURI(scheme, host, Integer.parseInt(port),
+		    projectName + Constants.REPORT_TABLE, "chart=pie&title=Actual+Time&d1=Time&d2=Estimated+Time&for=%5BPhase_List%5D&h0=Phase&where=intersects%28%5B%2FProyecto%2FCoaches+2016%2FPhase_Display_Filter_List%5D%2C+%5B%5E%5D%29&colorScheme=byPhase", null);
+	} catch (NumberFormatException | URISyntaxException e) {
+	    throw new ReportException("getDirectTimeTrendUrl", e);
+	}
+    }
+    public URI getSummary() throws ReportException {
+	try {
+	    return URIUtils.createURI(scheme, host, Integer.parseInt(port),
+		    projectName + Constants.REPORT_INDIV_PLAN_SUMMARY, "frame=content&section=50", null);
+	} catch (NumberFormatException | URISyntaxException e) {
+	    throw new ReportException("getDirectTimeTrendUrl", e);
+	}
+    }
+    public URI getSummaryToPQI() throws ReportException {
+	try {
+	    return URIUtils.createURI(scheme, host, Integer.parseInt(port),
+		    projectName + Constants.REPORT_INDIV_PLAN_SUMMARY, "frame=content&section=200", null);
+	} catch (NumberFormatException | URISyntaxException e) {
+	    throw new ReportException("getDirectTimeTrendUrl", e);
+	}
+    }
+    
+    public URI getFilter() throws ReportException {
+	try {
+	    return URIUtils.createURI(scheme, host, Integer.parseInt(port),
+		    projectName + Constants.REPORT_FILTER_URL, "", null);
+	} catch (NumberFormatException | URISyntaxException e) {
+	    throw new ReportException("getDirectTimeTrendUrl", e);
+	}
+    }
+    public URI getFilterByWBS() throws ReportException {
+	try {
+	    return URIUtils.createURI(scheme, host, Integer.parseInt(port),
+		    projectName + Constants.REPORT_FILTERBYWBS_URL, "", null);
+	} catch (NumberFormatException | URISyntaxException e) {
+	    throw new ReportException("getDirectTimeTrendUrl", e);
+	}
+    }
+    
+    public String getDestURI() throws ReportException {
+	return projectName+"//cms/TSP/indiv_plan_summary?frame=content&section=50";
+    }
 
     public URI getImageFromCacheUrl(String reportId) throws ReportException {
 	try {

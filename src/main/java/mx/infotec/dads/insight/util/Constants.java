@@ -7,6 +7,7 @@ package mx.infotec.dads.insight.util;
  *
  */
 public class Constants {
+    public static final String FILTER_FINISHED = "terminado";
     public static final String FILE_PDES_PROPERTIES = "./pdes.properties";
     public static final String PDES_CLIENT_HOST_NAME = "localhost";
     public static final String PDES_SCHEME = "http";
@@ -22,7 +23,12 @@ public class Constants {
     public static final String REPORT_FOLDER = "weekReport";
     public static final String REPORT_IMG_FOLDER = "reportImages";
     public static final String REPORT_EV_URL = "//reports/ev.class";
+    public static final String REPORT_FILTER_URL = "//team/setup/selectLabelFilter";
+    public static final String REPORT_FILTERBYWBS_URL = "//team/setup/selectWBSIndiv";
+    
     public static final String REPORT_INDIV_PLAN_SUMMARY = "//cms/TSP/indiv_plan_summary";
+    
+    public static final String REPORT_TABLE = "//reports/table.class";
     public static final String REPORT_EV_QUERY = "tl=auto&labelFilterAuto=t&pathFilterAuto=t&charts&showChart=pdash.ev.";
     public static final String OUTPUT_FORMAT = "%-40s : %-20s ";
     public static final String BODY_EVCHARITEM_IMG = "body .evChartItem img";
@@ -35,6 +41,12 @@ public class Constants {
     public static final int FIST_SELECTION = 0;
     public static final int SECOND_SELECTION = 1;
 
+    
+    public static final String PAGE_PLANNING = "index.html";
+    public static final String PAGE_TASK_PRODUCTS = "task_products.html";
+    public static final String PAGE_QUALITY = "quality.html";
+    public static final String PAGE_ROLES = "roles.html";
+    
     private Constants() {
 
     }

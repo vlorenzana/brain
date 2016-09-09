@@ -14,6 +14,10 @@ import mx.infotec.dads.insight.util.ZipUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.Version;
+import static mx.infotec.dads.insight.util.Constants.PAGE_PLANNING;
+import static mx.infotec.dads.insight.util.Constants.PAGE_QUALITY;
+import static mx.infotec.dads.insight.util.Constants.PAGE_ROLES;
+import static mx.infotec.dads.insight.util.Constants.PAGE_TASK_PRODUCTS;
 
 /**
  * Servicio para la generación de templates
@@ -60,24 +64,25 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
             }
             PerformanceReportTable pt = context.getReport().getPerformanceReportTable();	
             data.put("pTable", pt);
-	    TemplateUtil.saveTemplate(mainTemplate, CFG, data, "index.html", context.getOutputFile());
+	    TemplateUtil.saveTemplate(mainTemplate, CFG, data, PAGE_PLANNING, context.getOutputFile());
 	} catch (IOException e) {
 	    throw new ReportException("createIndexFile", e);
 	}
     }
 
     @Override
-    protected void createSizeFile(ReportContext context) throws ReportException {
+    protected void createQualityFile(ReportContext context) throws ReportException {
 	SizeReportTable sizeTable = context.getReport().getSizeReportTable();
 	Map<String, Object> templateData = new HashMap<>();
 	templateData.put("sizeTable", sizeTable.getData());
-	TemplateUtil.saveTemplate(mainTemplate, CFG, templateData, "size.html", context.getOutputFile());
+        templateData.put("tablePQI", context.getReport().getTablePQI());
+	TemplateUtil.saveTemplate(mainTemplate, CFG, templateData, PAGE_QUALITY, context.getOutputFile());
 
     }
 
     @Override
-    protected void createDefectFile(ReportContext context) throws ReportException {
-	TemplateUtil.saveTemplate(mainTemplate, CFG, new HashMap<String, Object>(), "defectChart.html",
+    protected void createRoleFile(ReportContext context) throws ReportException {
+	TemplateUtil.saveTemplate(mainTemplate, CFG, new HashMap<String, Object>(), PAGE_ROLES,
 		context.getOutputFile());
     }
 
@@ -99,7 +104,11 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
 	data.put("tasks", context.getReport().getTasksInProgressToHTml());
         data.put("taskcompleted", context.getReport().getTasksCompletedToHTML());
         data.put("tasknext", context.getReport().getTasksNextWeekToHTML());
-	TemplateUtil.saveTemplate(mainTemplate, CFG, data, "taskProgressChart.html", context.getOutputFile());
+        data.put("task_problems", context.getReport().getTaskProblems());
+        data.put("products", context.getReport().getProductsFinished());
+        data.put("timetable", context.getReport().getTimeTableFinished());
+        data.put("sizeTable", context.getReport().getSizeReportTable().getData());
+	TemplateUtil.saveTemplate(mainTemplate, CFG, data, PAGE_TASK_PRODUCTS, context.getOutputFile());
     }
 
     @Override

@@ -20,6 +20,25 @@ public class PerformanceReportTable {
     private String vgPerHour;
     private String vgNotPerformed;
     private String recovery;
+    private String recovery_percent;
+    private String recovery_hr;
+
+    public String getRecovery_percent() {
+        return recovery_percent;
+    }
+
+    public void setRecovery_percent(String recovery_percent) {
+        this.recovery_percent = recovery_percent;
+    }
+
+    public String getRecovery_hr() {
+        return recovery_hr;
+    }
+
+    public void setRecovery_hr(String recovery_hr) {
+        this.recovery_hr = recovery_hr;
+    }
+    
 
     private PerformanceReportTable() {
 
@@ -174,6 +193,15 @@ public class PerformanceReportTable {
 
 	public PerformanceTableBuilder withVgFalta(String vgFalta) {
 	    pt.setVgFalta(vgFalta);
+	    return this;
+	}
+        public PerformanceTableBuilder withRecoveryPercent(String recovery_percent) {
+	    pt.setRecovery_percent(recovery_percent);
+	    return this;
+	}
+        
+        public PerformanceTableBuilder withRecoveryHr(String recovery_hr) {
+	    pt.setRecovery_hr(recovery_hr);
 	    return this;
 	}
 

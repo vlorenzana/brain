@@ -5,6 +5,10 @@
  */
 package mx.infotec.dads.insight.util;
 
+import java.io.StringWriter;
+import java.util.HashMap;
+import org.apache.commons.lang3.StringEscapeUtils;
+
 /**
  *
  * @author victor.lorenzana
@@ -12,7 +16,8 @@ package mx.infotec.dads.insight.util;
 public class HTMLUtils {
     
     public static String escapeHTML(String s) {
-    StringBuilder out = new StringBuilder(Math.max(16, s.length()));
+    return StringEscapeUtils.escapeHtml4(s);
+    /*StringBuilder out = new StringBuilder(Math.max(16, s.length()));
     for (int i = 0; i < s.length(); i++) {
         char c = s.charAt(i);
         if (c > 127 || c == '"' || c == '<' || c == '>' || c == '&') {
@@ -23,6 +28,9 @@ public class HTMLUtils {
             out.append(c);
         }
     }
-    return out.toString();
+    return out.toString();*/
 }
+    
+    
+
 }

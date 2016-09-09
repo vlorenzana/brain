@@ -18,9 +18,17 @@ public class Report {
     private List<String> tasksInProgress;
     private List<String> tasksCompleted;
     private List<String> tasksNextWeek;
+    private List<TaskWithProblem> taskProblems;
+    private List<ProductsFinished> productsFinished;
+    private List<PhaseTime> timeTableFinished;
+    private List<PQIElement> tablePQI;
+
+    
+    
 
     public Report(InfoReportTable gTable, WeekReportTable weekTable, PerformanceReportTable performanceTable,
-	    SizeReportTable sizeTable, List<String> tasksInProgress,List<String> tasksCompleted,List<String> tasksNextWeek) {
+	    SizeReportTable sizeTable, List<String> tasksInProgress,List<String> tasksCompleted,List<String> tasksNextWeek,List<TaskWithProblem> taskProblems,List<ProductsFinished> productsFinished,
+            List<PhaseTime> timeTableFinished,List<PQIElement> tablePQI) {
 	this.infoReportTable = gTable;
 	this.weekReportTable = weekTable;
 	this.performanceReportTable = performanceTable;
@@ -28,8 +36,34 @@ public class Report {
 	this.tasksInProgress = tasksInProgress;
         this.tasksCompleted = tasksCompleted;
         this.tasksNextWeek = tasksNextWeek;
+        this.taskProblems=taskProblems;
+        this.productsFinished=productsFinished;
+        this.timeTableFinished=timeTableFinished;
+        this.tablePQI=tablePQI;
     }
 
+    public List<PQIElement> getTablePQI() {
+        return tablePQI;
+    }
+
+    public void setTablePQI(List<PQIElement> tablePQI) {
+        this.tablePQI = tablePQI;
+    }
+    public List<PhaseTime> getTimeTableFinished() {
+        return timeTableFinished;
+    }
+
+    public void setTimeTableFinished(List<PhaseTime> timeTableFinished) {
+        this.timeTableFinished = timeTableFinished;
+    }
+    
+    public List<ProductsFinished> getProductsFinished() {
+        return productsFinished;
+    }
+
+    public void setProductsFinished(List<ProductsFinished> productsFinished) {
+        this.productsFinished = productsFinished;
+    }
     public WeekReportTable getWeekReportTable() {
 	return weekReportTable;
     }
@@ -102,4 +136,13 @@ public class Report {
     public void setTasksInProgress(List<String> tasksInProgress) {        
 	this.tasksInProgress = tasksInProgress;
     }
+
+    public List<TaskWithProblem> getTaskProblems() {
+        return taskProblems;
+    }
+
+    public void setTaskProblems(List<TaskWithProblem> taskProblems) {
+        this.taskProblems = taskProblems;
+    }
+    
 }

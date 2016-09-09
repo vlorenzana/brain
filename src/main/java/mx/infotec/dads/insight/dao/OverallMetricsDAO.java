@@ -21,6 +21,10 @@ public class OverallMetricsDAO {
 
     private Document overallMetrics;
 
+    public Document getOverallMetrics() {
+        return overallMetrics;
+    }
+
     public OverallMetricsDAO(UrlPd urlPd) throws ReportException {
 	try {
 	    this.overallMetrics = Jsoup.connect(urlPd.getReportsPlanSummaryUrl().toString())
@@ -30,7 +34,7 @@ public class OverallMetricsDAO {
 	}
     }
 
-    public SizeReportTable findSizeTable(String xpathQuery) {
+    public SizeReportTable findSizeTable(String xpathQuery) {        
 	Elements overallMetricsElements = overallMetrics.select(xpathQuery);
 	Element sizeTable = overallMetricsElements.get(1);
 	sizeTable.addClass("table table-bordered table-striped table-responsive");

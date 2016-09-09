@@ -34,10 +34,16 @@ public class GenerateReportTask extends Task<Boolean> {
     private int selectedIndex;
     private UrlPd urlPd;
     private ScreensController screensController;
+    private String pathToReport;
     public GenerateReportTask(int selectedIndex, UrlPd urlPd) {
 	this.selectedIndex = selectedIndex;
 	this.urlPd = urlPd;
         this.screensController = screensController;
+    }
+    
+    public String getPathToReport()
+    {
+        return pathToReport;
     }
 
     @Override
@@ -49,6 +55,8 @@ public class GenerateReportTask extends Task<Boolean> {
 		DateUtils.setEn(true);
 	    }
 	    ReportContext context = new ReportContext();
+            File file=context.getOutputFile();
+            this.pathToReport=file.getAbsolutePath();
 	    context.setUrlPd(urlPd);
 	    PersonalReportService.getInstance().createReport(context);
 	} catch (Exception e) {

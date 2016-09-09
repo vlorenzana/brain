@@ -26,6 +26,8 @@ public class WeekReportTest {
     // String URL = readFile("test.html", Charset.defaultCharset());
 //    String report = new WeekReport().createReport(uri.toString());
   }
+  
+  
 
   private static String readFile(String resource, Charset encoding)
       throws IOException, URISyntaxException {
