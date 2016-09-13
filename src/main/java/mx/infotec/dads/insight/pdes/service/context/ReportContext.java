@@ -19,11 +19,17 @@ public class ReportContext {
     private Report report;
     private UrlPd urlPd;
     private File outputFile;
-
-    public ReportContext() {
-	File newOutputFile = new File(Constants.REPORT_FOLDER + DateUtils.getDateFolderForma(new Date()));
+    private Date reportDate;
+    public ReportContext(Date reportDate) {
+	//File newOutputFile = new File(Constants.REPORT_FOLDER + DateUtils.getDateFolderForma(new Date()));
+        this.reportDate=reportDate;                
+        File newOutputFile = new File(Constants.REPORT_FOLDER + DateUtils.getDateFolderForma(reportDate));
 	newOutputFile.mkdirs();
 	this.outputFile = newOutputFile;
+    }
+    public Date getReportDate()
+    {
+        return reportDate;
     }
 
     public Report getReport() {

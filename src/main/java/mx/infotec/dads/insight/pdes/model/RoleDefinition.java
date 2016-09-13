@@ -15,7 +15,49 @@ import java.util.List;
 public class RoleDefinition {
     public String id;
     public String title;
-    public List<String> acctions=new ArrayList<>();
+    public List<String> actions=new ArrayList<>();
     public List<String> responsabilities=new ArrayList<>();
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public List<String> getActions() {
+        return actions;
+    }
+
+    public void setActions(List<String> actions) {
+        this.actions = actions;
+    }
+
+    
+
+    public List<String> getResponsabilities() {
+        return responsabilities;
+    }
+
+    public void setResponsabilities(List<String> responsabilities) {
+        this.responsabilities = responsabilities;
+    }
+
+    public boolean isUsed() {
+        return used;
+    }
+
+    public void setUsed(boolean used) {
+        this.used = used;
+    }
     public boolean used=false;
 }

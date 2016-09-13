@@ -1,0 +1,36 @@
+<div class="container">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>
+				${title}<small></small>
+			</h2>
+			<div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+                    <table id="${id}" border="1" class="table table-bordered table-striped table-responsive">
+                        
+                        <tr>
+                            <th>
+                                Responsabilidad
+                            </th>
+                            <th>
+                                Actividades ejercidas - Estado
+                            </th>
+                        </tr>
+                        
+                        <#list rolTable as row>
+                        <tr>
+                            
+                            <td>
+                                ${row.name}
+                            </td>
+                            <td>
+                                ${row.action}
+                            </td>
+                        </tr>
+                        </#list>
+                        
+                    </table>
+		</div>
+	</div>
+</div>

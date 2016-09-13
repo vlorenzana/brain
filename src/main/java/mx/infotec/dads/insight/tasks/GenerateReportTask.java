@@ -1,6 +1,7 @@
 package mx.infotec.dads.insight.tasks;
 
 import java.io.File;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,16 +12,8 @@ import mx.infotec.dads.insight.util.Constants;
 import mx.infotec.dads.insight.util.ContextUtil;
 import mx.infotec.dads.insight.util.DateUtils;
 import mx.infotec.dads.insight.util.UrlPd;
-
 import javafx.concurrent.Task;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import mx.infotec.dads.insight.controller.ScreensController;
-import mx.infotec.dads.insight.controller.WizardController;
+import mx.infotec.dads.insight.pdes.service.WeekReportService;
 
 /**
  * Tarea para generar el reporte
@@ -32,13 +25,11 @@ public class GenerateReportTask extends Task<Boolean> {
     private static final Logger LOGGER = LoggerFactory.getLogger(GenerateReportTask.class);
 
     private int selectedIndex;
-    private UrlPd urlPd;
-    private ScreensController screensController;
+    private UrlPd urlPd;    
     private String pathToReport;
     public GenerateReportTask(int selectedIndex, UrlPd urlPd) {
 	this.selectedIndex = selectedIndex;
-	this.urlPd = urlPd;
-        this.screensController = screensController;
+	this.urlPd = urlPd;        
     }
     
     public String getPathToReport()
@@ -54,11 +45,12 @@ public class GenerateReportTask extends Task<Boolean> {
 	    } else {
 		DateUtils.setEn(true);
 	    }
-	    ReportContext context = new ReportContext();
+            Date endReport=WeekReportService.getStartReport(urlPd);
+	    ReportContext context = new ReportContext(endReport);
             File file=context.getOutputFile();
             this.pathToReport=file.getAbsolutePath();
 	    context.setUrlPd(urlPd);
-	    PersonalReportService.getInstance().createReport(context);
+	    PersonalReportService.getInstance().createReport(context,endReport);
 	} catch (Exception e) {
 	    ContextUtil.saveExceptionToDisk(e, Constants.FILE_ERROR_TXT, new File("./"));
 	}

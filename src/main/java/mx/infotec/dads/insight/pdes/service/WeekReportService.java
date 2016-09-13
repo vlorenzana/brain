@@ -51,19 +51,22 @@ public class WeekReportService {
     
     
     private WeekReportService() {
-
+        
     }
 
     /**
      * 
+     * @param output
      * @param urlPd
+     * @param endWeek
      * @return
+     * @throws mx.infotec.dads.insight.pdes.exceptions.ReportException
      * @throws IOException
      * @throws URISyntaxException
      */
-    public static Report createReport(File output,final UrlPd urlPd) throws ReportException {
+    public static Report createReport(File output,final UrlPd urlPd,Date endWeek) throws ReportException {
 	try {
-            Date endWeek=getStartReport(urlPd);
+            //Date endWeek=getStartReport(urlPd);            
             removeFilter(FILTER_FINISHED, urlPd);
             removeFilterByPath(urlPd);            
 	    Document doc = Jsoup.connect(urlPd.getWeekReportUrl().toString()).get();
@@ -93,7 +96,7 @@ public class WeekReportService {
             List<PQIElement> tablePQI=createTablePQI(urlPd,output,productsFinished,endWeek);
             
 	    return new Report(gTable, table, pTable, sizeTable, tasksInProgress,tasksCompleted,tasksNextWeek,taskProblems,productsFinished,timeTableFinished,tablePQI);
-	} catch (Exception e) {
+	} catch (ReportException | URISyntaxException | IOException e) {
 	    throw new ReportException("createReport", e);
 	}
 
@@ -130,7 +133,7 @@ public class WeekReportService {
         Connection con=Jsoup.connect(url);
         try
         {         
-          Document document=con.post();
+          Document document=con.get();
           Element table=document.select("table").get(0);        
           Elements rows=table.select("tr");
           for(int i=1 ; i<rows.size();i++)
@@ -165,16 +168,16 @@ public class WeekReportService {
         Connection con=Jsoup.connect(urlPd.getFilter().toString());
         Map<String,String> data=new HashMap<>();
         data.put("apply","Apply Filter");
-        data.put("destUri",urlPd.getDestURI());
+        data.put("destUri",urlPd.getDestFilterURI());
         data.put("filter",filter);
         con.data(data);
         try
         {
-          Document document=con.post();
+          con.post();
         }
         catch(IOException ioe)
         {
-            ioe.printStackTrace();
+            throw new ReportException(ioe);
         }
 
     }
@@ -182,16 +185,16 @@ public class WeekReportService {
     {        
         Connection con=Jsoup.connect(urlPd.getFilterByWBS().toString());
         Map<String,String> data=new HashMap<>();        
-        data.put("destUri",urlPd.getDestURI());
+        data.put("destUri",urlPd.getDestFilterBYWBSURI());
         data.put("relPath",path);
         con.data(data);
         try
         {
-          Document document=con.post();
+          con.post();
         }
         catch(IOException ioe)
         {
-            ioe.printStackTrace();
+            throw new ReportException(ioe);            
         }
 
     }
@@ -201,16 +204,16 @@ public class WeekReportService {
         Connection con=Jsoup.connect(urlPd.getFilter().toString());
         Map<String,String> data=new HashMap<>();
         data.put("remove","Remove Filter");
-        data.put("destUri",urlPd.getDestURI());
+        data.put("destUri",urlPd.getDestFilterRemoveURI());
         data.put("filter",filter);
         con.data(data);
         try
         {
-          Document document=con.post();
+          con.post();
         }
         catch(IOException ioe)
         {
-            ioe.printStackTrace();
+            throw new ReportException(ioe);
         }
 
     }
@@ -218,18 +221,17 @@ public class WeekReportService {
     {
         
         Connection con=Jsoup.connect(urlPd.getFilterByWBS().toString());
-        Map<String,String> data=new HashMap<>();
-        
-        data.put("destUri",urlPd.getDestURI());
+        Map<String,String> data=new HashMap<>();        
+        data.put("destUri",urlPd.getDestFilterBYWBSURI());
         data.put("relPath","");
         con.data(data);
         try
         {
-          Document document=con.post();
+          con.post();
         }
         catch(IOException ioe)
         {
-            ioe.printStackTrace();
+            throw new ReportException(ioe);
         }
 
     }
@@ -256,7 +258,7 @@ public class WeekReportService {
                 .build();
         
     }
-    private static Date getStartReport(UrlPd urlPd) throws IOException, URISyntaxException,ReportException
+    public static Date getStartReport(UrlPd urlPd) throws IOException, URISyntaxException,ReportException
     {
         Document doc = Jsoup.connect(urlPd.getWeekReportUrl().toString()).get();
         Elements elements=doc.select("h2");
@@ -303,9 +305,6 @@ public class WeekReportService {
                 String planned=tr.child(5).ownText(); // plannedDate
                 String finished=tr.child(7).ownText().trim(); // endDate
                 String hito=tr.child(8).ownText();
-
-                //System.out.println("date: "+date);
-
                 if(type.isEmpty() && !planned.isEmpty())
                 {
                     products.remove(parentId);
@@ -392,19 +391,11 @@ public class WeekReportService {
         return null;
     }
     private static Double getPQIProductPlanned(UrlPd urlPd) throws ReportException,URISyntaxException,IOException
-    {       
-        
-        //http://localhost:2468/Proyecto/Coaches+2016//reports/table.class?chart=radar&qf=quality%2FestProfile.rpt planeada
-        //http://localhost:2468/Proyecto/Coaches+2016//reports/table.class?chart=radar&qf=quality%2FactProfile.rpt actual
-        
+    {  
         return getPQIProductActual(urlPd,"quality%2FestProfile.rpt");
     }
     private static Double getPQIProductActual(UrlPd urlPd) throws ReportException,URISyntaxException,IOException
     {       
-        
-        //http://localhost:2468/Proyecto/Coaches+2016//reports/table.class?chart=radar&qf=quality%2FestProfile.rpt planeada
-        //http://localhost:2468/Proyecto/Coaches+2016//reports/table.class?chart=radar&qf=quality%2FactProfile.rpt actual
-        
         return getPQIProductActual(urlPd,"quality%2FactProfile.rpt");
     }
     private static Double getPQIProductActual(UrlPd urlPd,String param) throws ReportException,URISyntaxException,IOException
@@ -426,7 +417,7 @@ public class WeekReportService {
                     values.add(doubleData);
                 }
                 catch(NumberFormatException nfe)
-                {
+                {                    
                     values.add(Double.NaN);
                 }
             }            
@@ -438,8 +429,8 @@ public class WeekReportService {
                 double rev_code=values.get(1)*2>1?1.0:values.get(1)*2;
                 double defectos_comp=values.get(2);
                 double defectos_test=values.get(2);
-                double def_comp_index=0;
-                double def_test_index=0;
+                double def_comp_index;
+                double def_test_index;
                 if(defectos_comp==0)
                 {
                     def_comp_index=1;
@@ -474,7 +465,7 @@ public class WeekReportService {
         if(data.size()!=5)
         {
             return false;
-        }
+        }        
         for(Double d : data)
         {
             if(Double.isNaN(d))
@@ -578,10 +569,10 @@ public class WeekReportService {
     {
         List<TaskWithProblem> findProductsWithProblems=new ArrayList<>();
         Document document = Jsoup.connect(urlPd.getWeekReportUrl().toString()).get();        
-        Elements renglones=document.select("table[id=$$$_progress] tr");
-        for(int i=1;i<renglones.size();i++)
+        Elements rows=document.select("table[id=$$$_progress] tr");
+        for(int i=1;i<rows.size();i++)
         {
-            Element tr=renglones.get(i);
+            Element tr=rows.get(i);
             if(tr.childNodes().size()>10)
             {
                 String taskName=tr.child(0).ownText();

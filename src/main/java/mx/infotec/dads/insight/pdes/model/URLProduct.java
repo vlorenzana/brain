@@ -13,7 +13,16 @@ import java.net.URL;
  */
 public class URLProduct {
     public String product;
+    public int index;
 
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+    
     public String getProduct() {
         return product;
     }

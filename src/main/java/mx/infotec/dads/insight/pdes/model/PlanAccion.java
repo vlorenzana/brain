@@ -12,17 +12,17 @@ import javafx.beans.property.SimpleStringProperty;
  * @author victor.lorenzana
  */
 public class PlanAccion {
-    private SimpleStringProperty accion=new SimpleStringProperty();
+    private String accion;
 
-        public String getAccion() {
-            return accion.get();
-        }
+    public String getAccion() {
+        return accion;
+    }
 
-        public void setAccion(String accion) {
-            this.accion.set(accion);
-        }
-        public PlanAccion(String accion)
-        {
-            this.accion=new SimpleStringProperty(accion);
-        }
+    public void setAccion(String accion) {
+        this.accion=accion;
+    }
+    public PlanAccion(String accion)
+    {
+        this.accion=accion;
+    }
 }

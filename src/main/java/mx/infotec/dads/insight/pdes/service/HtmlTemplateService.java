@@ -6,7 +6,6 @@ import java.util.Map;
 
 import mx.infotec.dads.insight.pdes.exceptions.ReportException;
 import mx.infotec.dads.insight.pdes.model.PerformanceReportTable;
-import mx.infotec.dads.insight.pdes.model.SizeReportTable;
 import mx.infotec.dads.insight.pdes.service.context.ReportContext;
 import mx.infotec.dads.insight.util.TemplateUtil;
 import mx.infotec.dads.insight.util.ZipUtils;
@@ -14,6 +13,8 @@ import mx.infotec.dads.insight.util.ZipUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.Version;
+import java.util.List;
+import mx.infotec.dads.insight.pdes.model.PQIElement;
 import static mx.infotec.dads.insight.util.Constants.PAGE_PLANNING;
 import static mx.infotec.dads.insight.util.Constants.PAGE_QUALITY;
 import static mx.infotec.dads.insight.util.Constants.PAGE_ROLES;
@@ -71,11 +72,15 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
     }
 
     @Override
-    protected void createQualityFile(ReportContext context) throws ReportException {
-	SizeReportTable sizeTable = context.getReport().getSizeReportTable();
-	Map<String, Object> templateData = new HashMap<>();
-	templateData.put("sizeTable", sizeTable.getData());
-        templateData.put("tablePQI", context.getReport().getTablePQI());
+    protected void createQualityFile(ReportContext context) throws ReportException {	
+	Map<String, Object> templateData = new HashMap<>();	
+        List<PQIElement> tablePQI=context.getReport().getTablePQI();
+        templateData.put("tablePQI",tablePQI);
+        templateData.put("msgTable","");
+        if(tablePQI.isEmpty())
+        {
+            templateData.put("msgTable","No hay productos con PQI");
+        }
 	TemplateUtil.saveTemplate(mainTemplate, CFG, templateData, PAGE_QUALITY, context.getOutputFile());
 
     }

@@ -202,7 +202,15 @@ public class UrlPd {
 	}
     }
     
-    public String getDestURI() throws ReportException {
+    public String getDestFilterURI() throws ReportException {
+	return projectName+"//cms/TSP/indiv_plan_summary?section=50&frame=content&refresh=300&refresh=372";
+    }
+    
+    public String getDestFilterRemoveURI() throws ReportException {
+	return projectName+"//cms/TSP/indiv_plan_summary?section=50&frame=content";
+    }
+
+    public String getDestFilterBYWBSURI() throws ReportException {
 	return projectName+"//cms/TSP/indiv_plan_summary?frame=content&section=50";
     }
 

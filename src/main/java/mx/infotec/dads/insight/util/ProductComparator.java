@@ -17,7 +17,7 @@ public class ProductComparator implements Comparator<Product>{
 
     @Override
     public int compare(Product o1, Product o2) {
-        if(!o1.finishDate.isEmpty() && !o2.finishDate.isEmpty())
+        /*if(!o1.finishDate.isEmpty() && !o2.finishDate.isEmpty())
         {
             Date date1=DateUtils.convertStringToDate(DateUtils.extractDate(o1.finishDate));
             Date date2=DateUtils.convertStringToDate(DateUtils.extractDate(o2.finishDate));
@@ -32,6 +32,27 @@ public class ProductComparator implements Comparator<Product>{
         if(!o1.finishDate.isEmpty() && o2.finishDate.isEmpty())
         {
             Date date1=DateUtils.convertStringToDate(DateUtils.extractDate(o1.finishDate));
+            Date date2=new Date();
+            return date1.compareTo(date2);
+            
+        }
+        return 0;*/
+        
+        if(!o1.plannedDate.isEmpty() && !o2.plannedDate.isEmpty())
+        {
+            Date date1=DateUtils.convertStringToDate(DateUtils.extractDate(o1.plannedDate));
+            Date date2=DateUtils.convertStringToDate(DateUtils.extractDate(o2.plannedDate));
+            return date1.compareTo(date2);
+        }
+        if(o1.plannedDate.isEmpty() && !o2.plannedDate.isEmpty())
+        {            
+            Date date1=new Date();
+            Date date2=DateUtils.convertStringToDate(DateUtils.extractDate(o2.plannedDate));
+            return date1.compareTo(date2);
+        }
+        if(!o1.plannedDate.isEmpty() && o2.plannedDate.isEmpty())
+        {
+            Date date1=DateUtils.convertStringToDate(DateUtils.extractDate(o1.plannedDate));
             Date date2=new Date();
             return date1.compareTo(date2);
             

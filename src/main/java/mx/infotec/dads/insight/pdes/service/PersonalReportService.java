@@ -2,6 +2,7 @@ package mx.infotec.dads.insight.pdes.service;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Date;
 
 import javax.imageio.ImageIO;
 
@@ -42,9 +43,9 @@ public class PersonalReportService extends AbstractReportTemplate {
     }
 
     @Override
-    protected void createWeekReport(ReportContext context) throws ReportException {
+    protected void createWeekReport(ReportContext context,Date endWeek) throws ReportException {
 	try {
-	    Report report = WeekReportService.createReport(context.getOutputFile(),context.getUrlPd());
+	    Report report = WeekReportService.createReport(context.getOutputFile(),context.getUrlPd(),endWeek);
 	    context.setReport(report);
 	    HtmlTemplateService.getInstance().saveHtmlReport(context);
 	    ContextUtil.saveJsonFormat(context);
