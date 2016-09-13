@@ -36,6 +36,7 @@ import mx.infotec.dads.insight.util.DateUtils;
 import static mx.infotec.dads.insight.util.DateUtils.betweenWeek;
 import static mx.infotec.dads.insight.util.DateUtils.getDateFromHTML;
 import mx.infotec.dads.insight.util.DoubleUtils;
+import mx.infotec.dads.insight.util.PQI;
 import mx.infotec.dads.insight.util.ProductComparator;
 import mx.infotec.dads.insight.util.UrlPd;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
@@ -423,35 +424,7 @@ public class WeekReportService {
             }            
             if(hasPQI(values))
             {
-                
-                double design_Code=values.get(0)>1?1.0:values.get(0);
-                double rev_design=values.get(4)*2>1?1.0:values.get(4)*2;
-                double rev_code=values.get(1)*2>1?1.0:values.get(1)*2;
-                double defectos_comp=values.get(2);
-                double defectos_test=values.get(2);
-                double def_comp_index;
-                double def_test_index;
-                if(defectos_comp==0)
-                {
-                    def_comp_index=1;
-                }
-                else
-                {
-                    def_comp_index=20/(10+defectos_comp);
-                    def_comp_index=def_comp_index>1 ? 1 : def_comp_index;
-                }
-                
-                if(defectos_test==0)
-                {
-                    def_test_index=1;
-                }
-                else
-                {
-                    def_test_index=10/(5+defectos_test);
-                    def_test_index=def_test_index>1 ? 1 : def_test_index;
-                }
-                double pqi=design_Code*rev_design*rev_code*def_comp_index*def_test_index;
-                return pqi;
+                return PQI.getPQIFromDoubleList(values);                
             }
             else
             {
