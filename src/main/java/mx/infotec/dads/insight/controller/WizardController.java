@@ -24,6 +24,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.SelectionMode;
@@ -35,6 +36,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
 import javafx.scene.web.WebView;
+import mx.infotec.dads.insight.pdes.model.Validation;
 import static mx.infotec.dads.insight.util.Constants.PAGE_PLANNING;
 import static mx.infotec.dads.insight.util.Constants.PAGE_QUALITY;
 import static mx.infotec.dads.insight.util.Constants.PAGE_TASK_PRODUCTS;
@@ -49,8 +51,7 @@ import static mx.infotec.dads.insight.util.Constants.PAGE_TASK_PRODUCTS;
 public class WizardController implements Initializable {
 
     
-    @FXML
-    private TableColumn columnPlanAccionTaks;
+   
     
             
     @FXML
@@ -64,6 +65,18 @@ public class WizardController implements Initializable {
     
     @FXML
     private TableView tableRoles;
+    
+    @FXML
+    private TableView tablePlanAccionQuality;
+    
+    @FXML
+    private Button btnDeletePlanAccionQuality;
+    
+    @FXML
+    private Button btnAddPlanAccionQuality;
+    
+    
+    
     
     @FXML
     private GridPane gridRoles;
@@ -109,8 +122,7 @@ public class WizardController implements Initializable {
     private TableView tableProductsURL; 
     
             
-    @FXML
-    private TableColumn columnPlanAccion;
+    
     
     @FXML
     private TableColumn columnProduct;
@@ -147,12 +159,14 @@ public class WizardController implements Initializable {
     private String pathToReport;
     
     private ReportInformation information;
-    private final ObservableList<PlanAccion> data =
+    private final ObservableList<PlanAccion> dataActionPlanPlanning =
             FXCollections.observableArrayList();
     
      private final ObservableList<PlanAccion> dataTaksActions =
             FXCollections.observableArrayList();
-    
+     
+    private final ObservableList<PlanAccion> dataQualityActions =
+            FXCollections.observableArrayList();
     
     private final ObservableList<InfoPQI> dataPQI =
             FXCollections.observableArrayList();
@@ -174,7 +188,7 @@ public class WizardController implements Initializable {
         this.information.intComp_Ext=this.textAreaComp_Ext.getText();
         this.information.intHitos=this.textArea_Hitos.getText();
         this.information.actions.clear();
-        for(PlanAccion action : data)
+        for(PlanAccion action : dataActionPlanPlanning)
         {
             this.information.actions.add(action.getAccion());
         }
@@ -189,6 +203,12 @@ public class WizardController implements Initializable {
         {
             this.information.url_products.add(info);
         }
+        this.information.actionsQuality.clear();
+        for(PlanAccion action : dataQualityActions)
+        {
+            this.information.actionsQuality.add(action.getAccion());
+        }
+        
         this.information.int_Quality=this.textArea_Quality.getText();
         this.information.pqi.clear();
         for(InfoPQI info : this.dataPQI)
@@ -210,7 +230,7 @@ public class WizardController implements Initializable {
                 String id=status.id;
                 if(!actionsToUpdate.containsKey(id))
                 {
-                    actionsToUpdate.put(id, new ArrayList<String>());
+                    actionsToUpdate.put(id, new ArrayList<>());
                 }
                 actionsToUpdate.get(id).add(status.status);
             }
@@ -234,7 +254,27 @@ public class WizardController implements Initializable {
         this.information.save();
         this.webViewPlan.getEngine().reload();
         this.webViewQuality.getEngine().reload();
-        this.webViewTasksProducts.getEngine().reload();
+        this.webViewTasksProducts.getEngine().reload();        
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Guardar Reporte");
+        alert.setContentText("¡El reporte ha sido almacenado!");                                        
+        alert.showAndWait();
+        List<Validation> validations=getValidations();
+        if(!validations.isEmpty())
+        {
+            Alert alertValidations = new Alert(Alert.AlertType.INFORMATION);
+            alertValidations.setTitle("Reporte de validaciones no cumplidas");
+            StringBuilder sb=new StringBuilder();
+            int index=0;
+            for(Validation validation : validations)
+            {
+                index++;
+                sb.append(index+". "+ validation.name);
+                sb.append("\r\n");
+            }
+            alertValidations.setContentText(sb.toString());                                        
+            alertValidations.showAndWait();
+        }
     }
     public void setDataToFill(ReportInformation information)
     {
@@ -245,14 +285,54 @@ public class WizardController implements Initializable {
         this.pathToReport=pathToReport;
         
     }
-    private boolean noHasFinished()
+    private List<Validation> getValidations()
     {
-        return false;
+        List<Validation> getValidations=new ArrayList<>();
+        validatePlanning(getValidations);
+        validateTask(getValidations);
+        validateQuality(getValidations);
+        validateRoles(getValidations);
+        return getValidations;
     }
     
     public void onSave()
     {
         save();
+    }
+    private void initTablePlanForPlanning()
+    {
+        initTablePlanAction(this.information.actions, dataActionPlanPlanning, tablePlanAccion);
+    }
+    private void initTablePlanQuality()
+    {
+        initTablePlanAction(this.information.actionsQuality, dataQualityActions, tablePlanAccionQuality);
+    }
+    private void initTablePlanTaks()
+    {
+        initTablePlanAction(this.information.actionsTaks, dataTaksActions, tablePlanAccionTaks);
+    }
+    private void initTablePlanAction(List<String> initialData,ObservableList model,TableView table)
+    {
+        for(String action : initialData)
+        {
+            model.add(new PlanAccion(action.replace("\r\n", "").trim()));
+        }
+        table.setEditable(true);
+        table.setItems(model);
+        table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        TableColumn column=((TableColumn)table.getColumns().get(0));
+        column.setCellValueFactory(new PropertyValueFactory<PlanAccion, String>("accion"));        
+        column.setCellFactory(TextFieldTableCell.forTableColumn());        
+        column.setOnEditCommit(
+            new EventHandler<CellEditEvent<PlanAccion, String>>() {
+                @Override
+                public void handle(CellEditEvent<PlanAccion, String> t) {
+                    ((PlanAccion) t.getTableView().getItems().get(
+                        t.getTablePosition().getRow())
+                        ).setAccion(t.getNewValue());
+                }
+            }
+        );
     }
     public void init()
     {
@@ -264,25 +344,13 @@ public class WizardController implements Initializable {
         });  
         information.load();        
         String url_Report="file:///"+pathToReport;
-        tablePlanAccionTaks.setEditable(true);        
-        for(String action : information.actionsTaks)
-        {
-            dataTaksActions.add(new PlanAccion(action.replace("\r\n", "").trim()));
-        }
-        tablePlanAccionTaks.setItems(dataTaksActions);
-        tablePlanAccionTaks.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        columnPlanAccionTaks.setCellValueFactory(new PropertyValueFactory<PlanAccion, String>("accion"));        
-        columnPlanAccionTaks.setCellFactory(TextFieldTableCell.forTableColumn());        
-        columnPlanAccionTaks.setOnEditCommit(
-            new EventHandler<CellEditEvent<PlanAccion, String>>() {
-                @Override
-                public void handle(CellEditEvent<PlanAccion, String> t) {
-                    ((PlanAccion) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())
-                        ).setAccion(t.getNewValue());
-                }
-            }
-        );
+        
+        
+        initTablePlanQuality();
+        initTablePlanTaks();
+        
+        
+        
         
         
         tableRoles.setItems(role_status);
@@ -370,44 +438,12 @@ public class WizardController implements Initializable {
         webViewPlan.getEngine().load(url_Report+"/"+PAGE_PLANNING);
         webViewTasksProducts.getEngine().load(url_Report+"/"+PAGE_TASK_PRODUCTS);
         webViewQuality.getEngine().load(url_Report+"/"+PAGE_QUALITY);
-        tablePlanAccion.setEditable(true);        
-        tablePlanAccion.setItems(data);
-        tablePlanAccion.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        columnPlanAccion.setOnEditCommit(
-            new EventHandler<CellEditEvent<InfoPQI, String>>() {
-                @Override
-                public void handle(CellEditEvent<InfoPQI, String> t) {
-                    ((InfoPQI) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())
-                        ).setAccion(t.getNewValue());
-                }
-            }
-        );
         
-        
-        
-        
-        columnPlanAccion.setCellValueFactory(new PropertyValueFactory<PlanAccion, String>("accion"));        
-        columnPlanAccion.setCellFactory(TextFieldTableCell.forTableColumn());        
-        columnPlanAccion.setOnEditCommit(
-            new EventHandler<CellEditEvent<PlanAccion, String>>() {
-                @Override
-                public void handle(CellEditEvent<PlanAccion, String> t) {
-                    ((PlanAccion) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())
-                        ).setAccion(t.getNewValue());
-                }
-            }
-        );
-        
+        initTablePlanForPlanning();
         
         textAreaIntPlan.setText(this.information.intPlan);
         textAreaComp_Ext.setText(this.information.intComp_Ext);
-        textArea_Hitos.setText(this.information.intHitos);
-        for(String action : information.actions)
-        {
-            data.add(new PlanAccion(action.replace("\r\n", "").trim()));
-        }
+        textArea_Hitos.setText(this.information.intHitos);        
         
         textArea_IntSize.setText(this.information.int_Size);
         textArea_IntTime.setText(this.information.int_Time);
@@ -420,7 +456,25 @@ public class WizardController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-               
+             
+        
+        btnAddPlanAccionQuality.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                tablePlanAccionQuality.getItems().add(new PlanAccion("Plan de acción"));
+        }
+        });  
+        btnDeletePlanAccionQuality.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                int index=tablePlanAccionQuality.getSelectionModel().getSelectedIndex();
+                if(index>-1)
+                {
+                    tablePlanAccionQuality.getItems().remove(index);
+                            
+                }
+        }
+        }); 
        
         btnAddPlanAccion.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
@@ -504,10 +558,80 @@ public class WizardController implements Initializable {
             }
         }        
     }
-    
-    
-    
 
-    
-    
+    private void validatePlanning(List<Validation> validations) {
+        
+        if(textAreaIntPlan.getText().trim().isEmpty())
+        {
+            validations.add(new Validation("Hace falta la Interpretación Plan Calendario."));
+        }
+        if(dataActionPlanPlanning.isEmpty())
+        {
+            validations.add(new Validation("No existe ningún plan de acción para el Plan Calendario."));
+        }
+        if(textAreaComp_Ext.getText().trim().isEmpty())
+        {
+            validations.add(new Validation("Hace falta la Interpretación de Compromisos Externos."));
+        }
+        if(textArea_Hitos.getText().trim().isEmpty())
+        {
+            validations.add(new Validation("Hace falta la Interpretación de Hitos."));
+        }
+    }
+
+    private void validateTask(List<Validation> validations) {
+        
+        if(dataTaksActions.isEmpty())
+        {
+            validations.add(new Validation("No existe ningún plan de acción para Productos y Tareas."));
+        }
+        for(URLProduct product : dataProductURL)
+        {
+            if(product.getUrl()==null || product.getUrl().trim().isEmpty())
+            {
+               validations.add(new Validation("No se describió la URL para el producto "+product.product+".")); 
+            }
+        }
+        if(textArea_IntSize.getText().trim().isEmpty())
+        {
+            validations.add(new Validation("Hace falta la Interpretación de la Tabla de Tamaños."));
+        }
+        if(textArea_IntTime.getText().trim().isEmpty())
+        {
+            validations.add(new Validation("Hace falta la Interpretación de la Tabla de Tiempos en fase."));
+        }
+    }
+
+    private void validateQuality(List<Validation> validations) {
+        if(textArea_Quality.getText().trim().isEmpty())
+        {
+            validations.add(new Validation("Hace falta la Interpretación del estado de la Calidad."));
+        }
+        if(dataQualityActions.isEmpty())
+        {
+            validations.add(new Validation("No existe ningún plan de acción para el estado de la Calidad."));
+        }
+        for(InfoPQI pqi : dataPQI)
+        {
+            if(pqi.pqiActual<=0.4)
+            {
+                validations.add(new Validation("No existe ninguna acción definida por PQI menor o igual a 0.4 para el producto "+pqi.product+"."));
+            }
+        }
+    }
+
+    private void validateRoles(List<Validation> validations) {
+        
+        if(role_status.isEmpty())
+        {
+            validations.add(new Validation("¡Cuidado! No se tiene reportado ningún Rol Manager."));
+        }
+        for(RoleStatus status : role_status)
+        {
+            if(status.status==null || status.status.trim().isEmpty())
+            {
+                validations.add(new Validation(status.desc+": No existe ninguna actividad ejercida y estado para la actividad '"+status.resp+"'."));
+            }
+        }
+    }
 }

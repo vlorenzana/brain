@@ -52,6 +52,7 @@ public class ReportInformation {
     final private String path;
     public List<String> actions;
     public List<String> actionsTaks;
+    public List<String> actionsQuality;
     public List<InfoPQI> pqi=new ArrayList<>();
     public List<URLProduct> url_products=new ArrayList<>();
     public Collection<RoleDefinition> definitions;
@@ -237,6 +238,7 @@ public class ReportInformation {
             Document content=readFile(file);
             int_Quality=unescapeHtml4(extractParagraph("int_Quality",content));
             pqi=loadTable("int_pqi",content);
+            this.actionsQuality=extractList("plan_quality", content);
             
         }
         catch(IOException e)
@@ -252,6 +254,7 @@ public class ReportInformation {
             Document content=readFile(file);
             updateParagraph("int_Quality",int_Quality,content);
             saveTable("int_pqi",content);
+            updateList("plan_quality", actionsQuality, content);
             saveDocument(new File(file), content); 
             
         }

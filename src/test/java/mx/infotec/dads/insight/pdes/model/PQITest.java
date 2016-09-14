@@ -19,7 +19,7 @@ public class PQITest {
     {
         /*TestPQINormalPlanned();
         TestPQINormalActual();*/
-        TestPQINormalPlanned2();
+        TestPQINormalPlanned3();
     }
     public static void TestPQINormalPlanned()
     {
@@ -40,6 +40,21 @@ public class PQITest {
     public static void TestPQINormalPlanned2()
     {
         List<String> values=asList("1.75","0.1","30","20","0.29");
+        PQI pqi=PQI.getPQIObjectFromStringList(values);
+        assert new Double(1).equals(pqi.getDesignCodeIndex());
+        assert new Double(0.58).equals(pqi.getRevDesignIndex());
+        assert new Double(0.2).equals(pqi.getRevCodignIndex());
+        assert new Double(.5).equals(pqi.getCompIndex());
+        assert new Double(.4).equals(pqi.getTestIndex());
+        
+        Double resp=PQI.getPQIFromStringList(values);
+        assert new Double(0.02).equals(resp);
+        System.out.println("resp");
+    }
+    
+    public static void TestPQINormalPlanned3()
+    {
+        List<String> values=asList("#DIV/0!","#DIV/0!","#DIV/0!","#DIV/0!","#DIV/0!");
         PQI pqi=PQI.getPQIObjectFromStringList(values);
         assert new Double(1).equals(pqi.getDesignCodeIndex());
         assert new Double(0.58).equals(pqi.getRevDesignIndex());

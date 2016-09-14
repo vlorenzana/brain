@@ -109,7 +109,25 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
 	data.put("tasks", context.getReport().getTasksInProgressToHTml());
         data.put("taskcompleted", context.getReport().getTasksCompletedToHTML());
         data.put("tasknext", context.getReport().getTasksNextWeekToHTML());
+        String tasknextMsg="";
+        if(context.getReport().getTasksNextWeekToHTML().isEmpty())
+        {
+            tasknextMsg="No hay tareas para la siguiente semana";
+        }
+        data.put("tasknextMsg", tasknextMsg);
+        String task_problemsMsg="";
+        if(context.getReport().getTaskProblems().isEmpty())
+        {
+            task_problemsMsg="No hay tareas en problemas";
+        }
+        data.put("task_problemsMsg", task_problemsMsg);
         data.put("task_problems", context.getReport().getTaskProblems());
+        String productsMsg="";
+        if(context.getReport().getProducts().isEmpty())
+        {
+            productsMsg="No hay productos";
+        }
+        data.put("productsMsg", productsMsg);
         data.put("products", context.getReport().getProducts());
         data.put("timetable", context.getReport().getTimeTableFinished());
         data.put("sizeTable", context.getReport().getSizeReportTable().getData());

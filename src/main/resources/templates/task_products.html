@@ -21,32 +21,36 @@
 			<div class="clearfix"></div>
 		</div>
 		<div class="x_content">
-                    <table border="1" class="table table-bordered table-striped table-responsive">
-                        <tr>
-                        <th>
-                            Tarea
-                        </th>
-                        <th>
-                            Fecha Planeada
-                        </th>
-                        <th>
-                            Hito
-                        </th>
-                        </tr>
-                        <#list task_problems as task_problem>
-                        <tr>
-                            <td>
-                               ${task_problem.name}
-                            </td>
-                            <td>
-                               ${task_problem.date}
-                            </td>
-                            <td>
-                               ${task_problem.hito}
-                            </td>
-                        </tr>
-                        </#list>
-                    </table>
+                    <#if task_problemsMsg!="">
+                    <p>${task_problemsMsg}</p>
+                    <#else>
+                        <table border="1" class="table table-bordered table-striped table-responsive">
+                            <tr>
+                            <th>
+                                Tarea
+                            </th>
+                            <th>
+                                Fecha Planeada
+                            </th>
+                            <th>
+                                Hito
+                            </th>
+                            </tr>
+                            <#list task_problems as task_problem>
+                            <tr>
+                                <td>
+                                   ${task_problem.name}
+                                </td>
+                                <td>
+                                   ${task_problem.date}
+                                </td>
+                                <td>
+                                   ${task_problem.hito}
+                                </td>
+                            </tr>
+                            </#list>
+                        </table>
+                     </#if>
 		</div>
 	</div>
 </div>
@@ -60,17 +64,21 @@
 			<div class="clearfix"></div>
 		</div>
 		<div class="x_content">
-                   <table border="1" class="table table-bordered table-striped table-responsive">
-                        <tr>
-                            <th>Tarea</th>
-                        </tr>
-                        <#list tasknext as task>
-                        
-                        <tr>
-                            <td>${task}</td>
-                        </tr>
-                        </#list>                        
-                    </table>
+                   <#if tasknextMsg!="">
+                        <p>${tasknextMsg}</p>                        
+                   <#else>
+                        <table border="1" class="table table-bordered table-striped table-responsive">
+                             <tr>
+                                 <th>Tarea</th>
+                             </tr>
+                             <#list tasknext as task>
+
+                             <tr>
+                                 <td>${task}</td>
+                             </tr>
+                             </#list>                        
+                         </table>
+                    </#if>
 		</div>
 	</div>
 </div>
@@ -78,7 +86,7 @@
 	<div class="x_panel">
 		<div class="x_title">
 			<h2 class="int">
-                            Plan de acci&o&oacute;n
+                            Plan de acci&oacute;n
 			</h2>
 			<div class="clearfix"></div>
 		</div>
@@ -98,27 +106,31 @@
 			<div class="clearfix"></div>
 		</div>
 		<div class="x_content">
-                    <table id="table_products" border="1" class="table table-bordered table-striped table-responsive">
-                        <tr>
-                            <th>Producto</th>
-                            <th>Fecha Planeada</th>
-                            <th>Fecha Terminado</th>
-                            <th>URL</th>
-                        </tr>
-                        <#list products as product>
-                        <tr status="${product.status}">
-                            <td>${product.name}</td>
-                            <td>${product.plannedDate}</td>
-                            <td>${product.finishDate}</td>
-                            <#if product.status=="finishedToDate">
-                            <td><a href="#">URL de evidencia(opcional)</a></td>
-                            <#else>
-                            <td></td>
-                            </#if>
-                            
-                        </tr>
-                        </#list>                         
-                    </table>
+                    <#if productsMsg!="">
+                    <p>${productsMsg}</p>
+                    <#else>
+                        <table id="table_products" border="1" class="table table-bordered table-striped table-responsive">
+                            <tr>
+                                <th>Producto</th>
+                                <th>Fecha Planeada</th>
+                                <th>Fecha Terminado</th>
+                                <th>URL de evidencia</th>
+                            </tr>
+                            <#list products as product>
+                            <tr status="${product.status}">
+                                <td>${product.name}</td>
+                                <td>${product.plannedDate}</td>
+                                <td>${product.finishDate}</td>
+                                <#if product.status=="finishedToDate">
+                                <td>URL de evidencia(opcional)</td>
+                                <#else>
+                                <td></td>
+                                </#if>
+
+                            </tr>
+                            </#list>                         
+                        </table>
+                    </#if>
 		</div>
 	</div>
 </div>

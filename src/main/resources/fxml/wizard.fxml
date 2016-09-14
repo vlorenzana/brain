@@ -81,11 +81,11 @@
                                        <left>
                                           <Pane prefHeight="535.0" prefWidth="421.0" BorderPane.alignment="CENTER">
                                              <children>
-                                                <Label layoutX="7.0" layoutY="14.0" text="Plan de acción" />
+                                                <Label layoutX="7.0" layoutY="14.0" text="Plan de acción de Productos y Tareas" />
                                                 <TableView fx:id="tableProductsURL" editable="true" layoutX="8.0" layoutY="187.0" prefHeight="151.0" prefWidth="406.0">
                                                   <columns>
                                                     <TableColumn fx:id="columnProduct" prefWidth="215.0" text="Producto" />
-                                                    <TableColumn fx:id="columnURL" minWidth="1.0" prefWidth="190.0" text="URL" />
+                                                    <TableColumn fx:id="columnURL" minWidth="1.0" prefWidth="190.0" text="URL de evidencia" />
                                                   </columns>
                                                 </TableView>
                                                 <Label layoutX="7.0" layoutY="168.0" text="Productos Terminados" />
@@ -127,7 +127,7 @@
                                                 <Label layoutX="6.0" layoutY="128.0" text="PQI por producto y Acciones correctivas" />
                                                 <TableView fx:id="tablePlanAccionQuality" editable="true" layoutX="6.0" layoutY="327.0" prefHeight="145.0" prefWidth="407.0">
                                                    <columns>
-                                                      <TableColumn fx:id="columnPlanAccion1" prefWidth="387.0" sortable="false" text="Plan de acción" />
+                                                      <TableColumn fx:id="columnPlanAccionQuality" prefWidth="387.0" sortable="false" text="Plan de acción" />
                                                    </columns>
                                                 </TableView>
                                                 <Button fx:id="btnDeletePlanAccionQuality" layoutX="175.0" layoutY="476.0" mnemonicParsing="false" text="Eliminar renglon" />

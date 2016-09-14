@@ -1,6 +1,6 @@
 [
     {"id":"planning",
-        "title":"Planning manager",
+        "title":"Planning Manager",
         "responsabilities":[
             "Dar seguimiento al plan de trabajo (Asegurarse de que todas las personas registraron sus datos antes de hacer el reporte semanal)",
             "Generar el Reporte semanal del estatus del equipo",
@@ -9,12 +9,12 @@
         },
     {"id":"process","title":"Process Manager",
         "responsabilities":[
-            "Dar seguimiento al plan de trabajo (Asegurarse de que todas las personas registraron sus datos antes de hacer el reporte semanal)",
-            "Generar el Reporte semanal del estatus del equipo",
-            "Verificar y/o realizar modificaciones al plan del equipo"
+            "Procesos de trabajo del equipo (Workflows) (Conseguir el de la organización y en su defecto Elaborar, Validar, Comunicar, Asesorar)",
+            "Verificar que todo el equipo tiene acceso a los scripts de los procesos (y que saben cómo utilizarlos)",
+            "Verificar que se ejecutan las actividades de acuerdo con los procesos establecidos"
             ]
         },
-    {"id":"quality","title":"QualityManager",
+    {"id":"quality","title":"Quality Manager",
         "responsabilities":[
             "Dar seguimiento al plan de trabajo (Asegurarse de que todas las personas registraron sus datos antes de hacer el reporte semanal)",
             "Generar el Reporte semanal del estatus del equipo",
@@ -23,9 +23,9 @@
         },
     {"id":"test","title":"Test Manager",
         "responsabilities":[
-            "Dar seguimiento al plan de trabajo (Asegurarse de que todas las personas registraron sus datos antes de hacer el reporte semanal)",
-            "Generar el Reporte semanal del estatus del equipo",
-            "Verificar y/o realizar modificaciones al plan del equipo"
+            "Formato de definición de pruebas (Conseguir el de la organización y en su defecto Elaborar, Validar, Comunicar, Asesorar)",
+            "Asegurar que se realizan las pruebas de los productos generados.",
+            "Elaborar un reporte de las pruebas ejecutadas sobre los productos generados"
             ]
         },
     {"id":"design","title":"Design Manager",
@@ -38,9 +38,9 @@
         },
     {"id":"implementation","title":"Implementation Manager",
         "responsabilities":[
-            "Dar seguimiento al plan de trabajo (Asegurarse de que todas las personas registraron sus datos antes de hacer el reporte semanal)",
-            "Generar el Reporte semanal del estatus del equipo",
-            "Verificar y/o realizar modificaciones al plan del equipo"
+            "Estándar de codificación (Conseguir el de la organización y en su defecto Elaborar, Validar, Comunicar, Asesorar)",
+            "Validar generación y uso de Checklists de Revisión de Código",
+            "Verificar que se realizan revisiones e inspecciones de los productos de código"
             ]
     },
     {"id":"customer","title":"Customer Interface",
@@ -52,9 +52,9 @@
         },
     {"id":"support","title":"Support Manager",
         "responsabilities":[
-            "Dar seguimiento al plan de trabajo (Asegurarse de que todas las personas registraron sus datos antes de hacer el reporte semanal)",
+            "Reportar estatus de las solicitudes que hayan hecho los miembros del equipo",
             "Generar el Reporte semanal del estatus del equipo",
-            "Verificar y/o realizar modificaciones al plan del equipo"
+            "Vigilar la disponibilidad y cambios del SVN del proyecto"
             ]
         }
 ]

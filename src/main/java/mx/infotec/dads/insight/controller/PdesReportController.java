@@ -168,7 +168,7 @@ public class PdesReportController implements Initializable, ControlledScreen {
                         Alert alertconfirm = new Alert(AlertType.CONFIRMATION);
                         alertconfirm.setTitle("PDES Reporter");
                         alertconfirm.setHeaderText("Reporte Semanal");
-                        alertconfirm.setContentText("¡Esta opción borrará el reporte existente!");
+                        alertconfirm.setContentText("¿Esta opción borrará el reporte existente?");
                         Optional<ButtonType> resultConfirm =alertconfirm.showAndWait();
                         if (resultConfirm.get() == ButtonType.OK)
                         {

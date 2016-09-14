@@ -1,30 +1,38 @@
 Please send this log to: daniel.cortes@infotec.mx
 
-mx.infotec.dads.insight.pdes.exceptions.ReportException: locateResource
-	at mx.infotec.dads.insight.pdes.service.PersonalReportService.locateResource(PersonalReportService.java:115)
-	at mx.infotec.dads.insight.pdes.service.PersonalReportService.locateDefectImages(PersonalReportService.java:88)
-	at mx.infotec.dads.insight.pdes.service.AbstractReportTemplate.createReport(AbstractReportTemplate.java:99)
+mx.infotec.dads.insight.pdes.exceptions.ReportException: createWeekReport
+	at mx.infotec.dads.insight.pdes.service.PersonalReportService.createWeekReport(PersonalReportService.java:53)
+	at mx.infotec.dads.insight.pdes.service.AbstractReportTemplate.createReport(AbstractReportTemplate.java:93)
 	at mx.infotec.dads.insight.tasks.GenerateReportTask.call(GenerateReportTask.java:53)
 	at mx.infotec.dads.insight.tasks.GenerateReportTask.call(GenerateReportTask.java:24)
 	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
 	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.net.SocketTimeoutException: Read timed out
-	at java.net.SocketInputStream.socketRead0(Native Method)
-	at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
-	at java.net.SocketInputStream.read(SocketInputStream.java:170)
-	at java.net.SocketInputStream.read(SocketInputStream.java:141)
-	at java.io.BufferedInputStream.fill(BufferedInputStream.java:246)
-	at java.io.BufferedInputStream.read1(BufferedInputStream.java:286)
-	at java.io.BufferedInputStream.read(BufferedInputStream.java:345)
-	at sun.net.www.http.HttpClient.parseHTTPHeader(HttpClient.java:704)
-	at sun.net.www.http.HttpClient.parseHTTP(HttpClient.java:647)
-	at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1536)
-	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1441)
-	at java.net.HttpURLConnection.getResponseCode(HttpURLConnection.java:480)
-	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:516)
-	at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:493)
-	at org.jsoup.helper.HttpConnection.execute(HttpConnection.java:205)
-	at org.jsoup.helper.HttpConnection.get(HttpConnection.java:194)
-	at mx.infotec.dads.insight.pdes.service.PersonalReportService.locateResource(PersonalReportService.java:106)
-	... 7 more
+Caused by: mx.infotec.dads.insight.pdes.exceptions.ReportException: createPerformanceFile
+	at mx.infotec.dads.insight.util.TemplateUtil.saveTemplate(TemplateUtil.java:66)
+	at mx.infotec.dads.insight.pdes.service.HtmlTemplateService.createTaskProgressFile(HtmlTemplateService.java:116)
+	at mx.infotec.dads.insight.pdes.service.AbstractHtmlTemplate.saveHtmlReport(AbstractHtmlTemplate.java:48)
+	at mx.infotec.dads.insight.pdes.service.PersonalReportService.createWeekReport(PersonalReportService.java:50)
+	... 6 more
+Caused by: mx.infotec.dads.insight.pdes.exceptions.ReportException: readAsString
+	at mx.infotec.dads.insight.util.TemplateUtil.readAsString(TemplateUtil.java:41)
+	at mx.infotec.dads.insight.util.TemplateUtil.saveTemplate(TemplateUtil.java:61)
+	... 9 more
+Caused by: freemarker.core.NonBooleanException: For "#if" condition: Expected a boolean, but this has evaluated to a number (wrapper: f.t.SimpleNumber):
+==> tasknext?size  [in template "templates/task_products.html" at line 63, column 25]
+
+----
+FTL stack trace ("~" means nesting-related):
+	- Failed at: #if tasknext?size  [in template "templates/task_products.html" at line 63, column 20]
+----
+	at freemarker.core.Expression.modelToBoolean(Expression.java:142)
+	at freemarker.core.Expression.evalToBoolean(Expression.java:125)
+	at freemarker.core.Expression.evalToBoolean(Expression.java:110)
+	at freemarker.core.IfBlock.accept(IfBlock.java:46)
+	at freemarker.core.Environment.visit(Environment.java:324)
+	at freemarker.core.MixedContent.accept(MixedContent.java:54)
+	at freemarker.core.Environment.visit(Environment.java:324)
+	at freemarker.core.Environment.process(Environment.java:302)
+	at freemarker.template.Template.process(Template.java:325)
+	at mx.infotec.dads.insight.util.TemplateUtil.readAsString(TemplateUtil.java:36)
+	... 10 more
