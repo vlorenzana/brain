@@ -422,11 +422,8 @@ public class WizardController implements Initializable {
                 col++;
             }
             CheckBox chk=new CheckBox(def.title);
-            
             chk.setId(def.id);
-            gridRoles.add(chk, col, row);           
-            GridPane.setMargin(chk, new Insets(0, 20, 0, 20));
-            
+            gridRoles.add(chk, col, row);        
             chk.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {

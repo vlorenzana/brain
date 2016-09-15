@@ -164,6 +164,9 @@
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
+                                             <BorderPane.margin>
+                                                <Insets left="20.0" right="20.0" />
+                                             </BorderPane.margin>
                                           </GridPane>
                                        </top>
                                        <center>
