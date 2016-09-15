@@ -39,18 +39,18 @@
                                           <Pane prefHeight="635.0" prefWidth="357.0" BorderPane.alignment="CENTER">
                                              <children>
                                                 <Label layoutX="6.0" layoutY="9.0" text="Interpretación Plan Calendario" />
-                                                <TextArea fx:id="textAreaIntPlan" layoutX="3.0" layoutY="33.0" prefHeight="62.0" prefWidth="347.0" />
+                                                <TextArea fx:id="textAreaIntPlan" layoutX="3.0" layoutY="33.0" prefHeight="62.0" prefWidth="347.0" promptText="Interpretación Plan Calendario" wrapText="true" />
                                                 <Label layoutX="8.0" layoutY="101.0" text="Plan de acción" />
                                                 <TableView fx:id="tablePlanAccion" editable="true" layoutX="6.0" layoutY="120.0" prefHeight="132.0" prefWidth="346.0">
                                                   <columns>
-                                                    <TableColumn fx:id="columnPlanAccion" prefWidth="334.0" sortable="false" text="Plan de acción" />
+                                                    <TableColumn fx:id="columnPlanAccion" prefWidth="345.0" sortable="false" text="Plan de acción" />
                                                   </columns>
                                                 </TableView>
                                                 <Button fx:id="btnAddPlanAccion" layoutX="247.0" layoutY="260.0" mnemonicParsing="false" text="Agregar renglon" />
                                                 <Label layoutX="7.0" layoutY="288.0" prefHeight="33.0" prefWidth="234.0" text="Interpretación Compromisos Externos" wrapText="true" />
-                                                <TextArea fx:id="textAreaComp_Ext" layoutX="7.0" layoutY="314.0" prefHeight="88.0" prefWidth="344.0" />
+                                                <TextArea fx:id="textAreaComp_Ext" layoutX="7.0" layoutY="314.0" prefHeight="88.0" prefWidth="344.0" promptText="Interpretación Compromisos Externos" wrapText="true" />
                                                 <Label layoutX="7.0" layoutY="402.0" prefHeight="20.0" prefWidth="200.0" text="Interpretación Hitos" wrapText="true" />
-                                                <TextArea fx:id="textArea_Hitos" layoutX="8.0" layoutY="422.0" prefHeight="77.0" prefWidth="343.0" />
+                                                <TextArea fx:id="textArea_Hitos" layoutX="8.0" layoutY="422.0" prefHeight="77.0" prefWidth="343.0" promptText="Interpretación Hitos" wrapText="true" />
                                                 <Button fx:id="btnDeletePlanAccion" layoutX="125.0" layoutY="260.0" mnemonicParsing="false" text="Eliminar renglon" />
                                              </children>
                                           </Pane>
@@ -89,13 +89,13 @@
                                                   </columns>
                                                 </TableView>
                                                 <Label layoutX="7.0" layoutY="168.0" text="Productos Terminados" />
-                                                <TextArea fx:id="textArea_IntSize" layoutX="7.0" layoutY="361.0" prefHeight="62.0" prefWidth="407.0" />
+                                                <TextArea fx:id="textArea_IntSize" layoutX="7.0" layoutY="361.0" prefHeight="62.0" prefWidth="407.0" promptText="Interpretación de la tabla de Tamańos" wrapText="true" />
                                                 <Label layoutX="9.0" layoutY="341.0" text="Interpretación de la tabla de Tamańos" />
                                                 <Label layoutX="7.0" layoutY="423.0" text="Interpretación de la tabla de tiempos en fase" />
-                                                <TextArea fx:id="textArea_IntTime" layoutX="7.0" layoutY="447.0" prefHeight="62.0" prefWidth="407.0" />
+                                                <TextArea fx:id="textArea_IntTime" layoutX="7.0" layoutY="447.0" prefHeight="62.0" prefWidth="407.0" promptText="Interpretación de la tabla de tiempos en fase" wrapText="true" />
                                                 <TableView fx:id="tablePlanAccionTaks" editable="true" layoutX="7.0" layoutY="31.0" prefHeight="103.0" prefWidth="407.0">
                                                    <columns>
-                                                      <TableColumn fx:id="columnPlanAccionTaks" prefWidth="392.0" sortable="false" text="Plan de acción" />
+                                                      <TableColumn fx:id="columnPlanAccionTaks" prefWidth="406.0" sortable="false" text="Plan de acción" />
                                                    </columns>
                                                 </TableView>
                                                 <Button fx:id="btnDeleteRowActionTaks" layoutX="186.0" layoutY="136.0" mnemonicParsing="false" text="Eliminar renglon" />
@@ -117,7 +117,7 @@
                                           <Pane prefHeight="535.0" prefWidth="423.0" BorderPane.alignment="CENTER">
                                              <children>
                                                 <Label layoutX="8.0" layoutY="4.0" text="Interpretación del estado de la Calidad" />
-                                                <TextArea fx:id="textArea_Quality" layoutX="5.0" layoutY="27.0" prefHeight="100.0" prefWidth="409.0" />
+                                                <TextArea fx:id="textArea_Quality" layoutX="5.0" layoutY="27.0" prefHeight="100.0" prefWidth="409.0" promptText="Interpretación del estado de la Calidad" wrapText="true" />
                                                 <TableView fx:id="tablePQI" editable="true" layoutX="4.0" layoutY="152.0" prefHeight="166.0" prefWidth="412.0">
                                                   <columns>
                                                     <TableColumn fx:id="tableColumnProductPQI" prefWidth="198.0" text="Producto" />
@@ -127,7 +127,7 @@
                                                 <Label layoutX="6.0" layoutY="128.0" text="PQI por producto y Acciones correctivas" />
                                                 <TableView fx:id="tablePlanAccionQuality" editable="true" layoutX="6.0" layoutY="327.0" prefHeight="145.0" prefWidth="407.0">
                                                    <columns>
-                                                      <TableColumn fx:id="columnPlanAccionQuality" prefWidth="387.0" sortable="false" text="Plan de acción" />
+                                                      <TableColumn fx:id="columnPlanAccionQuality" prefWidth="405.0" sortable="false" text="Plan de acción" />
                                                    </columns>
                                                 </TableView>
                                                 <Button fx:id="btnDeletePlanAccionQuality" layoutX="175.0" layoutY="476.0" mnemonicParsing="false" text="Eliminar renglon" />
