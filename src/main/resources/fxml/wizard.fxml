@@ -176,6 +176,9 @@
                                               <TableColumn fx:id="columnResp" prefWidth="182.0" text="Responsabilidad" />
                                               <TableColumn fx:id="columnStatus" prefWidth="583.0" text="Actividades ejercidas - Estado " />
                                             </columns>
+                                             <BorderPane.margin>
+                                                <Insets />
+                                             </BorderPane.margin>
                                           </TableView>
                                        </center></BorderPane>
                                  </children>
