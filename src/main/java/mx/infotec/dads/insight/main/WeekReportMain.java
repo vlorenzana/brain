@@ -12,6 +12,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import static mx.infotec.dads.insight.util.Constants.ICON;
 
 /**
  * WeekReportMain class execute the main app.
@@ -44,7 +45,7 @@ public class WeekReportMain extends Application {
 	Scene scene = new Scene(root);
 	primaryStage.setScene(scene);
 	primaryStage.setTitle("Monkey Brain");
-	primaryStage.getIcons().add(new Image("images/monkey.png"));
+	primaryStage.getIcons().add(new Image(ICON));
 	scene.getStylesheets().add("/styles/app.css");
 	primaryStage.show();
     }

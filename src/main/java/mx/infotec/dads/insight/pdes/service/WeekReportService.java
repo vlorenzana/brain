@@ -31,7 +31,6 @@ import mx.infotec.dads.insight.pdes.model.TaskInfo;
 import mx.infotec.dads.insight.pdes.model.WeekReportTable;
 import mx.infotec.dads.insight.util.Constants;
 import static mx.infotec.dads.insight.util.Constants.FILTER_FINISHED;
-import static mx.infotec.dads.insight.util.Constants.TIMEOUT;
 import mx.infotec.dads.insight.util.ContextUtil;
 import mx.infotec.dads.insight.util.DateUtils;
 import static mx.infotec.dads.insight.util.DateUtils.betweenWeek;
@@ -42,7 +41,7 @@ import mx.infotec.dads.insight.util.ProductComparator;
 import mx.infotec.dads.insight.util.UrlPd;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 import org.jsoup.Connection;
-
+import static mx.infotec.dads.insight.util.ConnectionUtil.getConnection;
 /**
  * WeekReportService
  * 
@@ -71,7 +70,7 @@ public class WeekReportService {
             //Date endWeek=getStartReport(urlPd);            
             removeFilter(FILTER_FINISHED, urlPd);
             removeFilterByPath(urlPd);            
-	    Document doc = Jsoup.connect(urlPd.getWeekReportUrl().toString()).timeout(TIMEOUT).get();
+	    Document doc = getConnection(urlPd.getWeekReportUrl()).get();
 	    WeekReportTable table = new WeekReportTable(doc);
 	    Element element = doc.select("body table tbody tr td.left").get(1);
 	    String parse = element.text();
@@ -79,7 +78,7 @@ public class WeekReportService {
 	    String toDateReportString = DateUtils.convertPdesDate(reportDate);
 	    Date toDateReportDate = DateUtils.convertStringToDate(toDateReportString);
 	    Date fromDateReportDate = DateUtils.moveDays(toDateReportDate, -6);
-	    Document mainData = Jsoup.connect(urlPd.getGeneralReportUrl().toString()).timeout(TIMEOUT).get();
+	    Document mainData = getConnection(urlPd.getGeneralReportUrl()).get();
 	    InfoReportTable gTable = new InfoReportTable(mainData);
 	    gTable.setReportedPeriod("Del " + DateUtils.convertDateToString(fromDateReportDate) + " al "
 		    + DateUtils.convertDateToString(toDateReportDate));
@@ -132,7 +131,7 @@ public class WeekReportService {
         removeFilter(FILTER_FINISHED, urlPd);
         addFilter(FILTER_FINISHED,urlPd);      
         String url=urlPd.getPhaseTime().toString();
-        Connection con=Jsoup.connect(url);
+        Connection con=getConnection(url);
         try
         {         
           Document document=con.get();
@@ -167,7 +166,7 @@ public class WeekReportService {
     }
     public static void addFilter(String filter,UrlPd urlPd) throws ReportException
     {        
-        Connection con=Jsoup.connect(urlPd.getFilter().toString());
+        Connection con=getConnection(urlPd.getFilter().toString());
         Map<String,String> data=new HashMap<>();
         data.put("apply","Apply Filter");
         data.put("destUri",urlPd.getDestFilterURI());
@@ -185,7 +184,7 @@ public class WeekReportService {
     }
     public static void addFilterByPath(String path,UrlPd urlPd) throws ReportException
     {        
-        Connection con=Jsoup.connect(urlPd.getFilterByWBS().toString());
+        Connection con=getConnection(urlPd.getFilterByWBS().toString());
         Map<String,String> data=new HashMap<>();        
         data.put("destUri",urlPd.getDestFilterBYWBSURI());
         data.put("relPath",path);
@@ -203,7 +202,7 @@ public class WeekReportService {
     public static void removeFilter(String filter,UrlPd urlPd) throws ReportException
     {
         
-        Connection con=Jsoup.connect(urlPd.getFilter().toString()).timeout(TIMEOUT);
+        Connection con=getConnection(urlPd.getFilter());
         
         Map<String,String> data=new HashMap<>();
         data.put("remove","Remove Filter");
@@ -223,7 +222,7 @@ public class WeekReportService {
     public static void removeFilterByPath(UrlPd urlPd) throws ReportException
     {
         
-        Connection con=Jsoup.connect(urlPd.getFilterByWBS().toString()).timeout(TIMEOUT);
+        Connection con=getConnection(urlPd.getFilterByWBS());
         Map<String,String> data=new HashMap<>();        
         data.put("destUri",urlPd.getDestFilterBYWBSURI());
         data.put("relPath","");
@@ -263,7 +262,7 @@ public class WeekReportService {
     }
     public static Date getStartReport(UrlPd urlPd) throws IOException, URISyntaxException,ReportException
     {
-        Document doc = Jsoup.connect(urlPd.getWeekReportUrl().toString()).timeout(TIMEOUT).get();
+        Document doc = getConnection(urlPd.getWeekReportUrl()).get();
         Elements elements=doc.select("h2");
         if(elements.size()>0)
         {
@@ -294,7 +293,7 @@ public class WeekReportService {
     {   
         List<Product> findProductsFinished=new ArrayList<>();        
         Map<String,TaskInfo> products=new HashMap<>();
-        Document doc = Jsoup.connect(urlPd.getSummary().toString()).timeout(TIMEOUT).get();
+        Document doc = getConnection(urlPd.getSummary()).get();
         Elements renglones=doc.select("body table[name=TASK] tr");
         for(int i=2;i<renglones.size();i++)
         {
@@ -370,7 +369,7 @@ public class WeekReportService {
     }
     private static BufferedImage getImage(UrlPd urlPd,int index) throws IOException, URISyntaxException,ReportException 
     {
-        Document doc = Jsoup.connect(urlPd.getSummaryToPQI().toString()).timeout(TIMEOUT).get();
+        Document doc = getConnection(urlPd.getSummaryToPQI()).get();
         Elements images=doc.select("body div form img");
         int currentImage=-1;
         for(int i=0;i<images.size();i++)
@@ -403,7 +402,7 @@ public class WeekReportService {
     }
     private static Double getPQIProductActual(UrlPd urlPd,String param) throws ReportException,URISyntaxException,IOException
     {
-        Document doc = Jsoup.connect(urlPd.getURLPQITable().toString()+param).timeout(TIMEOUT).get();
+        Document doc = getConnection(urlPd.getURLPQITable().toString()+param).get();
         Elements rows=doc.select("table tr");
         
         for(int i=1;i<rows.size();i++)
@@ -511,7 +510,7 @@ public class WeekReportService {
     }
     
     private static List<String> findTasksInProgress(UrlPd urlPd) throws IOException, URISyntaxException {
-	Document doc = Jsoup.connect(urlPd.getWeekReportUrl().toString()).timeout(TIMEOUT).get();
+	Document doc = getConnection(urlPd.getWeekReportUrl().toString()).get();
 	//Elements tasksList = doc.select("[name=dueTask]");
         //tasksList
         Elements tasksList = doc.select("table[id=$$$_progress]");
@@ -528,7 +527,7 @@ public class WeekReportService {
 
     }
     private static List<String> findTasksCompleted(UrlPd urlPd) throws IOException, URISyntaxException {
-	Document doc = Jsoup.connect(urlPd.getWeekReportUrl().toString()).timeout(TIMEOUT).get();
+	Document doc = getConnection(urlPd.getWeekReportUrl()).get();
 	Elements tasksList = doc.select("[name=compTask]");
 	if (!tasksList.isEmpty()) {
 	    Elements task = doc.select("[name=compTask]").get(0).select("td.left");
@@ -545,7 +544,7 @@ public class WeekReportService {
     private static List<TaskWithProblem> findTaksWithProblems(UrlPd urlPd) throws IOException, URISyntaxException
     {
         List<TaskWithProblem> findProductsWithProblems=new ArrayList<>();
-        Document document = Jsoup.connect(urlPd.getWeekReportUrl().toString()).timeout(TIMEOUT).get();        
+        Document document = getConnection(urlPd.getWeekReportUrl().toString()).get();        
         Elements rows=document.select("table[id=$$$_progress] tr");
         for(int i=1;i<rows.size();i++)
         {
@@ -582,7 +581,7 @@ public class WeekReportService {
         return findProductsWithProblems;
     }
     private static List<String> findTasksNext(UrlPd urlPd) throws IOException, URISyntaxException {
-	Document doc = Jsoup.connect(urlPd.getWeekReportUrl().toString()).timeout(TIMEOUT).get();
+	Document doc = getConnection(urlPd.getWeekReportUrl().toString()).get();
 	//Elements tasksList = doc.select("[name=dueTask]");
         Elements tasksList = doc.select("table[id=$$$_due]");
 	if (!tasksList.isEmpty()) {

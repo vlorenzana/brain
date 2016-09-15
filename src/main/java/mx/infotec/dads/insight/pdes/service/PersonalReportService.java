@@ -6,7 +6,6 @@ import java.util.Date;
 
 import javax.imageio.ImageIO;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -14,8 +13,8 @@ import org.jsoup.select.Elements;
 import mx.infotec.dads.insight.pdes.exceptions.ReportException;
 import mx.infotec.dads.insight.pdes.model.Report;
 import mx.infotec.dads.insight.pdes.service.context.ReportContext;
+import static mx.infotec.dads.insight.util.ConnectionUtil.getConnection;
 import mx.infotec.dads.insight.util.Constants;
-import static mx.infotec.dads.insight.util.Constants.TIMEOUT;
 import mx.infotec.dads.insight.util.ContextUtil;
 
 /**
@@ -104,7 +103,7 @@ public class PersonalReportService extends AbstractReportTemplate {
     private void locateResource(final String contextUrl, final String xPathQuery, final String fileName,
 	    ReportContext context) throws ReportException {
 	try {
-	    Document doc = Jsoup.connect(contextUrl).timeout(TIMEOUT).get();
+	    Document doc = getConnection(contextUrl).get();
 	    Elements elements = doc.select(xPathQuery);
 	    BufferedImage image;
 	    int count = 0;

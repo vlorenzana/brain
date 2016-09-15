@@ -2,14 +2,14 @@ package mx.infotec.dads.insight.dao;
 
 import java.io.IOException;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import mx.infotec.dads.insight.pdes.exceptions.ReportException;
 import mx.infotec.dads.insight.pdes.model.SizeReportTable;
-import static mx.infotec.dads.insight.util.Constants.TIMEOUT;
+import mx.infotec.dads.insight.util.ConnectionUtil;
+import static mx.infotec.dads.insight.util.ConnectionUtil.getConnection;
 import mx.infotec.dads.insight.util.UrlPd;
 
 /**
@@ -29,7 +29,7 @@ public class OverallMetricsDAO {
     public OverallMetricsDAO(UrlPd urlPd) throws ReportException {
 	try {
             
-	    this.overallMetrics = Jsoup.connect(urlPd.getReportsPlanSummaryUrl().toString()).timeout(TIMEOUT)
+	    this.overallMetrics = ConnectionUtil.getConnection(urlPd.getReportsPlanSummaryUrl())
 		    .header("Referer", urlPd.getOveralMetricsUrl().toString()).get();
 	} catch (NumberFormatException | IOException e) {
             try
@@ -42,7 +42,7 @@ public class OverallMetricsDAO {
             }
             try
             {
-                this.overallMetrics = Jsoup.connect(urlPd.getReportsPlanSummaryUrl().toString()).timeout(TIMEOUT)
+                this.overallMetrics = getConnection(urlPd.getReportsPlanSummaryUrl())
                 .header("Referer", urlPd.getOveralMetricsUrl().toString()).get();
             }
             catch (NumberFormatException | IOException ue)

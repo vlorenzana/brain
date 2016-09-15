@@ -33,11 +33,13 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import mx.infotec.dads.insight.pdes.service.WeekReportService;
 import mx.infotec.dads.insight.pdes.service.context.ReportContext;
+import static mx.infotec.dads.insight.util.Constants.ICON;
 import mx.infotec.dads.insight.util.ContextUtil;
 import mx.infotec.dads.insight.util.DateUtils;
 
@@ -112,6 +114,7 @@ public class PdesReportController implements Initializable, ControlledScreen {
         controler.setDataToFill(new ReportInformation(path));            
         controler.init();
         stage.setScene(new Scene(root));
+        stage.getIcons().add(new Image(ICON));
         stage.setTitle("Análisis de reporte");
         stage.initModality(Modality.WINDOW_MODAL);
         stage.show();
