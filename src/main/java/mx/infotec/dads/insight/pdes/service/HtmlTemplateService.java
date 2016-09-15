@@ -53,11 +53,11 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
 
     @Override
     protected void createIndexFile(ReportContext context) throws ReportException {
-	try {
+	try {            
 	    mainTemplate = CFG.getTemplate("templates/mainLayout.html");
 	    HashMap<String, Object> data = new HashMap<>();
-	    data.put("gn", context.getReport().getInfoReportTable());
-            Map<String, Object> templateData = new HashMap<>();
+            
+	    data.put("gn", context.getReport().getInfoReportTable());            
             for (int i = 0; i < context.getReport().getWeekReportTable().getNumRows(); i++) {
                 for (int j = 0; j < context.getReport().getWeekReportTable().getNumCols(); j++) {
                     data.put("data" + i + "" + j, context.getReport().getWeekReportTable().getStringProperty(i, j));
@@ -65,7 +65,7 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
             }
             PerformanceReportTable pt = context.getReport().getPerformanceReportTable();	
             data.put("pTable", pt);
-	    TemplateUtil.saveTemplate(mainTemplate, CFG, data, PAGE_PLANNING, context.getOutputFile());
+	    TemplateUtil.saveTemplate(mainTemplate, CFG, data, PAGE_PLANNING, context.getOutputFile(),context.getUrlPd().getMemberName());
 	} catch (IOException e) {
 	    throw new ReportException("createIndexFile", e);
 	}
@@ -81,14 +81,14 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
         {
             templateData.put("msgTable","No hay productos con PQI");
         }
-	TemplateUtil.saveTemplate(mainTemplate, CFG, templateData, PAGE_QUALITY, context.getOutputFile());
+	TemplateUtil.saveTemplate(mainTemplate, CFG, templateData, PAGE_QUALITY, context.getOutputFile(),context.getUrlPd().getMemberName());
 
     }
 
     @Override
     protected void createRoleFile(ReportContext context) throws ReportException {
 	TemplateUtil.saveTemplate(mainTemplate, CFG, new HashMap<String, Object>(), PAGE_ROLES,
-		context.getOutputFile());
+		context.getOutputFile(),context.getUrlPd().getMemberName());
     }
 
     @Override
@@ -131,7 +131,7 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
         data.put("products", context.getReport().getProducts());
         data.put("timetable", context.getReport().getTimeTableFinished());
         data.put("sizeTable", context.getReport().getSizeReportTable().getData());
-	TemplateUtil.saveTemplate(mainTemplate, CFG, data, PAGE_TASK_PRODUCTS, context.getOutputFile());
+	TemplateUtil.saveTemplate(mainTemplate, CFG, data, PAGE_TASK_PRODUCTS, context.getOutputFile(),context.getUrlPd().getMemberName());
     }
 
     @Override
@@ -149,14 +149,14 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
 		templateData.put("data" + i + "" + j, context.getReport().getWeekReportTable().getStringProperty(i, j));
 	    }
 	}
-	TemplateUtil.saveTemplate(mainTemplate, CFG, templateData, "weekResume.html", context.getOutputFile());
+	TemplateUtil.saveTemplate(mainTemplate, CFG, templateData, "weekResume.html", context.getOutputFile(),context.getUrlPd().getMemberName());
 
     }
 
     @Override
     protected void createSupportFile(ReportContext context) throws ReportException {
 	TemplateUtil.saveTemplate(mainTemplate, CFG, new HashMap<String, Object>(), "support.html",
-		context.getOutputFile());
+		context.getOutputFile(),context.getUrlPd().getMemberName());
 
     }
 

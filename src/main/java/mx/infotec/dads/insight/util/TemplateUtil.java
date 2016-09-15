@@ -13,6 +13,7 @@ import mx.infotec.dads.insight.pdes.exceptions.ReportException;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * Clase uti para manejar los templates del proyecto
@@ -45,7 +46,7 @@ public class TemplateUtil {
     public static void mergeIntoWeekReportFile(Template template, Map<String, Object> data, String fileName,
 	    File outPutFile) throws ReportException {
 	try {
-	    Writer file = new FileWriter(new File(outPutFile, fileName));
+	    Writer file = new FileWriter(new File(outPutFile, fileName));            
 	    template.process(data, file);
 	    file.flush();
 	    file.close();
@@ -55,12 +56,14 @@ public class TemplateUtil {
     }
 
     public static void saveTemplate(Template mainTemplate, Configuration cfg, Map<String, Object> subData,
-	    String templateName, File outPutFile) throws ReportException {
+	    String templateName, File outPutFile,String memberName) throws ReportException {
 	try {
+            
 	    Template performanceTemplate = cfg.getTemplate("templates/" + templateName);
 	    String resString = TemplateUtil.readAsString(performanceTemplate, subData);
 	    Map<String, Object> mainData = new HashMap<>();
 	    mainData.put("content", resString);
+            mainData.put("memberName", StringEscapeUtils.escapeHtml4(memberName));            
 	    TemplateUtil.mergeIntoWeekReportFile(mainTemplate, mainData, templateName, outPutFile);
 	} catch (Exception e) {
 	    throw new ReportException("createPerformanceFile", e);

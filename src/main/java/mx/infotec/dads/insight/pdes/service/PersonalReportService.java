@@ -15,6 +15,7 @@ import mx.infotec.dads.insight.pdes.exceptions.ReportException;
 import mx.infotec.dads.insight.pdes.model.Report;
 import mx.infotec.dads.insight.pdes.service.context.ReportContext;
 import mx.infotec.dads.insight.util.Constants;
+import static mx.infotec.dads.insight.util.Constants.TIMEOUT;
 import mx.infotec.dads.insight.util.ContextUtil;
 
 /**
@@ -103,7 +104,7 @@ public class PersonalReportService extends AbstractReportTemplate {
     private void locateResource(final String contextUrl, final String xPathQuery, final String fileName,
 	    ReportContext context) throws ReportException {
 	try {
-	    Document doc = Jsoup.connect(contextUrl).get();
+	    Document doc = Jsoup.connect(contextUrl).timeout(TIMEOUT).get();
 	    Elements elements = doc.select(xPathQuery);
 	    BufferedImage image;
 	    int count = 0;

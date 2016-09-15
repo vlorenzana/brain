@@ -5,6 +5,7 @@
  */
 package mx.infotec.dads.insight.controller;
 
+import java.io.File;
 import java.io.IOException;
 import mx.infotec.dads.insight.pdes.model.ReportInformation;
 import mx.infotec.dads.insight.pdes.model.URLProduct;
@@ -37,9 +38,11 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
 import javafx.scene.web.WebView;
 import mx.infotec.dads.insight.pdes.model.Validation;
+import mx.infotec.dads.insight.util.Constants;
 import static mx.infotec.dads.insight.util.Constants.PAGE_PLANNING;
 import static mx.infotec.dads.insight.util.Constants.PAGE_QUALITY;
 import static mx.infotec.dads.insight.util.Constants.PAGE_TASK_PRODUCTS;
+import mx.infotec.dads.insight.util.ContextUtil;
 
 
 
@@ -249,7 +252,9 @@ public class WizardController implements Initializable {
             }
             
             
-        }catch(IOException e){}
+        }catch(IOException e){
+            ContextUtil.saveExceptionToDisk(e, Constants.FILE_ERROR_TXT, new File("./"));
+        }
         
         this.information.save();
         this.webViewPlan.getEngine().reload();

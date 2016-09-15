@@ -7,6 +7,9 @@ package mx.infotec.dads.insight.util;
  *
  */
 public class Constants {
+    
+    
+    public static final int TIMEOUT = 10*1000;
     public static final String FILTER_FINISHED = "terminado";
     public static final String FILE_PDES_PROPERTIES = "./pdes.properties";
     public static final String PDES_CLIENT_HOST_NAME = "localhost";
@@ -16,6 +19,7 @@ public class Constants {
     // Properties name's
     public static final String PROPERTY_PORT = "port";
     public static final String PROPERTY_PROJECT = "project";
+    public static final String PROPERTY_MEMBER_NAME = "memberName";
 
     public static final String FILE_ERROR_TXT = "./error.txt";
     public static final String ATTR_SRC = "src";

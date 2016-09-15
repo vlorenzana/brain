@@ -35,6 +35,7 @@ public class PropertyFileUtils {
 	    file.close();
 	    return UrlPd.createUrl().withHost(Constants.PDES_CLIENT_HOST_NAME).withScheme(Constants.PDES_SCHEME)
 		    .withPort(mainProperties.getProperty(Constants.PROPERTY_PORT))
+                    .withMemberName(mainProperties.getProperty(Constants.PROPERTY_MEMBER_NAME))
 		    .withProjectName(mainProperties.getProperty(Constants.PROPERTY_PROJECT));
 	} catch (IOException e) {
 	    throw new ReportRuntimeException("loadUrlContext", e);

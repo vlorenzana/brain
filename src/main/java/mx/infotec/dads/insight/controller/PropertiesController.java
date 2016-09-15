@@ -35,6 +35,10 @@ public class PropertiesController implements Initializable, ControlledScreen {
     ScreensController myController;
     @FXML
     private TextField projectName;
+    
+    @FXML
+    private TextField memberName;
+    
     @FXML
     private TextField port;
     @FXML
@@ -50,6 +54,7 @@ public class PropertiesController implements Initializable, ControlledScreen {
 	Properties props = new Properties();
 	props.setProperty(Constants.PROPERTY_PORT, port.getText());
 	props.setProperty(Constants.PROPERTY_PROJECT, projectName.getText());
+        props.setProperty(Constants.PROPERTY_MEMBER_NAME, memberName.getText());
 	PropertyFileUtils.saveProperties(props);
 	messageLabel.setText("Datos Guardados!");
         Alert alert=new Alert(Alert.AlertType.INFORMATION);
@@ -81,5 +86,6 @@ public class PropertiesController implements Initializable, ControlledScreen {
 	urlPd = PropertyFileUtils.loadUrlContext();
 	projectName.setText(urlPd.getProjectName());
 	port.setText(urlPd.getPort());
+        memberName.setText(urlPd.getMemberName());
     }
 }

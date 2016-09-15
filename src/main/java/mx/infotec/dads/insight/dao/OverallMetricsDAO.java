@@ -9,6 +9,7 @@ import org.jsoup.select.Elements;
 
 import mx.infotec.dads.insight.pdes.exceptions.ReportException;
 import mx.infotec.dads.insight.pdes.model.SizeReportTable;
+import static mx.infotec.dads.insight.util.Constants.TIMEOUT;
 import mx.infotec.dads.insight.util.UrlPd;
 
 /**
@@ -27,10 +28,27 @@ public class OverallMetricsDAO {
 
     public OverallMetricsDAO(UrlPd urlPd) throws ReportException {
 	try {
-	    this.overallMetrics = Jsoup.connect(urlPd.getReportsPlanSummaryUrl().toString())
+            
+	    this.overallMetrics = Jsoup.connect(urlPd.getReportsPlanSummaryUrl().toString()).timeout(TIMEOUT)
 		    .header("Referer", urlPd.getOveralMetricsUrl().toString()).get();
 	} catch (NumberFormatException | IOException e) {
-	    throw new ReportException("OverallMetricsDAO:", e);
+            try
+            {
+                Thread.currentThread().wait(5000);
+            }
+            catch(InterruptedException ie)
+            {
+               
+            }
+            try
+            {
+                this.overallMetrics = Jsoup.connect(urlPd.getReportsPlanSummaryUrl().toString()).timeout(TIMEOUT)
+                .header("Referer", urlPd.getOveralMetricsUrl().toString()).get();
+            }
+            catch (NumberFormatException | IOException ue)
+            {
+                throw new ReportException("OverallMetricsDAO:", ue);
+            }
 	}
     }
 

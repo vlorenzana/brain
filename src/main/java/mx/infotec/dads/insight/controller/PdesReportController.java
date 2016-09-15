@@ -38,6 +38,7 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import mx.infotec.dads.insight.pdes.service.WeekReportService;
 import mx.infotec.dads.insight.pdes.service.context.ReportContext;
+import mx.infotec.dads.insight.util.ContextUtil;
 import mx.infotec.dads.insight.util.DateUtils;
 
 /**
@@ -124,6 +125,9 @@ public class PdesReportController implements Initializable, ControlledScreen {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        
+        
+                
 	tipoReportList.add(new TipoReporte(Constants.FIST_SELECTION, "ES"));
 	tipoReportList.add(new TipoReporte(Constants.SECOND_SELECTION, "EN"));
 	cbxTipoReportId.setItems(tipoReportList);
@@ -134,7 +138,14 @@ public class PdesReportController implements Initializable, ControlledScreen {
         
 	btnReportId.setOnAction(event -> {
             
-            
+            if(urlPd.getMemberName()==null || urlPd.getMemberName().isEmpty() || "Miembro del equipo".equalsIgnoreCase(urlPd.getMemberName()))
+            {
+                Alert alertName = new Alert(AlertType.WARNING);
+                alertName.setTitle("PDES Reporter");
+                alertName.setHeaderText("Configuración");
+                alertName.setContentText("¡No haz indicado tu nombre en la configuración del reporte!");
+                alertName.showAndWait();
+            }
             try
             {
                 if (cbxTipoReportId.getSelectionModel().getSelectedIndex() == Constants.FIST_SELECTION) {
@@ -192,6 +203,7 @@ public class PdesReportController implements Initializable, ControlledScreen {
             }
             catch(IOException | URISyntaxException | ReportException e)
             {
+                ContextUtil.saveExceptionToDisk(e, Constants.FILE_ERROR_TXT, new File("./"));
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("PDES Reporter");
                 alert.setHeaderText("Reporte Semanal");
@@ -213,8 +225,8 @@ public class PdesReportController implements Initializable, ControlledScreen {
                 String path=((GenerateReportTask)task).getPathToReport();
                 try {
                     showEditReport(path);
-                } catch (IOException ex) {
-                    
+                } catch (IOException ioe) {
+                    ContextUtil.saveExceptionToDisk(ioe, Constants.FILE_ERROR_TXT, new File("./"));
                 }
                 
 	    });

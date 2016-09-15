@@ -18,6 +18,7 @@ public class UrlPd {
     private String host;
     private String port;
     private String projectName;
+    private String memberName;
 
     private UrlPd() {
 
@@ -34,6 +35,14 @@ public class UrlPd {
 
     public UrlPd withHost(String host) {
 	this.host = host;
+	return this;
+    }
+    public UrlPd withMemberName(String memberName) {
+        if(memberName==null || memberName.isEmpty())
+        {
+            memberName="Miembro del equipo";
+        }
+	this.memberName = memberName;
 	return this;
     }
 
@@ -77,7 +86,8 @@ public class UrlPd {
 	    throw new ReportException("getReportsPlanSummaryUrl:", e);
 	}
     }
-
+    
+    
     public URI getWeeklyTasksUrl() throws ReportException {
 	try {
 	    return URIUtils.createURI(scheme, host, Integer.parseInt(port), projectName + "/+" + "/reports/week.class",
@@ -246,4 +256,13 @@ public class UrlPd {
     public void setProjectName(String projectName) {
 	this.projectName = projectName;
     }
+
+    public String getMemberName() {
+        return memberName;
+    }
+
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
+    }
+    
 }
