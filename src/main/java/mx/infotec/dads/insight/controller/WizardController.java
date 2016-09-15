@@ -25,6 +25,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -421,8 +422,10 @@ public class WizardController implements Initializable {
                 col++;
             }
             CheckBox chk=new CheckBox(def.title);
+            
             chk.setId(def.id);
             gridRoles.add(chk, col, row);           
+            GridPane.setMargin(chk, new Insets(0, 20, 0, 20));
             
             chk.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
