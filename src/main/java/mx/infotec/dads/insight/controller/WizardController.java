@@ -25,7 +25,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -275,7 +274,7 @@ public class WizardController implements Initializable {
             for(Validation validation : validations)
             {
                 index++;
-                sb.append(index+". "+ validation.name);
+                sb.append(index).append(". ").append(validation.name);
                 sb.append("\r\n");
             }
             alertValidations.setContentText(sb.toString());                                        
@@ -327,7 +326,7 @@ public class WizardController implements Initializable {
         table.setItems(model);
         table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         TableColumn column=((TableColumn)table.getColumns().get(0));
-        column.setCellValueFactory(new PropertyValueFactory<PlanAccion, String>("accion"));        
+        column.setCellValueFactory(new PropertyValueFactory<>("accion"));        
         column.setCellFactory(TextFieldTableCell.forTableColumn());        
         column.setOnEditCommit(
             new EventHandler<CellEditEvent<PlanAccion, String>>() {
@@ -361,9 +360,9 @@ public class WizardController implements Initializable {
         
         tableRoles.setItems(role_status);
         tableRoles.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        columnResp.setCellValueFactory(new PropertyValueFactory<RoleStatus, String>("resp"));
-        columnStatus.setCellValueFactory(new PropertyValueFactory<RoleStatus, String>("status"));
-        columnRoleDesc.setCellValueFactory(new PropertyValueFactory<RoleStatus, String>("desc"));
+        columnResp.setCellValueFactory(new PropertyValueFactory<>("resp"));
+        columnStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        columnRoleDesc.setCellValueFactory(new PropertyValueFactory<>("desc"));
         columnStatus.setCellFactory(TextFieldTableCell.forTableColumn());
         columnStatus.setOnEditCommit(
             new EventHandler<CellEditEvent<RoleStatus, String>>() {
@@ -379,8 +378,8 @@ public class WizardController implements Initializable {
         dataProductURL.addAll(information.url_products);
         tableProductsURL.setItems(dataProductURL);
         tableProductsURL.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        columnProduct.setCellValueFactory(new PropertyValueFactory<URLProduct, String>("product"));
-        columnURL.setCellValueFactory(new PropertyValueFactory<URLProduct, String>("url"));
+        columnProduct.setCellValueFactory(new PropertyValueFactory<>("product"));
+        columnURL.setCellValueFactory(new PropertyValueFactory<>("url"));
         columnURL.setCellFactory(TextFieldTableCell.forTableColumn());
         columnURL.setOnEditCommit(
             new EventHandler<CellEditEvent<URLProduct, String>>() {
