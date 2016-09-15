@@ -586,12 +586,9 @@ public class WeekReportService {
         Elements tasksList = doc.select("table[id=$$$_due]");
 	if (!tasksList.isEmpty()) {
             List<String> taskNextWeek = new ArrayList<>();
-            if(tasksList.size()>1)
-            {
-                Elements task = tasksList.get(0).select("td.left");                
-                for (Element element : task) {
-                    taskNextWeek.add(element.text());
-                }
+            Elements task = tasksList.get(0).select("td.left");                
+            for (Element element : task) {
+                taskNextWeek.add(element.text());
             }
 	    return taskNextWeek;
 	} else {
