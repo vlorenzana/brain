@@ -15,6 +15,7 @@ import freemarker.template.Template;
 import freemarker.template.Version;
 import java.util.List;
 import mx.infotec.dads.insight.pdes.model.PQIElement;
+import mx.infotec.dads.insight.pdes.model.Product;
 import static mx.infotec.dads.insight.util.Constants.PAGE_PLANNING;
 import static mx.infotec.dads.insight.util.Constants.PAGE_QUALITY;
 import static mx.infotec.dads.insight.util.Constants.PAGE_ROLES;
@@ -106,8 +107,11 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
     @Override
     protected void createTaskProgressFile(ReportContext context) throws ReportException {
 	HashMap<String, Object> data = new HashMap<>();
-	data.put("tasks", context.getReport().getTasksInProgressToHTml());
-        data.put("taskcompleted", context.getReport().getTasksCompletedToHTML());
+	//data.put("tasks", context.getReport().getTasksInProgressToHTml());
+        //data.put("taskcompleted", context.getReport().getTasksCompletedToHTML());
+        
+        
+        
         data.put("tasknext", context.getReport().getTasksNextWeekToHTML());
         String tasknextMsg="";
         if(context.getReport().getTasksNextWeekToHTML().isEmpty())
@@ -122,13 +126,14 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
         }
         data.put("task_problemsMsg", task_problemsMsg);
         data.put("task_problems", context.getReport().getTaskProblems());
+        List<Product> products=context.getReport().getProducts();
         String productsMsg="";
         if(context.getReport().getProducts().isEmpty())
         {
             productsMsg="No hay productos";
         }
         data.put("productsMsg", productsMsg);
-        data.put("products", context.getReport().getProducts());
+        data.put("products", products);
         data.put("timetable", context.getReport().getTimeTableFinished());
         data.put("sizeTable", context.getReport().getSizeReportTable().getData());
 	TemplateUtil.saveTemplate(mainTemplate, CFG, data, PAGE_TASK_PRODUCTS, context.getOutputFile(),context.getUrlPd().getMemberName());
@@ -143,13 +148,13 @@ public class HtmlTemplateService extends AbstractHtmlTemplate {
 
     @Override
     protected void createWeekResumeFile(ReportContext context) throws ReportException {
-	Map<String, Object> templateData = new HashMap<>();
+	/*Map<String, Object> templateData = new HashMap<>();
 	for (int i = 0; i < context.getReport().getWeekReportTable().getNumRows(); i++) {
 	    for (int j = 0; j < context.getReport().getWeekReportTable().getNumCols(); j++) {
 		templateData.put("data" + i + "" + j, context.getReport().getWeekReportTable().getStringProperty(i, j));
 	    }
 	}
-	TemplateUtil.saveTemplate(mainTemplate, CFG, templateData, "weekResume.html", context.getOutputFile(),context.getUrlPd().getMemberName());
+	TemplateUtil.saveTemplate(mainTemplate, CFG, templateData, "weekResume.html", context.getOutputFile(),context.getUrlPd().getMemberName());*/
 
     }
 

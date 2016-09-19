@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -42,6 +41,7 @@ import mx.infotec.dads.insight.util.UrlPd;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 import org.jsoup.Connection;
 import static mx.infotec.dads.insight.util.ConnectionUtil.getConnection;
+import mx.infotec.dads.insight.util.TaskWithProblemComparator;
 /**
  * WeekReportService
  * 
@@ -561,11 +561,9 @@ public class WeekReportService {
                     {
                         int iUsed=Integer.parseInt(used);
                         if(iUsed>100)
-                        {
-                            //tasks.add(taskName);
+                        {                            
                             TaskWithProblem task=new TaskWithProblem(taskName,tr.child(7).text(),date);
                             findProductsWithProblems.add(task);
-
                         }
                     }
                     else if(left.startsWith("-"))
@@ -577,7 +575,8 @@ public class WeekReportService {
 
                 }
             }
-        }      
+        } 
+        Collections.sort(findProductsWithProblems, new TaskWithProblemComparator());
         return findProductsWithProblems;
     }
     private static List<String> findTasksNext(UrlPd urlPd) throws IOException, URISyntaxException {

@@ -15,7 +15,15 @@
           <bottom>
             <FlowPane alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="800.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="save" mnemonicParsing="false" text="Guardar" />
+                  <Button fx:id="save" mnemonicParsing="false" text="Guardar">
+                     <FlowPane.margin>
+                        <Insets right="50.0" />
+                     </FlowPane.margin></Button>
+                  <Button fx:id="btnCerrar" mnemonicParsing="false" text="Cerrar">
+                     <FlowPane.margin>
+                        <Insets />
+                     </FlowPane.margin>
+                  </Button>
                </children>
                <padding>
                   <Insets left="20.0" right="20.0" />
@@ -36,22 +44,22 @@
                                  <children>
                                     <BorderPane layoutX="112.0" layoutY="53.0" prefHeight="519.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <left>
-                                          <Pane prefHeight="635.0" prefWidth="357.0" BorderPane.alignment="CENTER">
+                                          <Pane prefHeight="515.0" prefWidth="425.0" BorderPane.alignment="CENTER">
                                              <children>
-                                                <Label layoutX="6.0" layoutY="9.0" text="Interpretación Plan Calendario" />
-                                                <TextArea fx:id="textAreaIntPlan" layoutX="3.0" layoutY="33.0" prefHeight="62.0" prefWidth="347.0" promptText="Interpretación Plan Calendario" wrapText="true" />
-                                                <Label layoutX="8.0" layoutY="101.0" text="Plan de acción" />
-                                                <TableView fx:id="tablePlanAccion" editable="true" layoutX="6.0" layoutY="120.0" prefHeight="132.0" prefWidth="346.0">
+                                                <Label layoutX="10.0" layoutY="9.0" text="Interpretación del plan calendario" />
+                                                <TextArea fx:id="textAreaIntPlan" layoutX="5.0" layoutY="33.0" prefHeight="62.0" prefWidth="410.0" promptText="Interpretación del plan calendario" wrapText="true" />
+                                                <Label layoutX="10.0" layoutY="101.0" text="Plan de acción del plan calendario" />
+                                                <TableView fx:id="tablePlanAccion" editable="true" layoutX="5.0" layoutY="120.0" prefHeight="132.0" prefWidth="410.0">
                                                   <columns>
-                                                    <TableColumn fx:id="columnPlanAccion" prefWidth="345.0" sortable="false" text="Plan de acción" />
+                                                    <TableColumn fx:id="columnPlanAccion" prefWidth="405.0" sortable="false" text="Plan de acción del plan calendario" />
                                                   </columns>
                                                 </TableView>
-                                                <Button fx:id="btnAddPlanAccion" layoutX="247.0" layoutY="260.0" mnemonicParsing="false" text="Agregar renglon" />
-                                                <Label layoutX="7.0" layoutY="288.0" prefHeight="33.0" prefWidth="234.0" text="Interpretación Compromisos Externos" wrapText="true" />
-                                                <TextArea fx:id="textAreaComp_Ext" layoutX="7.0" layoutY="314.0" prefHeight="88.0" prefWidth="344.0" promptText="Interpretación Compromisos Externos" wrapText="true" />
-                                                <Label layoutX="7.0" layoutY="402.0" prefHeight="20.0" prefWidth="200.0" text="Interpretación Hitos" wrapText="true" />
-                                                <TextArea fx:id="textArea_Hitos" layoutX="8.0" layoutY="422.0" prefHeight="77.0" prefWidth="343.0" promptText="Interpretación Hitos" wrapText="true" />
-                                                <Button fx:id="btnDeletePlanAccion" layoutX="125.0" layoutY="260.0" mnemonicParsing="false" text="Eliminar renglon" />
+                                                <Button fx:id="btnAddPlanAccion" layoutX="311.0" layoutY="259.0" mnemonicParsing="false" text="Agregar renglón" />
+                                                <Label layoutX="10.0" layoutY="288.0" prefHeight="33.0" prefWidth="234.0" text="Interpretación de los compromisos externos" wrapText="true" />
+                                                <TextArea fx:id="textAreaComp_Ext" layoutX="5.0" layoutY="314.0" prefHeight="88.0" prefWidth="410.0" promptText="Interpretación de los compromisos externos" wrapText="true" />
+                                                <Label layoutX="10.0" layoutY="402.0" prefHeight="20.0" prefWidth="200.0" text="Interpretación de los hitos" wrapText="true" />
+                                                <TextArea fx:id="textArea_Hitos" layoutX="5.0" layoutY="422.0" prefHeight="77.0" prefWidth="410.0" promptText="Interpretación de los hitos" wrapText="true" />
+                                                <Button fx:id="btnDeletePlanAccion" layoutX="189.0" layoutY="259.0" mnemonicParsing="false" text="Eliminar renglón" />
                                              </children>
                                           </Pane>
                                        </left>
@@ -79,27 +87,27 @@
                                           <WebView fx:id="webViewTasksProducts" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                                        </center>
                                        <left>
-                                          <Pane prefHeight="535.0" prefWidth="421.0" BorderPane.alignment="CENTER">
+                                          <Pane prefHeight="535.0" prefWidth="425.0" BorderPane.alignment="CENTER">
                                              <children>
-                                                <Label layoutX="7.0" layoutY="14.0" text="Plan de acción de Productos y Tareas" />
-                                                <TableView fx:id="tableProductsURL" editable="true" layoutX="8.0" layoutY="187.0" prefHeight="151.0" prefWidth="406.0">
+                                                <Label layoutX="10.0" layoutY="14.0" text="Plan de acción de productos y tareas" />
+                                                <TableView fx:id="tableProductsURL" editable="true" layoutX="5.0" layoutY="187.0" prefHeight="151.0" prefWidth="410.0">
                                                   <columns>
                                                     <TableColumn fx:id="columnProduct" prefWidth="215.0" text="Producto" />
                                                     <TableColumn fx:id="columnURL" minWidth="1.0" prefWidth="190.0" text="URL de evidencia" />
                                                   </columns>
                                                 </TableView>
-                                                <Label layoutX="7.0" layoutY="168.0" text="Productos Terminados" />
-                                                <TextArea fx:id="textArea_IntSize" layoutX="7.0" layoutY="361.0" prefHeight="62.0" prefWidth="407.0" promptText="Interpretación de la tabla de Tamańos" wrapText="true" />
-                                                <Label layoutX="9.0" layoutY="341.0" text="Interpretación de la tabla de Tamańos" />
-                                                <Label layoutX="7.0" layoutY="423.0" text="Interpretación de la tabla de tiempos en fase" />
-                                                <TextArea fx:id="textArea_IntTime" layoutX="7.0" layoutY="447.0" prefHeight="62.0" prefWidth="407.0" promptText="Interpretación de la tabla de tiempos en fase" wrapText="true" />
-                                                <TableView fx:id="tablePlanAccionTaks" editable="true" layoutX="7.0" layoutY="31.0" prefHeight="103.0" prefWidth="407.0">
+                                                <Label layoutX="10.0" layoutY="168.0" text="Productos terminados en la semana" />
+                                                <TextArea fx:id="textArea_IntSize" layoutX="5.0" layoutY="361.0" prefHeight="62.0" prefWidth="410.0" promptText="Interpretación de la tabla de tamaños" wrapText="true" />
+                                                <Label layoutX="10.0" layoutY="341.0" text="Interpretación de la tabla de tamaños" />
+                                                <Label layoutX="10.0" layoutY="428.0" text="Interpretación de la tabla de tiempos en fase" />
+                                                <TextArea fx:id="textArea_IntTime" layoutX="5.0" layoutY="447.0" prefHeight="62.0" prefWidth="410.0" promptText="Interpretación de la tabla de tiempos en fase" wrapText="true" />
+                                                <TableView fx:id="tablePlanAccionTaks" editable="true" layoutX="5.0" layoutY="31.0" prefHeight="103.0" prefWidth="410.0">
                                                    <columns>
-                                                      <TableColumn fx:id="columnPlanAccionTaks" prefWidth="406.0" sortable="false" text="Plan de acción" />
+                                                      <TableColumn fx:id="columnPlanAccionTaks" prefWidth="406.0" sortable="false" text="Plan de acción de productos y tareas" />
                                                    </columns>
                                                 </TableView>
-                                                <Button fx:id="btnDeleteRowActionTaks" layoutX="186.0" layoutY="136.0" mnemonicParsing="false" text="Eliminar renglon" />
-                                                <Button fx:id="btnAddRowActionTaks" layoutX="311.0" layoutY="136.0" mnemonicParsing="false" text="Agregar renglon" />
+                                                <Button fx:id="btnDeleteRowActionTaks" layoutX="186.0" layoutY="136.0" mnemonicParsing="false" text="Eliminar renglón" />
+                                                <Button fx:id="btnAddRowActionTaks" layoutX="311.0" layoutY="136.0" mnemonicParsing="false" text="Agregar renglón" />
                                              </children>
                                           </Pane>
                                        </left>
@@ -114,24 +122,25 @@
                                  <children>
                                     <BorderPane layoutX="175.0" layoutY="94.0" prefHeight="535.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <left>
-                                          <Pane prefHeight="535.0" prefWidth="423.0" BorderPane.alignment="CENTER">
+                                          <Pane prefHeight="535.0" prefWidth="425.0" BorderPane.alignment="CENTER">
                                              <children>
-                                                <Label layoutX="8.0" layoutY="4.0" text="Interpretación del estado de la Calidad" />
-                                                <TextArea fx:id="textArea_Quality" layoutX="5.0" layoutY="27.0" prefHeight="100.0" prefWidth="409.0" promptText="Interpretación del estado de la Calidad" wrapText="true" />
-                                                <TableView fx:id="tablePQI" editable="true" layoutX="4.0" layoutY="152.0" prefHeight="166.0" prefWidth="412.0">
+                                                <Label layoutX="10.0" layoutY="5.0" text="Interpretación del estado de la calidad" />
+                                                <TextArea fx:id="textArea_Quality" layoutX="5.0" layoutY="27.0" prefHeight="100.0" prefWidth="410.0" promptText="Interpretación del estado de la calidad" wrapText="true" />
+                                                <TableView fx:id="tablePQI" editable="true" layoutX="5.0" layoutY="152.0" prefHeight="166.0" prefWidth="410.0">
                                                   <columns>
                                                     <TableColumn fx:id="tableColumnProductPQI" prefWidth="198.0" text="Producto" />
                                                       <TableColumn fx:id="tableColumnProductPQIAction" prefWidth="210.0" text="Acciones correctivas" />
                                                   </columns>
                                                 </TableView>
-                                                <Label layoutX="6.0" layoutY="128.0" text="PQI por producto y Acciones correctivas" />
-                                                <TableView fx:id="tablePlanAccionQuality" editable="true" layoutX="6.0" layoutY="327.0" prefHeight="145.0" prefWidth="407.0">
+                                                <Label layoutX="10.0" layoutY="133.0" text="PQI por producto y acciones correctivas" />
+                                                <TableView fx:id="tablePlanAccionQuality" editable="true" layoutX="5.0" layoutY="344.0" prefHeight="128.0" prefWidth="410.0">
                                                    <columns>
-                                                      <TableColumn fx:id="columnPlanAccionQuality" prefWidth="405.0" sortable="false" text="Plan de acción" />
+                                                      <TableColumn fx:id="columnPlanAccionQuality" prefWidth="405.0" sortable="false" text="Plan de acción del estado de la calidad" />
                                                    </columns>
                                                 </TableView>
-                                                <Button fx:id="btnDeletePlanAccionQuality" layoutX="175.0" layoutY="476.0" mnemonicParsing="false" text="Eliminar renglon" />
-                                                <Button fx:id="btnAddPlanAccionQuality" layoutX="299.0" layoutY="476.0" mnemonicParsing="false" text="Agregar renglon" />
+                                                <Button fx:id="btnDeletePlanAccionQuality" layoutX="189.0" layoutY="476.0" mnemonicParsing="false" text="Eliminar renglón" />
+                                                <Button fx:id="btnAddPlanAccionQuality" layoutX="313.0" layoutY="476.0" mnemonicParsing="false" text="Agregar renglón" />
+                                                <Label layoutX="10.0" layoutY="327.0" text="Plan de acción del estado de la calidad" />
                                              </children>
                                           </Pane>
                                        </left>
@@ -172,7 +181,7 @@
                                        <center>
                                           <TableView fx:id="tableRoles" editable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                             <columns>
-                                                <TableColumn fx:id="columnRoleDesc" prefWidth="102.0" text="Role" />
+                                                <TableColumn fx:id="columnRoleDesc" prefWidth="102.0" text="Rol" />
                                               <TableColumn fx:id="columnResp" prefWidth="182.0" text="Responsabilidad" />
                                               <TableColumn fx:id="columnStatus" prefWidth="583.0" text="Actividades ejercidas - Estado " />
                                             </columns>

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,6 +28,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -37,7 +39,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
 import javafx.scene.web.WebView;
-import mx.infotec.dads.insight.pdes.model.Validation;
+import javafx.stage.Stage;
+
 import mx.infotec.dads.insight.util.Constants;
 import static mx.infotec.dads.insight.util.Constants.PAGE_PLANNING;
 import static mx.infotec.dads.insight.util.Constants.PAGE_QUALITY;
@@ -53,9 +56,6 @@ import mx.infotec.dads.insight.util.ContextUtil;
  */
 public class WizardController implements Initializable {
 
-    
-   
-    
             
     @FXML
     private TableColumn columnRoleDesc;
@@ -99,6 +99,11 @@ public class WizardController implements Initializable {
     
     @FXML
     private Button save;
+    
+    
+    @FXML
+    private Button btnCerrar;
+    
     
     
     @FXML
@@ -264,17 +269,17 @@ public class WizardController implements Initializable {
         alert.setTitle("Guardar Reporte");
         alert.setContentText("¡El reporte ha sido almacenado!");                                        
         alert.showAndWait();
-        List<Validation> validations=getValidations();
+        List<String> validations=getValidations();
         if(!validations.isEmpty())
         {
             Alert alertValidations = new Alert(Alert.AlertType.INFORMATION);
             alertValidations.setTitle("Reporte de validaciones no cumplidas");
             StringBuilder sb=new StringBuilder();
             int index=0;
-            for(Validation validation : validations)
+            for(String validation : validations)
             {
                 index++;
-                sb.append(index).append(". ").append(validation.name);
+                sb.append(index).append(". ").append(validation);
                 sb.append("\r\n");
             }
             alertValidations.setContentText(sb.toString());                                        
@@ -290,9 +295,9 @@ public class WizardController implements Initializable {
         this.pathToReport=pathToReport;
         
     }
-    private List<Validation> getValidations()
+    private List<String> getValidations()
     {
-        List<Validation> getValidations=new ArrayList<>();
+        List<String> getValidations=new ArrayList<>();
         validatePlanning(getValidations);
         validateTask(getValidations);
         validateQuality(getValidations);
@@ -346,7 +351,24 @@ public class WizardController implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 onSave();
         }
-        });  
+        });
+        
+        btnCerrar.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Cerrar ventana");
+                alert.setContentText("¿Desea cerrar la ventana sin guardar los cambios?");                                                        
+                Optional<ButtonType> result = alert.showAndWait();  
+                if(result.get()==ButtonType.OK)
+                {
+                    Stage stage = (Stage) btnCerrar.getScene().getWindow();                
+                    stage.close();
+                }
+        }
+        });
+        
         information.load();        
         String url_Report="file:///"+pathToReport;
         
@@ -367,7 +389,7 @@ public class WizardController implements Initializable {
         columnStatus.setOnEditCommit(
             new EventHandler<CellEditEvent<RoleStatus, String>>() {
                 @Override
-                public void handle(CellEditEvent<RoleStatus, String> t) {
+                public void handle(CellEditEvent<RoleStatus, String> t) {                   
                     ((RoleStatus) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())
                         ).setStatus(t.getNewValue());
@@ -396,8 +418,8 @@ public class WizardController implements Initializable {
         dataPQI.addAll(information.pqi);
         tablePQI.setItems(dataPQI);
         tablePQI.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        tableColumnProductPQI.setCellValueFactory(new PropertyValueFactory<InfoPQI, String>("product"));
-        tableColumnProductPQIAction.setCellValueFactory(new PropertyValueFactory<InfoPQI, String>("accion"));
+        tableColumnProductPQI.setCellValueFactory(new PropertyValueFactory<>("product"));
+        tableColumnProductPQIAction.setCellValueFactory(new PropertyValueFactory<>("accion"));
         tableColumnProductPQIAction.setCellFactory(TextFieldTableCell.forTableColumn());
         tableColumnProductPQIAction.setOnEditCommit(
             new EventHandler<CellEditEvent<InfoPQI, String>>() {
@@ -563,78 +585,78 @@ public class WizardController implements Initializable {
         }        
     }
 
-    private void validatePlanning(List<Validation> validations) {
+    private void validatePlanning(List<String> validations) {
         
         if(textAreaIntPlan.getText().trim().isEmpty())
         {
-            validations.add(new Validation("Hace falta la Interpretación Plan Calendario."));
+            validations.add("Hace falta la Interpretación Plan Calendario.");
         }
         if(dataActionPlanPlanning.isEmpty())
         {
-            validations.add(new Validation("No existe ningún plan de acción para el Plan Calendario."));
+            validations.add("No existe ningún plan de acción para el Plan Calendario.");
         }
         if(textAreaComp_Ext.getText().trim().isEmpty())
         {
-            validations.add(new Validation("Hace falta la Interpretación de Compromisos Externos."));
+            validations.add("Hace falta la Interpretación de Compromisos Externos.");
         }
         if(textArea_Hitos.getText().trim().isEmpty())
         {
-            validations.add(new Validation("Hace falta la Interpretación de Hitos."));
+            validations.add("Hace falta la Interpretación de Hitos.");
         }
     }
 
-    private void validateTask(List<Validation> validations) {
+    private void validateTask(List<String> validations) {
         
         if(dataTaksActions.isEmpty())
         {
-            validations.add(new Validation("No existe ningún plan de acción para Productos y Tareas."));
+            validations.add("No existe ningún plan de acción para Productos y Tareas.");
         }
         for(URLProduct product : dataProductURL)
         {
             if(product.getUrl()==null || product.getUrl().trim().isEmpty())
             {
-               validations.add(new Validation("No se describió la URL para el producto "+product.product+".")); 
+               validations.add("No se describió la URL para el producto "+product.product+"."); 
             }
         }
         if(textArea_IntSize.getText().trim().isEmpty())
         {
-            validations.add(new Validation("Hace falta la Interpretación de la Tabla de Tamaños."));
+            validations.add("Hace falta la Interpretación de la Tabla de Tamaños.");
         }
         if(textArea_IntTime.getText().trim().isEmpty())
         {
-            validations.add(new Validation("Hace falta la Interpretación de la Tabla de Tiempos en fase."));
+            validations.add("Hace falta la Interpretación de la Tabla de Tiempos en fase.");
         }
     }
 
-    private void validateQuality(List<Validation> validations) {
+    private void validateQuality(List<String> validations) {
         if(textArea_Quality.getText().trim().isEmpty())
         {
-            validations.add(new Validation("Hace falta la Interpretación del estado de la Calidad."));
+            validations.add("Hace falta la Interpretación del estado de la Calidad.");
         }
         if(dataQualityActions.isEmpty())
         {
-            validations.add(new Validation("No existe ningún plan de acción para el estado de la Calidad."));
+            validations.add("No existe ningún plan de acción para el estado de la Calidad.");
         }
         for(InfoPQI pqi : dataPQI)
         {
             if(pqi.pqiActual<=0.4)
             {
-                validations.add(new Validation("No existe ninguna acción definida por PQI menor o igual a 0.4 para el producto "+pqi.product+"."));
+                validations.add("No existe ninguna acción definida por PQI menor o igual a 0.4 para el producto "+pqi.product+".");
             }
         }
     }
 
-    private void validateRoles(List<Validation> validations) {
+    private void validateRoles(List<String> validations) {
         
         if(role_status.isEmpty())
         {
-            validations.add(new Validation("¡Cuidado! No se tiene reportado ningún Rol Manager."));
+            validations.add("¡Cuidado! No se tiene reportado ningún Rol Manager.");
         }
         for(RoleStatus status : role_status)
         {
             if(status.status==null || status.status.trim().isEmpty())
             {
-                validations.add(new Validation(status.desc+": No existe ninguna actividad ejercida y estado para la actividad '"+status.resp+"'."));
+                validations.add(status.desc+": No existe ninguna actividad ejercida y estado para la actividad '"+status.resp+"'.");
             }
         }
     }
