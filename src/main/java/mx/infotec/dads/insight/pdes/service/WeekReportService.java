@@ -40,8 +40,8 @@ import mx.infotec.dads.insight.util.ProductComparator;
 import mx.infotec.dads.insight.util.UrlPd;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 import org.jsoup.Connection;
-import static mx.infotec.dads.insight.util.ConnectionUtil.getConnection;
 import mx.infotec.dads.insight.util.TaskWithProblemComparator;
+import static mx.infotec.dads.insight.util.ConnectionUtil.getConnection;
 /**
  * WeekReportService
  * 
@@ -59,25 +59,22 @@ public class WeekReportService {
      * 
      * @param output
      * @param urlPd
-     * @param endWeek
      * @return
-     * @throws mx.infotec.dads.insight.pdes.exceptions.ReportException
-     * @throws IOException
-     * @throws URISyntaxException
+     * @throws ReportException 
      */
-    public static Report createReport(File output,final UrlPd urlPd,Date endWeek) throws ReportException {
-	try {
-            //Date endWeek=getStartReport(urlPd);            
+    public static Report createReport(final File output,final UrlPd urlPd) throws ReportException {
+	try 
+        {            
             removeFilter(FILTER_FINISHED, urlPd);
             removeFilterByPath(urlPd);            
-	    Document doc = getConnection(urlPd.getWeekReportUrl()).get();
-	    WeekReportTable table = new WeekReportTable(doc);
-	    Element element = doc.select("body table tbody tr td.left").get(1);
-	    String parse = element.text();
+	    Document weekReportInHTML = getConnection(urlPd.getWeekReportUrl()).get();
+	    WeekReportTable table = new WeekReportTable(weekReportInHTML);
+	    Element cellElement = weekReportInHTML.select("body table tbody tr td.left").get(1);
+	    String parse = cellElement.text();
 	    String reportDate = DateUtils.extractDate(parse);
 	    String toDateReportString = DateUtils.convertPdesDate(reportDate);
 	    Date toDateReportDate = DateUtils.convertStringToDate(toDateReportString);
-	    Date fromDateReportDate = DateUtils.moveDays(toDateReportDate, -6);
+	    Date fromDateReportDate = DateUtils.getDateInit(toDateReportDate);
 	    Document mainData = getConnection(urlPd.getGeneralReportUrl()).get();
 	    InfoReportTable gTable = new InfoReportTable(mainData);
 	    gTable.setReportedPeriod("Del " + DateUtils.convertDateToString(fromDateReportDate) + " al "
@@ -92,9 +89,9 @@ public class WeekReportService {
 	    PerformanceReportTable pTable = computeData(table);
 	    gTable.setStatus(ContextUtil.computeStatus(pTable.getVgDiff()));
             List<TaskWithProblem> taskProblems=findTaksWithProblems(urlPd);
-            List<Product> productsFinished=findProductsToDate(urlPd,endWeek);
+            List<Product> productsFinished=findProductsToDate(urlPd,toDateReportDate);
             List<PhaseTime> timeTableFinished=getTimeTableFinished(urlPd);
-            List<PQIElement> tablePQI=createTablePQI(urlPd,output,productsFinished,endWeek);
+            List<PQIElement> tablePQI=createTablePQI(urlPd,output,productsFinished,toDateReportDate);
             
 	    return new Report(gTable, table, pTable, sizeTable, tasksInProgress,tasksCompleted,tasksNextWeek,taskProblems,productsFinished,timeTableFinished,tablePQI);
 	} catch (ReportException | URISyntaxException | IOException e) {
@@ -102,7 +99,7 @@ public class WeekReportService {
 	}
 
     }
-    public static SizeReportTable findSizeTable(UrlPd urlPd) throws ReportException
+    public static SizeReportTable findSizeTable(final UrlPd urlPd) throws ReportException
     {   
         try
         {
@@ -124,17 +121,17 @@ public class WeekReportService {
             removeFilter(FILTER_FINISHED, urlPd);
         }
     }
-    public static List<PhaseTime> getTimeTableFinished(UrlPd urlPd) throws ReportException
+    public static List<PhaseTime> getTimeTableFinished(final UrlPd urlPd) throws ReportException
     {
         List<PhaseTime> getTimeTableFinished=new ArrayList<>();
         
         removeFilter(FILTER_FINISHED, urlPd);
         addFilter(FILTER_FINISHED,urlPd);      
         String url=urlPd.getPhaseTime().toString();
-        Connection con=getConnection(url);
+        Connection connection=getConnection(url);
         try
         {         
-          Document document=con.get();
+          Document document=connection.get();
           Element table=document.select("table").get(0);        
           Elements rows=table.select("tr");
           for(int i=1 ; i<rows.size();i++)
@@ -164,17 +161,17 @@ public class WeekReportService {
 
         return getTimeTableFinished;
     }
-    public static void addFilter(String filter,UrlPd urlPd) throws ReportException
+    public static void addFilter(final String filter,final UrlPd urlPd) throws ReportException
     {        
-        Connection con=getConnection(urlPd.getFilter().toString());
+        Connection connection=getConnection(urlPd.getFilter().toString());
         Map<String,String> data=new HashMap<>();
         data.put("apply","Apply Filter");
         data.put("destUri",urlPd.getDestFilterURI());
         data.put("filter",filter);
-        con.data(data);
+        connection.data(data);
         try
         {
-          con.post();
+          connection.post();
         }
         catch(IOException ioe)
         {
@@ -182,16 +179,16 @@ public class WeekReportService {
         }
 
     }
-    public static void addFilterByPath(String path,UrlPd urlPd) throws ReportException
+    public static void addFilterByPath(final String path,final UrlPd urlPd) throws ReportException
     {        
-        Connection con=getConnection(urlPd.getFilterByWBS().toString());
+        Connection connection=getConnection(urlPd.getFilterByWBS().toString());
         Map<String,String> data=new HashMap<>();        
         data.put("destUri",urlPd.getDestFilterBYWBSURI());
         data.put("relPath",path);
-        con.data(data);
+        connection.data(data);
         try
         {
-          con.post();
+          connection.post();
         }
         catch(IOException ioe)
         {
@@ -199,19 +196,19 @@ public class WeekReportService {
         }
 
     }
-    public static void removeFilter(String filter,UrlPd urlPd) throws ReportException
+    public static void removeFilter(final String filter,final UrlPd urlPd) throws ReportException
     {
         
-        Connection con=getConnection(urlPd.getFilter());
+        Connection connection=getConnection(urlPd.getFilter());
         
         Map<String,String> data=new HashMap<>();
         data.put("remove","Remove Filter");
         data.put("destUri",urlPd.getDestFilterRemoveURI());
         data.put("filter",filter);
-        con.data(data);
+        connection.data(data);
         try
         {
-          con.post();
+          connection.post();
         }
         catch(IOException ioe)
         {
@@ -219,17 +216,17 @@ public class WeekReportService {
         }
 
     }
-    public static void removeFilterByPath(UrlPd urlPd) throws ReportException
+    public static void removeFilterByPath(final UrlPd urlPd) throws ReportException
     {
         
-        Connection con=getConnection(urlPd.getFilterByWBS());
+        Connection connection=getConnection(urlPd.getFilterByWBS());
         Map<String,String> data=new HashMap<>();        
         data.put("destUri",urlPd.getDestFilterBYWBSURI());
         data.put("relPath","");
-        con.data(data);
+        connection.data(data);
         try
         {
-          con.post();
+          connection.post();
         }
         catch(IOException ioe)
         {
@@ -238,29 +235,29 @@ public class WeekReportService {
 
     }
 
-    public static PerformanceReportTable computeData(WeekReportTable table) {
-	String vg = computeVg(table);
-	String vgDiff = computeVgDiff(table);
-	String vgFalta = computeVgFalta(table);
+    public static PerformanceReportTable computeData(final WeekReportTable table) {
+	String earnedValue = computeVg(table);
+	String evDiff = computeVgDiff(table);
+	String evLeft = computeVgLeft(table);
 	String horasTarea = computeTaskHours(table);
 	String tareaCerradas = computeClosedTask(table);
-	double hsTareasTerm = computeHoursTaskNotFinished(table);
-	String semHrTarNoTerm = computeWeekhrsTaskNotFinished(table, hsTareasTerm);
-	double vhxH = computeVgXh(table);
-	String vgNoRe = computeVgNotPerformed(vhxH, hsTareasTerm);
-	String recup = computeRecoveryWeeks(table);
-        String recovery_percent=computeRecoveryPercent(table);
-        String recovery_hr=computeRecoveryHr(table,recup);
+	double hsTasksTerm = computeHoursTaskNotFinished(table);
+	String semHrTarNoTerm = computeWeekhrsTaskNotFinished(table, hsTasksTerm);
+	double evhxH = computeVgXh(table);
+	String evNoPerformed = computeEvNotPerformed(evhxH, hsTasksTerm);
+	String recoveryWeeks = computeRecoveryWeeks(table);
+        String recoveryPercent=computeRecoveryPercent(table);
+        String recoveryHr=computeRecoveryHr(table,recoveryWeeks);
         
-	return PerformanceReportTable.getBuilder().withVg(vg).withVgDiff(vgDiff).withVgFalta(vgFalta)
+	return PerformanceReportTable.getBuilder().withVg(earnedValue).withVgDiff(evDiff).withVgFalta(evLeft)
 		.withTaskHours(horasTarea).withTaskClosed(tareaCerradas)
-		.withHoursNotFinished(DoubleUtils.formatToDigits(hsTareasTerm)).withWeekHrsNotFinished(semHrTarNoTerm)
-		.withVgPerHour(DoubleUtils.formatToDigits(vhxH)).withVgNotPerformed(vgNoRe).withRecovery(recup).withRecoveryPercent(recovery_percent)
-                .withRecoveryHr(recovery_hr)
+		.withHoursNotFinished(DoubleUtils.formatToDigits(hsTasksTerm)).withWeekHrsNotFinished(semHrTarNoTerm)
+		.withVgPerHour(DoubleUtils.formatToDigits(evhxH)).withVgNotPerformed(evNoPerformed).withRecovery(recoveryWeeks).withRecoveryPercent(recoveryPercent)
+                .withRecoveryHr(recoveryHr)
                 .build();
         
     }
-    public static Date getStartReport(UrlPd urlPd) throws IOException, URISyntaxException,ReportException
+    public static Date getStartReport(final UrlPd urlPd) throws IOException, URISyntaxException,ReportException
     {
         Document doc = getConnection(urlPd.getWeekReportUrl()).get();
         Elements elements=doc.select("h2");
@@ -272,7 +269,7 @@ public class WeekReportService {
         }
         return new Date();
     }
-    private static String getPath(String id,Document doc)
+    private static String getPath(final String id,final Document doc)
     {
         String getPath="";        
         int pos=id.lastIndexOf("-");
@@ -289,15 +286,15 @@ public class WeekReportService {
         }
         return getPath;
     }
-    private static List<Product> findProductsToDate(UrlPd urlPd,Date endWeek) throws IOException, URISyntaxException,ReportException
+    private static List<Product> findProductsToDate(final UrlPd urlPd,final Date endWeek) throws IOException, URISyntaxException,ReportException
     {   
         List<Product> findProductsFinished=new ArrayList<>();        
         Map<String,TaskInfo> products=new HashMap<>();
         Document doc = getConnection(urlPd.getSummary()).get();
-        Elements renglones=doc.select("body table[name=TASK] tr");
-        for(int i=2;i<renglones.size();i++)
+        Elements renglones=doc.select("body table[id=snip15_task] tr");
+        for(int index=2;index<renglones.size();index++)
         {
-            Element tr=renglones.get(i);
+            Element tr=renglones.get(index);
             if(tr.children().size()>8)
             {
                 String id=tr.attr("id");
@@ -367,7 +364,7 @@ public class WeekReportService {
         Collections.sort(findProductsFinished, new ProductComparator());
         return findProductsFinished;
     }
-    private static BufferedImage getImage(UrlPd urlPd,int index) throws IOException, URISyntaxException,ReportException 
+    private static BufferedImage getImage(final UrlPd urlPd,final int index) throws IOException, URISyntaxException,ReportException 
     {
         Document doc = getConnection(urlPd.getSummaryToPQI()).get();
         Elements images=doc.select("body div form img");
@@ -392,23 +389,23 @@ public class WeekReportService {
         }
         return null;
     }
-    private static Double getPQIProductPlanned(UrlPd urlPd) throws ReportException,URISyntaxException,IOException
+    private static Double getPQIProductPlanned(final UrlPd urlPd) throws ReportException,URISyntaxException,IOException
     {  
         return getPQIProductActual(urlPd,"quality%2FestProfile.rpt");
     }
-    private static Double getPQIProductActual(UrlPd urlPd) throws ReportException,URISyntaxException,IOException
+    private static Double getPQIProductActual(final UrlPd urlPd) throws ReportException,URISyntaxException,IOException
     {       
         return getPQIProductActual(urlPd,"quality%2FactProfile.rpt");
     }
-    private static Double getPQIProductActual(UrlPd urlPd,String param) throws ReportException,URISyntaxException,IOException
+    private static Double getPQIProductActual(final UrlPd urlPd,final String param) throws ReportException,URISyntaxException,IOException
     {
         Document doc = getConnection(urlPd.getURLPQITable().toString()+param).get();
         Elements rows=doc.select("table tr");
         
-        for(int i=1;i<rows.size();i++)
+        for(int index=1;index<rows.size();index++)
         {
             List<Double> values=new ArrayList<>();
-            Element tr=rows.get(i);
+            Element tr=rows.get(index);
             for(int j=1;j<tr.children().size();j++)
             {
                 Element node=tr.child(j);
@@ -434,7 +431,7 @@ public class WeekReportService {
         }
         return null;        
     }
-    private static boolean hasPQI(List<Double> data)
+    private static boolean hasPQI(final List<Double> data)
     {
         if(data.size()!=5)
         {
@@ -449,7 +446,7 @@ public class WeekReportService {
         }
         return true;
     }
-    private static List<PQIElement> createTablePQI(UrlPd urlPd,File output,List<Product> products,Date endWeek) throws ReportException,URISyntaxException
+    private static List<PQIElement> createTablePQI(final UrlPd urlPd,final File output,final List<Product> products,final Date endWeek) throws ReportException,URISyntaxException
     {
         List<PQIElement> createTablePQI=new ArrayList<>();
         try
@@ -483,14 +480,14 @@ public class WeekReportService {
                             if(pqi_planned_image!=null)
                             {                    
                                 String name="pqi_planned_"+index;
-                                element.imagePQIPlanned=Constants.REPORT_IMG_FOLDER+"/"+name+".png";
+                                element.imagePQIPlanned=Constants.REPORT_IMG_FOLDER+File.separator+name+".png";
                                 ContextUtil.saveImageToDisk(pqi_planned_image, output, name);                
                             }
                             BufferedImage pqi_actual_image=getImage(urlPd,1);
                             if(pqi_actual_image!=null)
                             {                    
                                 String name="pqi_actual_"+index;
-                                element.imagePQIActual=Constants.REPORT_IMG_FOLDER+"/"+name+".png";
+                                element.imagePQIActual=Constants.REPORT_IMG_FOLDER+File.separator+name+".png";
                                 ContextUtil.saveImageToDisk(pqi_actual_image, output, name);                
                             }
                         }
@@ -509,10 +506,8 @@ public class WeekReportService {
         return createTablePQI;
     }
     
-    private static List<String> findTasksInProgress(UrlPd urlPd) throws IOException, URISyntaxException {
-	Document doc = getConnection(urlPd.getWeekReportUrl().toString()).get();
-	//Elements tasksList = doc.select("[name=dueTask]");
-        //tasksList
+    private static List<String> findTasksInProgress(final UrlPd urlPd) throws IOException, URISyntaxException {
+	Document doc = getConnection(urlPd.getWeekReportUrl().toString()).get();	
         Elements tasksList = doc.select("table[id=$$$_progress]");
 	if (!tasksList.isEmpty()) {
 	    Elements task = tasksList.get(0).select("td.left");
@@ -526,11 +521,11 @@ public class WeekReportService {
 	}
 
     }
-    private static List<String> findTasksCompleted(UrlPd urlPd) throws IOException, URISyntaxException {
+    private static List<String> findTasksCompleted(final UrlPd urlPd) throws IOException, URISyntaxException {
 	Document doc = getConnection(urlPd.getWeekReportUrl()).get();
-	Elements tasksList = doc.select("[name=compTask]");
+	Elements tasksList = doc.select("[id=$$$_comp] tr");
 	if (!tasksList.isEmpty()) {
-	    Elements task = doc.select("[name=compTask]").get(0).select("td.left");
+	    Elements task = tasksList.select("td.left");
 	    List<String> taskCompleted = new ArrayList<>();
 	    for (Element element : task) {
 		taskCompleted.add(element.text());
@@ -541,14 +536,14 @@ public class WeekReportService {
 	}
 
     }
-    private static List<TaskWithProblem> findTaksWithProblems(UrlPd urlPd) throws IOException, URISyntaxException
+    private static List<TaskWithProblem> findTaksWithProblems(final UrlPd urlPd) throws IOException, URISyntaxException
     {
         List<TaskWithProblem> findProductsWithProblems=new ArrayList<>();
         Document document = getConnection(urlPd.getWeekReportUrl().toString()).get();        
         Elements rows=document.select("table[id=$$$_progress] tr");
-        for(int i=1;i<rows.size();i++)
+        for(int index=1;index<rows.size();index++)
         {
-            Element tr=rows.get(i);
+            Element tr=rows.get(index);
             if(tr.childNodes().size()>10)
             {
                 String taskName=tr.child(0).ownText();
@@ -565,8 +560,13 @@ public class WeekReportService {
                             TaskWithProblem task=new TaskWithProblem(taskName,tr.child(7).text(),date);
                             findProductsWithProblems.add(task);
                         }
+                        else if(left!=null && left.startsWith("-"))
+                        {
+                            TaskWithProblem task=new TaskWithProblem(taskName,tr.child(7).text(),date);
+                            findProductsWithProblems.add(task);
+                        }
                     }
-                    else if(left.startsWith("-"))
+                    else if(left!=null && left.startsWith("-"))
                     {
                         TaskWithProblem task=new TaskWithProblem(taskName,tr.child(7).text(),date);
                         findProductsWithProblems.add(task);
@@ -579,13 +579,12 @@ public class WeekReportService {
         Collections.sort(findProductsWithProblems, new TaskWithProblemComparator());
         return findProductsWithProblems;
     }
-    private static List<String> findTasksNext(UrlPd urlPd) throws IOException, URISyntaxException {
-	Document doc = getConnection(urlPd.getWeekReportUrl().toString()).get();
-	//Elements tasksList = doc.select("[name=dueTask]");
-        Elements tasksList = doc.select("table[id=$$$_due]");
+    private static List<String> findTasksNext(final UrlPd urlPd) throws IOException, URISyntaxException {
+	Document doc = getConnection(urlPd.getWeekReportUrl().toString()).get();	
+        Elements tasksList = doc.select("table[id=$$$_due] tr");
 	if (!tasksList.isEmpty()) {
             List<String> taskNextWeek = new ArrayList<>();
-            Elements task = tasksList.get(0).select("td.left");                
+            Elements task = tasksList.select("td.left");                
             for (Element element : task) {
                 taskNextWeek.add(element.text());
             }
@@ -596,53 +595,53 @@ public class WeekReportService {
 
     }
 
-    public static String computeVg(WeekReportTable table) {
+    public static String computeVg(final WeekReportTable table) {
 	return DoubleUtils.formatToDigits(table.getDoubleProperty(1, 4));
     }
 
-    public static String computeVgDiff(WeekReportTable table) {
+    public static String computeVgDiff(final WeekReportTable table) {
 	return DoubleUtils.formatToDigits(table.getDoubleProperty(1, 4) - table.getDoubleProperty(1, 3));
     }
 
-    public static String computeVgFalta(WeekReportTable table) {
+    public static String computeVgLeft(final WeekReportTable table) {
 	return DoubleUtils.formatToDigits((1 - table.getDoubleProperty(1, 5)) * 100);
     }
 
-    public static String computeTaskHours(WeekReportTable table) {
+    public static String computeTaskHours(final WeekReportTable table) {
 	return DoubleUtils.formatToDigits(table.getDoubleProperty(1, 1));
     }
 
-    public static String computeClosedTask(WeekReportTable table) {
+    public static String computeClosedTask(final WeekReportTable table) {
 	return DoubleUtils.formatToDigits((table.getDoubleProperty(3, 2) * 100) - 100);
     }
 
-    public static double computeHoursTaskNotFinished(WeekReportTable table) {
+    public static double computeHoursTaskNotFinished(final WeekReportTable table) {
 	return table.getDoubleProperty(1, 1) - table.getDoubleProperty(3, 1);
     }
 
-    public static String computeWeekhrsTaskNotFinished(WeekReportTable table, double hsTareasTerm) {
+    public static String computeWeekhrsTaskNotFinished(final WeekReportTable table, final double hsTareasTerm) {
 	return DoubleUtils.formatToDigits(hsTareasTerm / table.getDoubleProperty(2, 1));
     }
 
-    public static double computeVgXh(WeekReportTable table) {
+    public static double computeVgXh(final WeekReportTable table) {
 	return table.getDoubleProperty(1, 4) / table.getDoubleProperty(3, 1);
     }
 
-    public static String computeVgNotPerformed(double vhxH, double hsTareasTerm) {
+    public static String computeEvNotPerformed(final double vhxH, final double hsTareasTerm) {
 	return DoubleUtils.formatToDigits(vhxH * hsTareasTerm);
     }
 
-    public static String computeRecoveryWeeks(WeekReportTable table) {
+    public static String computeRecoveryWeeks(final WeekReportTable table) {
         double weeks=(table.getDoubleProperty(1, 3) - table.getDoubleProperty(1, 4)) / table.getDoubleProperty(2, 4);
         weeks*=-1;        
 	return weeks>0 ? "+"+DoubleUtils.formatToDigits(weeks): DoubleUtils.formatToDigits(weeks);
     }
 
-    public static String computeRecoveryPercent(WeekReportTable table) {
+    public static String computeRecoveryPercent(final WeekReportTable table) {
         double actualVsPlan=table.getDoubleProperty(1, 5);
         return actualVsPlan>1 ? "+"+DoubleUtils.formatToDigits((Math.abs(1-actualVsPlan))*100) : "-"+DoubleUtils.formatToDigits((1-actualVsPlan)*100);
     }
-    public static String computeRecoveryHr(WeekReportTable table,String weeks) {
+    public static String computeRecoveryHr(final WeekReportTable table,final String weeks) {
         double averagePerWeekToDate=table.getDoubleProperty(2, 1);
         double dWeeks=Double.parseDouble(weeks);
         double hr=averagePerWeekToDate * dWeeks;

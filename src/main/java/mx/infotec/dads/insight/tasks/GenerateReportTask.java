@@ -50,7 +50,7 @@ public class GenerateReportTask extends Task<Boolean> {
             File file=context.getOutputFile();
             this.pathToReport=file.getAbsolutePath();
 	    context.setUrlPd(urlPd);
-	    PersonalReportService.getInstance().createReport(context,endReport);
+	    PersonalReportService.getInstance().createReport(context);
 	} catch (Exception e) {
 	    ContextUtil.saveExceptionToDisk(e, Constants.FILE_ERROR_TXT, new File("./"));
 	}

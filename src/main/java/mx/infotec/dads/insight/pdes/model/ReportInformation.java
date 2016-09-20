@@ -82,7 +82,7 @@ public class ReportInformation {
     }
     private void saveRoles()
     {
-        String file=path+"/"+PAGE_ROLES;
+        String file=path+File.separator+PAGE_ROLES;
         try
         {
             Document content=readFile(file);
@@ -108,7 +108,7 @@ public class ReportInformation {
     
     private void loadRolesFromReport()
     {
-        String file=path+"/"+PAGE_ROLES;
+        String file=path+File.separator+PAGE_ROLES;
         try
         {
             Document content=readFile(file);
@@ -232,7 +232,7 @@ public class ReportInformation {
     }
     private void loadQuality()
     {
-        String file=path+"/"+PAGE_QUALITY;
+        String file=path+File.separator+PAGE_QUALITY;
         try
         {
             Document content=readFile(file);
@@ -248,7 +248,7 @@ public class ReportInformation {
     }
     private void saveQuality()
     {
-        String file=path+"/"+PAGE_QUALITY;
+        String file=path+File.separator+PAGE_QUALITY;
         try
         {
             Document content=readFile(file);
@@ -265,7 +265,7 @@ public class ReportInformation {
     }
     private void loadTaskAndProducts()
     {
-        String file=path+"/"+PAGE_TASK_PRODUCTS;
+        String file=path+File.separator+PAGE_TASK_PRODUCTS;
         try
         {
             Document content=readFile(file);
@@ -282,7 +282,7 @@ public class ReportInformation {
     
     private void saveTaks()
     {
-        String file=path+"/"+PAGE_TASK_PRODUCTS;        
+        String file=path+File.separator+PAGE_TASK_PRODUCTS;        
         try
         {
             Document content=readFile(file);

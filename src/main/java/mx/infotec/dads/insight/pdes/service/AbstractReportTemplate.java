@@ -17,7 +17,7 @@ public abstract class AbstractReportTemplate {
      * @param context
      * @throws ReportException
      */
-    protected abstract void createWeekReport(ReportContext context,Date endWeek) throws ReportException;
+    protected abstract void createWeekReport(ReportContext context) throws ReportException;
 
     /**
      * Locate the Earn Value Image in the Process Dashboard
@@ -89,8 +89,8 @@ public abstract class AbstractReportTemplate {
      * @param context
      * @throws ReportException
      */
-    public void createReport(ReportContext context,Date endWeek) throws ReportException {
-	createWeekReport(context,endWeek);
+    public void createReport(ReportContext context) throws ReportException {
+	createWeekReport(context);
 	locateEvImage(context);
 	locateCumDirectTimeImage(context);
 	locateEvTrendImage(context);

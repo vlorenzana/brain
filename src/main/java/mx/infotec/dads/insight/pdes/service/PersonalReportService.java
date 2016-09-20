@@ -2,7 +2,6 @@ package mx.infotec.dads.insight.pdes.service;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Date;
 
 import javax.imageio.ImageIO;
 
@@ -16,6 +15,9 @@ import mx.infotec.dads.insight.pdes.service.context.ReportContext;
 import static mx.infotec.dads.insight.util.ConnectionUtil.getConnection;
 import mx.infotec.dads.insight.util.Constants;
 import mx.infotec.dads.insight.util.ContextUtil;
+import static mx.infotec.dads.insight.util.ConnectionUtil.getConnection;
+import static mx.infotec.dads.insight.util.ConnectionUtil.getConnection;
+import static mx.infotec.dads.insight.util.ConnectionUtil.getConnection;
 
 /**
  * Servicio para la generación del reporte personal
@@ -43,9 +45,9 @@ public class PersonalReportService extends AbstractReportTemplate {
     }
 
     @Override
-    protected void createWeekReport(ReportContext context,Date endWeek) throws ReportException {
+    protected void createWeekReport(ReportContext context) throws ReportException {
 	try {
-	    Report report = WeekReportService.createReport(context.getOutputFile(),context.getUrlPd(),endWeek);
+	    Report report = WeekReportService.createReport(context.getOutputFile(),context.getUrlPd());
 	    context.setReport(report);
 	    HtmlTemplateService.getInstance().saveHtmlReport(context);
 	    ContextUtil.saveJsonFormat(context);

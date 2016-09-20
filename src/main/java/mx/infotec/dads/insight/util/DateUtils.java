@@ -202,13 +202,14 @@ public class DateUtils {
          calDate.set(Calendar.HOUR, 0);
          return calDate;
     }
+    public static Date getDateInit(Date endWeek)
+    {
+        return DateUtils.moveDays(endWeek, -6);
+    }
     public static boolean betweenWeek(Date date,Date endWeek)
     {
-        Calendar init=Calendar.getInstance();                    
-        init.setTime(endWeek);
-        init.add(Calendar.DATE, -7);
-        Date initWeek=init.getTime();
-        return between(date, initWeek, endWeek);
+        Date init=getDateInit(endWeek);
+        return between(date, init, endWeek);
     }
     public static Date getDateFromHTML(String date)
     {
