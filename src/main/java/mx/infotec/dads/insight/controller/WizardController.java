@@ -40,11 +40,11 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-
 import mx.infotec.dads.insight.util.Constants;
 import static mx.infotec.dads.insight.util.Constants.PAGE_PLANNING;
 import static mx.infotec.dads.insight.util.Constants.PAGE_QUALITY;
 import static mx.infotec.dads.insight.util.Constants.PAGE_TASK_PRODUCTS;
+import static mx.infotec.dads.insight.util.Constants.PLAN_DE_ACCION;
 import mx.infotec.dads.insight.util.ContextUtil;
 
 
@@ -235,7 +235,7 @@ public class WizardController implements Initializable {
             Map<String,List<String>> actionsToUpdate=new HashMap<>();
             for(RoleStatus status : role_status)
             {
-                String id=status.id;
+                final String id=status.id;
                 if(!actionsToUpdate.containsKey(id))
                 {
                     actionsToUpdate.put(id, new ArrayList<>());
@@ -274,23 +274,23 @@ public class WizardController implements Initializable {
         {
             Alert alertValidations = new Alert(Alert.AlertType.INFORMATION);
             alertValidations.setTitle("Reporte de validaciones no cumplidas");
-            StringBuilder sb=new StringBuilder();
+            StringBuilder stringBuilder=new StringBuilder();
             int index=0;
             for(String validation : validations)
             {
                 index++;
-                sb.append(index).append(". ").append(validation);
-                sb.append("\r\n");
+                stringBuilder.append(index).append(". ").append(validation);
+                stringBuilder.append("\r\n");
             }
-            alertValidations.setContentText(sb.toString());                                        
+            alertValidations.setContentText(stringBuilder.toString());                                        
             alertValidations.showAndWait();
         }
     }
-    public void setDataToFill(ReportInformation information)
+    public void setDataToFill(final ReportInformation information)
     {
         this.information=information;        
     }
-    public void setPathToReport(String pathToReport)
+    public void setPathToReport(final String pathToReport)
     {
         this.pathToReport=pathToReport;
         
@@ -321,7 +321,7 @@ public class WizardController implements Initializable {
     {
         initTablePlanAction(this.information.actionsTaks, dataTaksActions, tablePlanAccionTaks);
     }
-    private void initTablePlanAction(List<String> initialData,ObservableList model,TableView table)
+    private void initTablePlanAction(final List<String> initialData,final ObservableList model,final TableView table)
     {
         for(String action : initialData)
         {
@@ -336,10 +336,10 @@ public class WizardController implements Initializable {
         column.setOnEditCommit(
             new EventHandler<CellEditEvent<PlanAccion, String>>() {
                 @Override
-                public void handle(CellEditEvent<PlanAccion, String> t) {
-                    ((PlanAccion) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())
-                        ).setAccion(t.getNewValue());
+                public void handle(CellEditEvent<PlanAccion, String> cell) {
+                    ((PlanAccion) cell.getTableView().getItems().get(
+                        cell.getTablePosition().getRow())
+                        ).setAccion(cell.getNewValue());
                 }
             }
         );
@@ -370,7 +370,7 @@ public class WizardController implements Initializable {
         });
         
         information.load();        
-        String url_Report="file:///"+pathToReport;
+        String urlReport="file:///"+pathToReport;
         
         
         initTablePlanQuality();
@@ -389,10 +389,10 @@ public class WizardController implements Initializable {
         columnStatus.setOnEditCommit(
             new EventHandler<CellEditEvent<RoleStatus, String>>() {
                 @Override
-                public void handle(CellEditEvent<RoleStatus, String> t) {                   
-                    ((RoleStatus) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())
-                        ).setStatus(t.getNewValue());
+                public void handle(CellEditEvent<RoleStatus, String> cell) {                   
+                    ((RoleStatus) cell.getTableView().getItems().get(
+                        cell.getTablePosition().getRow())
+                        ).setStatus(cell.getNewValue());
                 }
             }
         );
@@ -406,10 +406,10 @@ public class WizardController implements Initializable {
         columnURL.setOnEditCommit(
             new EventHandler<CellEditEvent<URLProduct, String>>() {
                 @Override
-                public void handle(CellEditEvent<URLProduct, String> t) {
-                    ((URLProduct) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())
-                        ).setUrl(t.getNewValue());
+                public void handle(CellEditEvent<URLProduct, String> cell) {
+                    ((URLProduct) cell.getTableView().getItems().get(
+                        cell.getTablePosition().getRow())
+                        ).setUrl(cell.getNewValue());
                 }
             }
         );
@@ -424,10 +424,10 @@ public class WizardController implements Initializable {
         tableColumnProductPQIAction.setOnEditCommit(
             new EventHandler<CellEditEvent<InfoPQI, String>>() {
                 @Override
-                public void handle(CellEditEvent<InfoPQI, String> t) {
-                    ((InfoPQI) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())
-                        ).setAccion(t.getNewValue());
+                public void handle(CellEditEvent<InfoPQI, String> cell) {
+                    ((InfoPQI) cell.getTableView().getItems().get(
+                        cell.getTablePosition().getRow())
+                        ).setAccion(cell.getNewValue());
                 }
             }
         );
@@ -461,9 +461,9 @@ public class WizardController implements Initializable {
         }
         
         
-        webViewPlan.getEngine().load(url_Report+"/"+PAGE_PLANNING);
-        webViewTasksProducts.getEngine().load(url_Report+"/"+PAGE_TASK_PRODUCTS);
-        webViewQuality.getEngine().load(url_Report+"/"+PAGE_QUALITY);
+        webViewPlan.getEngine().load(urlReport+"/"+PAGE_PLANNING);
+        webViewTasksProducts.getEngine().load(urlReport+"/"+PAGE_TASK_PRODUCTS);
+        webViewQuality.getEngine().load(urlReport+"/"+PAGE_QUALITY);
         
         initTablePlanForPlanning();
         
@@ -478,16 +478,18 @@ public class WizardController implements Initializable {
     
     
     /**
-     * Initializes the controller class.
+     * 
+     * @param url
+     * @param rb 
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(final URL url, final ResourceBundle rb) {
              
         
         btnAddPlanAccionQuality.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                tablePlanAccionQuality.getItems().add(new PlanAccion("Plan de acción"));
+                tablePlanAccionQuality.getItems().add(new PlanAccion(PLAN_DE_ACCION));
         }
         });  
         btnDeletePlanAccionQuality.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
@@ -505,7 +507,7 @@ public class WizardController implements Initializable {
         btnAddPlanAccion.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                tablePlanAccion.getItems().add(new PlanAccion("Plan de acción"));
+                tablePlanAccion.getItems().add(new PlanAccion(PLAN_DE_ACCION));
         }
         });  
         btnDeletePlanAccion.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
@@ -523,7 +525,7 @@ public class WizardController implements Initializable {
         btnAddRowActionTaks.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                tablePlanAccionTaks.getItems().add(new PlanAccion("Plan de acción"));
+                tablePlanAccionTaks.getItems().add(new PlanAccion(PLAN_DE_ACCION));
         }
         });  
         btnDeleteRowActionTaks.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
@@ -540,26 +542,27 @@ public class WizardController implements Initializable {
         
     }    
     
-    private void onCheckBox(CheckBox chk)
+    
+    private void onCheckBox(final CheckBox checkbox)
     {
-        String id=chk.getId();
+        String id=checkbox.getId();
         for(RoleDefinition def : information.definitions)
         {
             if(id.equals(def.id))
             {
-                if(chk.isSelected())
+                if(checkbox.isSelected())
                 {
                     // adds the lines
                     def.used=true;
-                    for(int i=0;i<def.responsabilities.size();i++)
+                    for(int index=0;index<def.responsabilities.size();index++)
                     {
-                        String resp=def.responsabilities.get(i);
-                        String action=def.actions.get(i);
+                        String responsability=def.responsabilities.get(index);
+                        String action=def.actions.get(index);
                         RoleStatus roleStatus=new RoleStatus();
                         roleStatus.status=action;
-                        roleStatus.resp=resp;
+                        roleStatus.responsability=responsability;
                         roleStatus.id=id;
-                        roleStatus.desc=def.title;
+                        roleStatus.description=def.title;
                         role_status.add(roleStatus);
 
                     }
@@ -585,7 +588,7 @@ public class WizardController implements Initializable {
         }        
     }
 
-    private void validatePlanning(List<String> validations) {
+    private void validatePlanning(final List<String> validations) {
         
         if(textAreaIntPlan.getText().trim().isEmpty())
         {
@@ -605,7 +608,7 @@ public class WizardController implements Initializable {
         }
     }
 
-    private void validateTask(List<String> validations) {
+    private void validateTask(final List<String> validations) {
         
         if(dataTaksActions.isEmpty())
         {
@@ -628,7 +631,7 @@ public class WizardController implements Initializable {
         }
     }
 
-    private void validateQuality(List<String> validations) {
+    private void validateQuality(final List<String> validations) {
         if(textArea_Quality.getText().trim().isEmpty())
         {
             validations.add("Hace falta la Interpretación del estado de la Calidad.");
@@ -646,7 +649,7 @@ public class WizardController implements Initializable {
         }
     }
 
-    private void validateRoles(List<String> validations) {
+    private void validateRoles(final List<String> validations) {
         
         if(role_status.isEmpty())
         {
@@ -656,7 +659,7 @@ public class WizardController implements Initializable {
         {
             if(status.status==null || status.status.trim().isEmpty())
             {
-                validations.add(status.desc+": No existe ninguna actividad ejercida y estado para la actividad '"+status.resp+"'.");
+                validations.add(status.description+": No existe ninguna actividad ejercida y estado para la actividad '"+status.responsability+"'.");
             }
         }
     }
