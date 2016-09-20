@@ -592,19 +592,19 @@ public class WizardController implements Initializable {
         
         if(textAreaIntPlan.getText().trim().isEmpty())
         {
-            validations.add("Hace falta la Interpretación Plan Calendario.");
+            validations.add("Hace falta la Interpretación plan de calendario.");
         }
         if(dataActionPlanPlanning.isEmpty())
         {
-            validations.add("No existe ningún plan de acción para el Plan Calendario.");
+            validations.add("No existe ningún plan de acción para el plan de calendario.");
         }
         if(textAreaComp_Ext.getText().trim().isEmpty())
         {
-            validations.add("Hace falta la Interpretación de Compromisos Externos.");
+            validations.add("Hace falta la interpretación de compromisos externos.");
         }
         if(textArea_Hitos.getText().trim().isEmpty())
         {
-            validations.add("Hace falta la Interpretación de Hitos.");
+            validations.add("Hace falta la interpretación de hitos.");
         }
     }
 
@@ -612,7 +612,7 @@ public class WizardController implements Initializable {
         
         if(dataTaksActions.isEmpty())
         {
-            validations.add("No existe ningún plan de acción para Productos y Tareas.");
+            validations.add("No existe ningún plan de acción para productos y tareas.");
         }
         for(URLProduct product : dataProductURL)
         {
@@ -623,22 +623,22 @@ public class WizardController implements Initializable {
         }
         if(textArea_IntSize.getText().trim().isEmpty())
         {
-            validations.add("Hace falta la Interpretación de la Tabla de Tamaños.");
+            validations.add("Hace falta la interpretación de la tabla de tamaños.");
         }
         if(textArea_IntTime.getText().trim().isEmpty())
         {
-            validations.add("Hace falta la Interpretación de la Tabla de Tiempos en fase.");
+            validations.add("Hace falta la interpretación de la tabla de tiempos en fase.");
         }
     }
 
     private void validateQuality(final List<String> validations) {
         if(textArea_Quality.getText().trim().isEmpty())
         {
-            validations.add("Hace falta la Interpretación del estado de la Calidad.");
+            validations.add("Hace falta la interpretación del estado de la calidad.");
         }
         if(dataQualityActions.isEmpty())
         {
-            validations.add("No existe ningún plan de acción para el estado de la Calidad.");
+            validations.add("No existe ningún plan de acción para el estado de la calidad.");
         }
         for(InfoPQI pqi : dataPQI)
         {
@@ -653,7 +653,7 @@ public class WizardController implements Initializable {
         
         if(role_status.isEmpty())
         {
-            validations.add("¡Cuidado! No se tiene reportado ningún Rol Manager.");
+            validations.add("¡Cuidado! No se tiene reportado ningún rol manager.");
         }
         for(RoleStatus status : role_status)
         {
