@@ -114,7 +114,7 @@ public class ReportInformation {
             Document content=readFile(file);
             for(RoleDefinition def : definitions)
             {
-                String id=def.id;
+                String id=def.getId();
                 loadRole(id,content,def);
             }
         }
@@ -130,11 +130,11 @@ public class ReportInformation {
         definitions=mapper.readValue(new InputStreamReader(in,Charset.defaultCharset()), TypeFactory.defaultInstance().constructParametricType(Collection.class, RoleDefinition.class));        
         for(RoleDefinition def : definitions)
         {
-            if(def.actions.isEmpty() && !def.responsabilities.isEmpty())
+            if(def.getActions().isEmpty() && !def.getResponsabilities().isEmpty())
             {
-                for(String resp : def.responsabilities)
+                for(String resp : def.getResponsabilities())
                 {
-                    def.actions.add("");
+                    def.getActions().add("");
                 }
             }
         }
@@ -212,9 +212,9 @@ public class ReportInformation {
             String product=tr.child(0).text();
             String action=tr.child(3).text();
             InfoPQI info=new InfoPQI();
-            info.accion=unescapeHtml4(action);
-            info.product=unescapeHtml4(product);
-            info.pqiActual=Double.parseDouble(tr.child(2).child(0).text());
+            info.setAccion(unescapeHtml4(action));
+            info.setProduct(unescapeHtml4(product));
+            info.setPqiActual(Double.parseDouble(tr.child(2).child(0).text()));
             loadTable.add(info);
         }
         return loadTable;
@@ -226,7 +226,7 @@ public class ReportInformation {
         for(int i=1;i<table.size();i++)
         {
             Element tr=table.get(i);            
-            tr.child(3).text(this.pqi.get(i-1).accion);            
+            tr.child(3).text(this.pqi.get(i-1).getAccion());            
         }
         
     }
@@ -365,12 +365,12 @@ public class ReportInformation {
             ByteArrayOutputStream out=new ByteArrayOutputStream();
             OutputStreamWriter writer=new OutputStreamWriter(out);
             Map<String,Object> data=new HashMap<>();
-            data.put("title", def.title);
-            data.put("id", def.id);
+            data.put("title", def.getTitle());
+            data.put("id", def.getId());
             List<RoleInformation> inf=new ArrayList<>();
-            for(int i=0;i<def.responsabilities.size();i++)
+            for(int i=0;i<def.getResponsabilities().size();i++)
             {
-                inf.add(new RoleInformation(def.responsabilities.get(i), def.actions.get(i)));
+                inf.add(new RoleInformation(def.getResponsabilities().get(i), def.getActions().get(i)));
             }
             data.put("rolTable",inf);            
             mainTemplate.process(data, writer);
@@ -395,13 +395,13 @@ public class ReportInformation {
             String resp=tr.child(0).text().trim();
             String action=tr.child(1).text().trim();
             int index=-1;
-            for(String resp_cat : def.responsabilities)
+            for(String resp_cat : def.getResponsabilities())
             {
                 index++;
                 if(resp_cat.equalsIgnoreCase(resp))
                 {
-                    def.actions.add(index, action);
-                    def.used=true;
+                    def.getActions().add(index, action);
+                    def.setUsed(true);
                 }
             }
         }

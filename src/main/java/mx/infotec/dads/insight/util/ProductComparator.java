@@ -18,49 +18,49 @@ public class ProductComparator implements Comparator<Product>{
     @Override
     public int compare(Product o1, Product o2) {
         int res=0;
-        if(!o1.plannedDate.isEmpty() && !o2.plannedDate.isEmpty())
+        if(!o1.getPlannedDate().isEmpty() && !o2.getPlannedDate().isEmpty())
         {
-            Date date1=DateUtils.convertStringToDate(DateUtils.extractDate(o1.plannedDate));
-            Date date2=DateUtils.convertStringToDate(DateUtils.extractDate(o2.plannedDate));
+            Date date1=DateUtils.convertStringToDate(DateUtils.extractDate(o1.getPlannedDate()));
+            Date date2=DateUtils.convertStringToDate(DateUtils.extractDate(o2.getPlannedDate()));
             res=date1.compareTo(date2);
         }
-        if(o1.plannedDate.isEmpty() && !o2.plannedDate.isEmpty())
+        if(o1.getPlannedDate().isEmpty() && !o2.getPlannedDate().isEmpty())
         {            
             Date date1=new Date();
-            Date date2=DateUtils.convertStringToDate(DateUtils.extractDate(o2.plannedDate));
+            Date date2=DateUtils.convertStringToDate(DateUtils.extractDate(o2.getPlannedDate()));
             res=date1.compareTo(date2);
         }
-        if(!o1.plannedDate.isEmpty() && o2.plannedDate.isEmpty())
+        if(!o1.getPlannedDate().isEmpty() && o2.getPlannedDate().isEmpty())
         {
-            Date date1=DateUtils.convertStringToDate(DateUtils.extractDate(o1.plannedDate));
+            Date date1=DateUtils.convertStringToDate(DateUtils.extractDate(o1.getPlannedDate()));
             Date date2=new Date();
             res=date1.compareTo(date2);            
         }
         if(res==0)
         {
-            if(!o1.finishDate.isEmpty() && !o2.finishDate.isEmpty())
+            if(!o1.getFinishDate().isEmpty() && !o2.getFinishDate().isEmpty())
             {
-                Date date1=DateUtils.convertStringToDate(DateUtils.extractDate(o1.finishDate));
-                Date date2=DateUtils.convertStringToDate(DateUtils.extractDate(o2.finishDate));
+                Date date1=DateUtils.convertStringToDate(DateUtils.extractDate(o1.getFinishDate()));
+                Date date2=DateUtils.convertStringToDate(DateUtils.extractDate(o2.getFinishDate()));
                 res=date1.compareTo(date2);
             }
-            if(o1.finishDate.isEmpty() && !o2.finishDate.isEmpty())
+            if(o1.getFinishDate().isEmpty() && !o2.getFinishDate().isEmpty())
             {            
                 Date date1=new Date();
-                Date date2=DateUtils.convertStringToDate(DateUtils.extractDate(o2.finishDate));
+                Date date2=DateUtils.convertStringToDate(DateUtils.extractDate(o2.getFinishDate()));
                 res=date1.compareTo(date2);
             }
-            if(!o1.finishDate.isEmpty() && o2.finishDate.isEmpty())
+            if(!o1.getFinishDate().isEmpty() && o2.getFinishDate().isEmpty())
             {
-                Date date1=DateUtils.convertStringToDate(DateUtils.extractDate(o1.finishDate));
+                Date date1=DateUtils.convertStringToDate(DateUtils.extractDate(o1.getFinishDate()));
                 Date date2=new Date();
                 res=date1.compareTo(date2);            
             }   
         }
         if(res==0)
         {
-            String name1=o1.name;
-            String name2=o2.name;
+            String name1=o1.getName();
+            String name2=o2.getName();
             res=name1.compareToIgnoreCase(name2);
         }
         return res;

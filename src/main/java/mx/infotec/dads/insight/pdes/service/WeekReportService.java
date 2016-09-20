@@ -144,10 +144,10 @@ public class WeekReportService {
               String timeActual=row.child(1).ownText();
               String timePlanned=row.child(2).ownText();
               PhaseTime phase=new PhaseTime();
-              phase.name=phaseName;
-              phase.actualTime=DateUtils.convertDecimalToTime(timeActual);
-              phase.plannedTime=DateUtils.convertDecimalToTime(timePlanned);
-              phase.percentActual=timePlanned.isEmpty() || timePlanned.equals("0")? "0%":((Double.parseDouble(timeActual)-Double.parseDouble(timePlanned))/Double.parseDouble(timeActual))+"%";
+              phase.setName(phaseName);
+              phase.setActualTime(DateUtils.convertDecimalToTime(timeActual));
+              phase.setPlannedTime(DateUtils.convertDecimalToTime(timePlanned));
+              phase.setPercentActual(timePlanned.isEmpty() || timePlanned.equals("0")? "0%":((Double.parseDouble(timeActual)-Double.parseDouble(timePlanned))/Double.parseDouble(timeActual))+"%");
               getTimeTableFinished.add(phase);
           }
 
@@ -315,13 +315,12 @@ public class WeekReportService {
                     if(plannedDate.before(endWeek) || plannedDate.equals(endWeek))
                     {                        
                         TaskInfo task=new TaskInfo();
-                        task.id=id;
-                        task.productName=escapeHtml4(productName);
-                        task.hito=hito;                        
-                        task.endDate=finished;
-                        task.endDate=finished;
-                        task.plannedDate=planned;
-                        task.status="before";
+                        task.setId(id);
+                        task.setProductName(escapeHtml4(productName));
+                        task.setHito(hito);                        
+                        task.setEndDate(finished);
+                        task.setPlannedDate(planned);
+                        task.setStatus("before");
                         products.put(id, task);
                     }
                     if(!finished.isEmpty())
@@ -330,18 +329,18 @@ public class WeekReportService {
                         if(finishedDate.before(endWeek) || finishedDate.equals(endWeek))
                         {
                             TaskInfo task=new TaskInfo();
-                            task.id=id;
-                            task.productName=escapeHtml4(productName);
-                            task.hito=hito;  
-                            task.endDate=finished;
-                            task.plannedDate=planned;
+                            task.setId(id);
+                            task.setProductName(escapeHtml4(productName));
+                            task.setHito(hito);
+                            task.setEndDate(finished);
+                            task.setPlannedDate(planned);
                             if(betweenWeek(finishedDate, endWeek))
                             {
-                                task.status="finishedToDate";
+                                task.setStatus("finishedToDate");
                             }
                             else
                             {
-                                task.status="finished";
+                                task.setStatus("finished");
                             }                            
                             products.put(id, task);
                         }
@@ -353,16 +352,16 @@ public class WeekReportService {
         {
             TaskInfo info=products.get(key);
             Product product=new Product();
-            product.name=info.productName;
-            product.setFinishDate(info.endDate);
-            product.setPlannedDate(info.plannedDate);
-            String path=getPath(info.id, doc);
+            product.setName(info.getProductName());
+            product.setFinishDate(info.getEndDate());
+            product.setPlannedDate(info.getPlannedDate());
+            String path=getPath(info.getId(), doc);
             if(path.startsWith(PATH_TASK))
             {
                 path=path.substring(1);
             }
-            product.path=path;
-            product.status=info.status;
+            product.setPath(path);
+            product.setStatus(info.getStatus());
             findProductsFinished.add(product);
         }
         Collections.sort(findProductsFinished, new ProductComparator());
@@ -458,36 +457,36 @@ public class WeekReportService {
             int index=0;
             for(Product product : products)
             {
-                if(!product.finishDate.isEmpty())
+                if(!product.getFinishDate().isEmpty())
                 {
-                    Date finished=getDateFromHTML(product.finishDate);                    
+                    Date finished=getDateFromHTML(product.getFinishDate());                    
                     if(betweenWeek(finished,endWeek))                        
                     {
                         index++;
-                        addFilterByPath(product.path, urlPd);                        
+                        addFilterByPath(product.getPath(), urlPd);                        
                         Double pqi_planned=getPQIProductPlanned(urlPd);
                         Double pqi_actual=getPQIProductActual(urlPd);
                         if(pqi_actual!=null && pqi_planned!=null)                        
                         {
                             PQIElement element=new PQIElement();
-                            element.pathToProduct=escapeHtml4(product.path);
+                            element.setPathToProduct(escapeHtml4(product.getPath()));
                             createTablePQI.add(element);
-                            element.pqi_actual=pqi_actual;
-                            element.pqi_planned=pqi_planned;
-                            element.imagePQIActual="";
-                            element.imagePQIPlanned="";                           
+                            element.setPqi_actual(pqi_actual);
+                            element.setPqi_planned(pqi_planned);
+                            element.setImagePQIActual("");
+                            element.setImagePQIPlanned("");                           
                             BufferedImage pqi_planned_image=getImage(urlPd,0); 
                             if(pqi_planned_image!=null)
                             {                    
                                 String name="pqi_planned_"+index;
-                                element.imagePQIPlanned=Constants.REPORT_IMG_FOLDER+File.separator+name+EXTENSION;
+                                element.setImagePQIPlanned(Constants.REPORT_IMG_FOLDER+File.separator+name+EXTENSION);
                                 ContextUtil.saveImageToDisk(pqi_planned_image, output, name);                
                             }
                             BufferedImage pqi_actual_image=getImage(urlPd,1);
                             if(pqi_actual_image!=null)
                             {                    
                                 String name="pqi_actual_"+index;
-                                element.imagePQIActual=Constants.REPORT_IMG_FOLDER+File.separator+name+EXTENSION;
+                                element.setImagePQIActual(Constants.REPORT_IMG_FOLDER+File.separator+name+EXTENSION);
                                 ContextUtil.saveImageToDisk(pqi_actual_image, output, name);                
                             }
                         }

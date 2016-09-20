@@ -10,8 +10,9 @@ package mx.infotec.dads.insight.pdes.model;
  * @author victor.lorenzana
  */
 public class RoleInformation {
-    public String name;
-
+    private String name;
+    private String action;
+    
     public RoleInformation(String name, String action) {
         this.name = name;
         this.action = action;
@@ -34,5 +35,5 @@ public class RoleInformation {
     }
 
     
-    public String action;
+    
 }

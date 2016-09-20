@@ -10,9 +10,9 @@ package mx.infotec.dads.insight.pdes.model;
  * @author victor.lorenzana
  */
 public class PQIElement {
-    public Double pqi_planned;
-    public Double pqi_actual;
-    public String imagePQIPlanned;
+    private Double pqi_planned;
+    private Double pqi_actual;
+    private String imagePQIPlanned;
     
 
     

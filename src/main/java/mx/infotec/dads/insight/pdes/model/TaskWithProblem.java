@@ -12,9 +12,9 @@ import org.apache.commons.lang3.StringEscapeUtils;
  * @author victor.lorenzana
  */
 public class TaskWithProblem {
-    public String name;
-    public String hito;
-    public String date;
+    private String name;
+    private String hito;
+    private String date;
 
     public String getDate() {
         return date;

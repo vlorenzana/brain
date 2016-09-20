@@ -10,10 +10,12 @@ package mx.infotec.dads.insight.pdes.model;
  * @author victor.lorenzana
  */
 public class Product {
-    public String name; 
-    public String plannedDate;
-    public String finishDate;
-
+    private String name; 
+    private String plannedDate;
+    private String finishDate;
+    private String status;
+    private String path;
+    
     public String getStatus() {
         return status;
     }
@@ -21,7 +23,7 @@ public class Product {
     public void setStatus(String status) {
         this.status = status;
     }
-    public String status;
+    
     public String getPlannedDate() {
         return plannedDate;
     }
@@ -52,5 +54,5 @@ public class Product {
     public void setPath(String path) {
         this.path = path;
     }
-    public String path;
+    
 }

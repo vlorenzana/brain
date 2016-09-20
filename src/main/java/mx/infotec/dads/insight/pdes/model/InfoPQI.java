@@ -11,8 +11,10 @@ package mx.infotec.dads.insight.pdes.model;
  */
 public class InfoPQI {
  
-    public String product="";
-
+    private String product="";
+    private Double pqiActual;
+    private String accion="";
+    
     public String getProduct() {
         return product;
     }
@@ -28,9 +30,9 @@ public class InfoPQI {
     public void setAccion(String accion) {
         this.accion = accion;
     }
-    public String accion="";
     
-    public Double pqiActual;
+    
+    
 
     public Double getPqiActual() {
         return pqiActual;

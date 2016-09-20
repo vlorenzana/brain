@@ -11,8 +11,12 @@ package mx.infotec.dads.insight.pdes.model;
  */
 public class PhaseTime {
     
-    public String name;
-
+    private String name;
+    private String plannedTime;
+    private String actualTime;
+    private String percentActual;
+    
+    
     public String getName() {
         return name;
     }
@@ -44,7 +48,5 @@ public class PhaseTime {
     public void setPercentActual(String percentActual) {
         this.percentActual = percentActual;
     }
-    public String plannedTime;
-    public String actualTime;
-    public String percentActual;
+    
 }

@@ -1,7 +1,7 @@
 package mx.infotec.dads.insight.pdes.model;
 
 /**
- * Clase que encapsula un renglon en el reporte semanal
+ * Clase que encapsula un renglón en el reporte semanal
  * 
  * @author Daniel Cortes Pichardo
  *

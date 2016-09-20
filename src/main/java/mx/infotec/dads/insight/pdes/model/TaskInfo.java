@@ -10,12 +10,14 @@ package mx.infotec.dads.insight.pdes.model;
  * @author victor.lorenzana
  */
 public class TaskInfo {
-    public String id;
-    public String productName;
-    public String plannedDate;
-    public String endDate;
-    public String status;
-
+    private String id;
+    private String productName;
+    private String plannedDate;
+    private String endDate;
+    private String status;
+    private String hito;
+    
+    
     public String getStatus() {
         return status;
     }
@@ -64,5 +66,5 @@ public class TaskInfo {
     public void setHito(String hito) {
         this.hito = hito;
     }
-    public String hito;
+    
 }

@@ -235,24 +235,24 @@ public class WizardController implements Initializable {
             Map<String,List<String>> actionsToUpdate=new HashMap<>();
             for(RoleStatus status : role_status)
             {
-                final String id=status.id;
+                final String id=status.getId();
                 if(!actionsToUpdate.containsKey(id))
                 {
                     actionsToUpdate.put(id, new ArrayList<>());
                 }
-                actionsToUpdate.get(id).add(status.status);
+                actionsToUpdate.get(id).add(status.getStatus());
             }
             
             for(RoleDefinition def : information.definitions)
             {
-                if(actionsToUpdate.containsKey(def.id))
+                if(actionsToUpdate.containsKey(def.getId()))
                 {
-                    def.used=true;
-                    def.actions=actionsToUpdate.get(def.id);
+                    def.setUsed(true);
+                    def.setActions(actionsToUpdate.get(def.getId()));
                 }
                 else
                 {
-                    def.used=false;
+                    def.setUsed(false);
                 }
             }
             
@@ -442,8 +442,8 @@ public class WizardController implements Initializable {
                 row=0;
                 col++;
             }
-            CheckBox chk=new CheckBox(def.title);
-            chk.setId(def.id);
+            CheckBox chk=new CheckBox(def.getTitle());
+            chk.setId(def.getId());
             gridRoles.add(chk, col, row);        
             chk.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -548,21 +548,21 @@ public class WizardController implements Initializable {
         String id=checkbox.getId();
         for(RoleDefinition def : information.definitions)
         {
-            if(id.equals(def.id))
+            if(id.equals(def.getId()))
             {
                 if(checkbox.isSelected())
                 {
                     // adds the lines
                     def.used=true;
-                    for(int index=0;index<def.responsabilities.size();index++)
+                    for(int index=0;index<def.getResponsabilities().size();index++)
                     {
-                        String responsability=def.responsabilities.get(index);
-                        String action=def.actions.get(index);
+                        String responsability=def.getResponsabilities().get(index);
+                        String action=def.getActions().get(index);
                         RoleStatus roleStatus=new RoleStatus();
-                        roleStatus.status=action;
-                        roleStatus.responsability=responsability;
-                        roleStatus.id=id;
-                        roleStatus.description=def.title;
+                        roleStatus.setStatus(action);
+                        roleStatus.setResponsability(responsability);
+                        roleStatus.setId(id);
+                        roleStatus.setDescription(def.getTitle());
                         role_status.add(roleStatus);
 
                     }
@@ -574,7 +574,7 @@ public class WizardController implements Initializable {
                     List<RoleStatus> delete=new ArrayList<>();
                     for(RoleStatus status : role_status)
                     {
-                        if(id.equals(status.id))
+                        if(id.equals(status.getId()))
                         {
                             delete.add(status);
                         }
@@ -642,9 +642,9 @@ public class WizardController implements Initializable {
         }
         for(InfoPQI pqi : dataPQI)
         {
-            if(pqi.pqiActual<=0.4)
+            if(pqi.getPqiActual()<=0.4)
             {
-                validations.add("No existe ninguna acción definida por PQI menor o igual a 0.4 para el producto "+pqi.product+".");
+                validations.add("No existe ninguna acción definida por PQI menor o igual a 0.4 para el producto "+pqi.getProduct()+".");
             }
         }
     }
@@ -657,9 +657,9 @@ public class WizardController implements Initializable {
         }
         for(RoleStatus status : role_status)
         {
-            if(status.status==null || status.status.trim().isEmpty())
+            if(status.getStatus()==null || status.getStatus().trim().isEmpty())
             {
-                validations.add(status.description+": No existe ninguna actividad ejercida y estado para la actividad '"+status.responsability+"'.");
+                validations.add(status.getDescription()+": No existe ninguna actividad ejercida y estado para la actividad '"+status.getResponsability()+"'.");
             }
         }
     }

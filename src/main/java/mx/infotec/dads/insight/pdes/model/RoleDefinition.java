@@ -13,10 +13,10 @@ import java.util.List;
  * @author victor.lorenzana
  */
 public class RoleDefinition {
-    public String id;
-    public String title;
-    public List<String> actions=new ArrayList<>();
-    public List<String> responsabilities=new ArrayList<>();
+    private String id;
+    private String title;
+    private List<String> actions=new ArrayList<>();
+    private List<String> responsabilities=new ArrayList<>();
 
     public String getId() {
         return id;
