@@ -33,7 +33,14 @@
                                         <td><center>${product.pqi_planned}</center><br><br>
                                             <img width="300" height="200" src="${product.imagePQIPlanned}">                                    
                                         </td>
-                                        <td><div style="color: rgb(255,0,0);"><center>${product.pqi_actual}</center></div><br><br>
+                                        <td>
+                                            <#if product.pqi_actual<=0.4>
+                                            <div style="color: rgb(255,0,0);"><center>${product.pqi_actual}</center></div>
+                                             <#else>   
+                                             <div><center>${product.pqi_actual}</center></div>
+                                             </#if>
+                                            
+                                            <br><br>
                                             <img width="300" height="200" src="${product.imagePQIActual}">   </td>                                        
                                             <td></td>
                                     </tr>

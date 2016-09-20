@@ -13,15 +13,9 @@ public class PQIElement {
     public Double pqi_planned;
     public Double pqi_actual;
     public String imagePQIPlanned;
-    public String style="";
+    
 
-    public String getStyle() {
-        return style;
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
-    }
+    
 
     public Double getPqi_planned() {
         return pqi_planned;

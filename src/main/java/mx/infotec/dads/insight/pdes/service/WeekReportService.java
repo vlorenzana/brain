@@ -55,6 +55,9 @@ public class WeekReportService {
         
     }
 
+    
+    private static final String EXTENSION = ".png";
+    private static final String PATH_TASK = "/";
     /**
      * 
      * @param output
@@ -281,11 +284,12 @@ public class WeekReportService {
             {
                 Element tr=elements.get(0);                
                 String productName=tr.child(0).child(0).ownText();
-                return getPath(idParent,doc)+"/"+productName;
+                return getPath(idParent,doc)+PATH_TASK+productName;
             }
         }
         return getPath;
     }
+    
     private static List<Product> findProductsToDate(final UrlPd urlPd,final Date endWeek) throws IOException, URISyntaxException,ReportException
     {   
         List<Product> findProductsFinished=new ArrayList<>();        
@@ -353,7 +357,7 @@ public class WeekReportService {
             product.setFinishDate(info.endDate);
             product.setPlannedDate(info.plannedDate);
             String path=getPath(info.id, doc);
-            if(path.startsWith("/"))
+            if(path.startsWith(PATH_TASK))
             {
                 path=path.substring(1);
             }
@@ -463,7 +467,7 @@ public class WeekReportService {
                         addFilterByPath(product.path, urlPd);                        
                         Double pqi_planned=getPQIProductPlanned(urlPd);
                         Double pqi_actual=getPQIProductActual(urlPd);
-                        if(pqi_actual!=null && pqi_planned!=null)
+                        if(pqi_actual!=null && pqi_planned!=null)                        
                         {
                             PQIElement element=new PQIElement();
                             element.pathToProduct=escapeHtml4(product.path);
@@ -471,23 +475,19 @@ public class WeekReportService {
                             element.pqi_actual=pqi_actual;
                             element.pqi_planned=pqi_planned;
                             element.imagePQIActual="";
-                            element.imagePQIPlanned="";
-                            if(element.pqi_actual<=0.4)
-                            {
-                                element.style="color:red;";
-                            }
+                            element.imagePQIPlanned="";                           
                             BufferedImage pqi_planned_image=getImage(urlPd,0); 
                             if(pqi_planned_image!=null)
                             {                    
                                 String name="pqi_planned_"+index;
-                                element.imagePQIPlanned=Constants.REPORT_IMG_FOLDER+File.separator+name+".png";
+                                element.imagePQIPlanned=Constants.REPORT_IMG_FOLDER+File.separator+name+EXTENSION;
                                 ContextUtil.saveImageToDisk(pqi_planned_image, output, name);                
                             }
                             BufferedImage pqi_actual_image=getImage(urlPd,1);
                             if(pqi_actual_image!=null)
                             {                    
                                 String name="pqi_actual_"+index;
-                                element.imagePQIActual=Constants.REPORT_IMG_FOLDER+File.separator+name+".png";
+                                element.imagePQIActual=Constants.REPORT_IMG_FOLDER+File.separator+name+EXTENSION;
                                 ContextUtil.saveImageToDisk(pqi_actual_image, output, name);                
                             }
                         }
@@ -505,6 +505,7 @@ public class WeekReportService {
         }
         return createTablePQI;
     }
+    
     
     private static List<String> findTasksInProgress(final UrlPd urlPd) throws IOException, URISyntaxException {
 	Document doc = getConnection(urlPd.getWeekReportUrl().toString()).get();	
