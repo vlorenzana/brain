@@ -52,6 +52,8 @@ public class Constants {
     public static final String PAGE_QUALITY = "quality.html";
     public static final String PAGE_ROLES = "roles.html";
     
+    public static final String PLAN_DE_ACCION = "Plan de acción";
+    
     private Constants() {
 
     }

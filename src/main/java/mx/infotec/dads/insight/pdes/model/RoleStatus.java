@@ -11,15 +11,15 @@ package mx.infotec.dads.insight.pdes.model;
  */
 public class RoleStatus {
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String desc) {
+        this.description = desc;
     }
     
-    public String desc;
+    public String description;
     
     public String status;
 
@@ -31,12 +31,12 @@ public class RoleStatus {
         this.status = status;
     }
 
-    public String getResp() {
-        return resp;
+    public String getResponsability() {
+        return responsability;
     }
 
-    public void setResp(String resp) {
-        this.resp = resp;
+    public void setResponsability(String resp) {
+        this.responsability = resp;
     }
 
     public String getId() {
@@ -46,6 +46,6 @@ public class RoleStatus {
     public void setId(String id) {
         this.id = id;
     }
-    public String resp;
+    public String responsability;
     public String id;
 }

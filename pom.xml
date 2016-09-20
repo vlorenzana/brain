@@ -100,7 +100,7 @@
 						<configuration>
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.danimaniarqsoft.brain.main.WeekReportMain</mainClass>
+									<mainClass>mx.infotec.dads.insight.main.WeekReportMain</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>

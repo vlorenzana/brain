@@ -258,7 +258,7 @@ public class WizardController implements Initializable {
             
             
         }catch(IOException e){
-            ContextUtil.saveExceptionToDisk(e, Constants.FILE_ERROR_TXT, new File("./"));
+            ContextUtil.saveExceptionToDisk(e, Constants.FILE_ERROR_TXT, new File("."+File.separator));
         }
         
         this.information.save();
@@ -461,9 +461,9 @@ public class WizardController implements Initializable {
         }
         
         
-        webViewPlan.getEngine().load(urlReport+"/"+PAGE_PLANNING);
-        webViewTasksProducts.getEngine().load(urlReport+"/"+PAGE_TASK_PRODUCTS);
-        webViewQuality.getEngine().load(urlReport+"/"+PAGE_QUALITY);
+        webViewPlan.getEngine().load(urlReport+File.separator+PAGE_PLANNING);
+        webViewTasksProducts.getEngine().load(urlReport+File.separator+PAGE_TASK_PRODUCTS);
+        webViewQuality.getEngine().load(urlReport+File.separator+PAGE_QUALITY);
         
         initTablePlanForPlanning();
         

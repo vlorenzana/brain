@@ -70,7 +70,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>com.danimaniarqsoft.brain.main.WeekReportMain</mainClass>
+                  <mainClass>mx.infotec.dads.insight.main.WeekReportMain</mainClass>
                 </transformer>
               </transformers>
             </configuration>
