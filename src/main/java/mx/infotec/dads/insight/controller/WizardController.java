@@ -182,7 +182,7 @@ public class WizardController implements Initializable {
     private final ObservableList<URLProduct> dataProductURL =
             FXCollections.observableArrayList();
     
-    private final ObservableList<RoleStatus> role_status =
+    private final ObservableList<RoleStatus> dataRolStatus =
             FXCollections.observableArrayList();
     
     
@@ -233,7 +233,7 @@ public class WizardController implements Initializable {
             information.loadRoleDefinition();
 
             Map<String,List<String>> actionsToUpdate=new HashMap<>();
-            for(RoleStatus status : role_status)
+            for(RoleStatus status : dataRolStatus)
             {
                 final String id=status.getId();
                 if(!actionsToUpdate.containsKey(id))
@@ -380,11 +380,11 @@ public class WizardController implements Initializable {
         
         
         
-        tableRoles.setItems(role_status);
+        tableRoles.setItems(dataRolStatus);
         tableRoles.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        columnResp.setCellValueFactory(new PropertyValueFactory<>("resp"));
+        columnResp.setCellValueFactory(new PropertyValueFactory<>("responsability"));
         columnStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-        columnRoleDesc.setCellValueFactory(new PropertyValueFactory<>("desc"));
+        columnRoleDesc.setCellValueFactory(new PropertyValueFactory<>("description"));
         columnStatus.setCellFactory(TextFieldTableCell.forTableColumn());
         columnStatus.setOnEditCommit(
             new EventHandler<CellEditEvent<RoleStatus, String>>() {
@@ -563,7 +563,7 @@ public class WizardController implements Initializable {
                         roleStatus.setResponsability(responsability);
                         roleStatus.setId(id);
                         roleStatus.setDescription(def.getTitle());
-                        role_status.add(roleStatus);
+                        dataRolStatus.add(roleStatus);
 
                     }
                 }
@@ -572,7 +572,7 @@ public class WizardController implements Initializable {
                     def.used=false;
                     // removes the lines
                     List<RoleStatus> delete=new ArrayList<>();
-                    for(RoleStatus status : role_status)
+                    for(RoleStatus status : dataRolStatus)
                     {
                         if(id.equals(status.getId()))
                         {
@@ -581,7 +581,7 @@ public class WizardController implements Initializable {
                     }
                     for(RoleStatus status : delete)
                     {
-                        role_status.remove(status);
+                        dataRolStatus.remove(status);
                     }
                 }
             }
@@ -651,11 +651,11 @@ public class WizardController implements Initializable {
 
     private void validateRoles(final List<String> validations) {
         
-        if(role_status.isEmpty())
+        if(dataRolStatus.isEmpty())
         {
             validations.add("¡Cuidado! No se tiene reportado ningún rol manager.");
         }
-        for(RoleStatus status : role_status)
+        for(RoleStatus status : dataRolStatus)
         {
             if(status.getStatus()==null || status.getStatus().trim().isEmpty())
             {

@@ -12,7 +12,7 @@ import javafx.beans.property.SimpleStringProperty;
  * @author victor.lorenzana
  */
 public class PlanAccion {
-    private String accion;
+    public String accion;
 
     public String getAccion() {
         return accion;

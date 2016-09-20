@@ -11,10 +11,10 @@ package mx.infotec.dads.insight.pdes.model;
  */
 public class RoleStatus {
 
-    private String description;    
-    private String status;
-    private String responsability;
-    private String id;
+    public String description;    
+    public String status;
+    public String responsability;
+    public String id;
     
     public String getDescription() {
         return description;
