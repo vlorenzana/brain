@@ -78,9 +78,6 @@ public class WizardController implements Initializable {
     @FXML
     private Button btnAddPlanAccionQuality;
     
-    
-    
-    
     @FXML
     private GridPane gridRoles;
     
@@ -92,19 +89,15 @@ public class WizardController implements Initializable {
     
     @FXML
     private WebView webViewQuality;
-    
-    
+       
     @FXML
     private Button btnAddPlanAccion;
     
     @FXML
     private Button save;
     
-    
     @FXML
     private Button btnCerrar;
-    
-    
     
     @FXML
     private Button btnDeletePlanAccion;
@@ -115,11 +108,9 @@ public class WizardController implements Initializable {
     @FXML
     private Button btnAddRowActionTaks;
     
-            
     @FXML
     private TableView tablePlanAccionTaks;        
-    
-            
+                
     @FXML
     private TableView tablePlanAccion;        
     
@@ -129,12 +120,10 @@ public class WizardController implements Initializable {
     @FXML
     private TableView tableProductsURL; 
     
-            
-    
-    
     @FXML
     private TableColumn columnProduct;
-     @FXML
+    
+    @FXML
     private TableColumn columnURL;
     
     @FXML
@@ -152,11 +141,8 @@ public class WizardController implements Initializable {
     @FXML
     private TextArea textArea_Hitos;
     
-    
-    
     @FXML
     private TextArea textArea_IntSize;
-    
     
     @FXML
     private TextArea textArea_IntTime;
@@ -170,7 +156,7 @@ public class WizardController implements Initializable {
     private final ObservableList<PlanAccion> dataActionPlanPlanning =
             FXCollections.observableArrayList();
     
-     private final ObservableList<PlanAccion> dataTaksActions =
+    private final ObservableList<PlanAccion> dataTaksActions =
             FXCollections.observableArrayList();
      
     private final ObservableList<PlanAccion> dataQualityActions =
