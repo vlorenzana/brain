@@ -43,6 +43,7 @@ import org.jsoup.Connection;
 import mx.infotec.dads.insight.util.TaskWithProblemComparator;
 import static mx.infotec.dads.insight.util.ConnectionUtil.getConnection;
 import static mx.infotec.dads.insight.util.Constants.NO_SE_PUEDE_CALCULAR;
+import static mx.infotec.dads.insight.util.DoubleUtils.computePercent;
 import org.apache.commons.lang3.math.NumberUtils;
 /**
  * WeekReportService
@@ -171,19 +172,16 @@ public class WeekReportService {
               phase.setName(phaseName);
               phase.setActualTime(DateUtils.convertDecimalToTime(timeActual));
               phase.setPlannedTime(DateUtils.convertDecimalToTime(timePlanned));
-              phase.setPercentActual(timePlanned.isEmpty() || timePlanned.equals("0") || timeActual.equals("0") ? "0%":DoubleUtils.formatToDigits((((Double.parseDouble(timeActual)-Double.parseDouble(timePlanned))/Double.parseDouble(timeActual))*100))+"%");
+              double dPlanned=Double.parseDouble(timePlanned);
+              double dActual=Double.parseDouble(timeActual);
+              phase.setPercentActual(computePercent(dPlanned, dActual));              
               getTimeTableFinished.add(phase);
           }
             PhaseTime phase=new PhaseTime();
             phase.setName("Total");
             phase.setActualTime(DateUtils.convertDecimalToTime(String.valueOf(totalActual)));
-            phase.setPlannedTime(DateUtils.convertDecimalToTime(String.valueOf(totalPlanned)));
-            double percent=0;
-            if(totalActual!=0)
-            {
-                percent=((totalActual-totalPlanned)/totalActual)*100;
-            }           
-            phase.setPercentActual(DoubleUtils.formatToDigits(percent)+"%");
+            phase.setPlannedTime(DateUtils.convertDecimalToTime(String.valueOf(totalPlanned)));            
+            phase.setPercentActual(computePercent(totalPlanned, totalActual));
             getTimeTableFinished.add(phase);
 
         }

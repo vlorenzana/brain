@@ -23,4 +23,13 @@ public class DoubleUtils {
         }
         return formatter.format(value);
     }
+    public static String computePercent(double planned,double actual)
+    {
+        double percent=0;
+        if(planned!=0)
+        {
+            percent=actual/planned;
+        }  
+        return DoubleUtils.formatToDigits(percent)+"%";
+    }
 }
