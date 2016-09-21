@@ -84,9 +84,8 @@ public class WeekReportService {
 	    InfoReportTable gTable = new InfoReportTable(mainData);
 	    gTable.setReportedPeriod("Del " + DateUtils.convertDateToString(fromDateReportDate) + " al "
 		    + DateUtils.convertDateToString(toDateReportDate));
-	    //OverallMetricsDAO omDAO = new OverallMetricsDAO(urlPd);
-	    //SizeReportTable sizeTable = omDAO.findSizeTable("body div form table");
-            SizeReportTable sizeTable = findSizeTable(urlPd);
+	    OverallMetricsDAO omDAO = new OverallMetricsDAO(urlPd);	    
+            SizeReportTable sizeTable = findSizeTable(urlPd,omDAO);
 	    List<String> tasksInProgress = findTasksInProgress(urlPd);
             List<String> tasksCompleted = findTasksCompleted(urlPd);
             List<String> tasksNextWeek = findTasksNext(urlPd);
@@ -104,14 +103,13 @@ public class WeekReportService {
 	}
 
     }
-    public static SizeReportTable findSizeTable(final UrlPd urlPd) throws ReportException
+    public static SizeReportTable findSizeTable(final UrlPd urlPd,final OverallMetricsDAO omDAO) throws ReportException
     {   
         try
         {
             removeFilter(FILTER_FINISHED, urlPd);
             addFilter(FILTER_FINISHED, urlPd);        
-            String xpathQuery="body div form table";
-            OverallMetricsDAO omDAO = new OverallMetricsDAO(urlPd);
+            String xpathQuery="body div form table";            
             Elements overallMetricsElements = omDAO.getOverallMetrics().select(xpathQuery);
             Element sizeTable = overallMetricsElements.get(1);
             sizeTable.addClass("table table-bordered table-striped table-responsive");
