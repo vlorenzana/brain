@@ -16,7 +16,11 @@
         },
     {"id":"quality","title":"Quality Manager",
         "responsabilities":[
-            "Dar seguimiento al Plan de Calidad (Asegurarse de que todas las personas registraron sus datos antes de hacer el reporte semanal): Densidad de Defectos por tipo de producto Yields de Proceso y de Fase Paretos de Total de efectos por Tipo de Defecto y Tiempo de corrección por Tipo de Defectos PQI de los componentes críticos",
+            "Dar seguimiento al Plan de Calidad",
+            "Asegurarse de que todas las personas registraron sus datos antes de hacer el reporte semanal",
+            "Densidad de Defectos por tipo de producto Yields de Proceso y de Fase ",
+            "Paretos de Total de efectos por Tipo de Defecto",
+            "Tiempo de corrección por Tipo de Defectos PQI de los componentes críticos",
             "Recolectar información de Encuesta de Satisfacción del Cliente"            
             ]
         },

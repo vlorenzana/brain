@@ -8,7 +8,8 @@ package mx.infotec.dads.insight.util;
  */
 public class Constants {
     
-    
+    public static final String PDES__REPORTER = "PDES Reporter";    
+    public static final String WIZARD = "/fxml/wizard.fxml";
     public static final String ICON = "images/monkey.png";
     public static final int TIMEOUT = 10*1000;
     public static final String FILTER_FINISHED = "terminado";

@@ -40,6 +40,8 @@ import javafx.stage.Stage;
 import mx.infotec.dads.insight.pdes.service.WeekReportService;
 import mx.infotec.dads.insight.pdes.service.context.ReportContext;
 import static mx.infotec.dads.insight.util.Constants.ICON;
+import static mx.infotec.dads.insight.util.Constants.PDES__REPORTER;
+import static mx.infotec.dads.insight.util.Constants.WIZARD;
 import mx.infotec.dads.insight.util.ContextUtil;
 import mx.infotec.dads.insight.util.DateUtils;
 
@@ -60,16 +62,15 @@ public class PdesReportController implements Initializable, ControlledScreen {
     private Label messageLabel;
     @FXML
     private Button btnReportId;
-    @FXML
-    private Button btnSaveProperties;
+    
     @FXML
     private ComboBox<TipoReporte> cbxTipoReportId;
     @FXML
-    private ObservableList<TipoReporte> tipoReportList = FXCollections.observableArrayList();
+    private final ObservableList<TipoReporte> tipoReportList = FXCollections.observableArrayList();
 
     private UrlPd urlPd;
 
-    public void goPropertiesScreen(ActionEvent event) {
+    public void goPropertiesScreen(final ActionEvent event) {
 	myController.loadScreen(WeekReportMain.PROPERTIES, WeekReportMain.PROPERTIES_FILE);
 	myController.setScreen(WeekReportMain.PROPERTIES);
     }
@@ -94,19 +95,19 @@ public class PdesReportController implements Initializable, ControlledScreen {
 	});
 	popup.show(stage);
     }
-    private static Date getDateReport(UrlPd UrlPd) throws IOException,URISyntaxException,ReportException
+    private static Date getDateReport(final UrlPd UrlPd) throws IOException,URISyntaxException,ReportException
     {
         return WeekReportService.getStartReport(UrlPd);
     }
     @Override
-    public void setScreenParent(ScreensController screenPage) {
+    public void setScreenParent(final ScreensController screenPage) {
 	myController = screenPage;
     }
-    private void showEditReport(String path) throws IOException
+    private void showEditReport(final String path) throws IOException
     {
         Stage stage = new Stage();
         WizardController controler=new WizardController();
-        FXMLLoader loader=new FXMLLoader(WizardController.class.getResource("/fxml/wizard.fxml"));            
+        FXMLLoader loader=new FXMLLoader(WizardController.class.getResource(WIZARD));            
         loader.setController(controler);
         Parent root = loader.load();            
         controler=loader.getController();
@@ -119,17 +120,14 @@ public class PdesReportController implements Initializable, ControlledScreen {
         stage.initModality(Modality.WINDOW_MODAL);
         stage.show();
     }
+    
     /**
-     * Initializes the controller class. This method is automatically called
-     * after the fxml file has been loaded.
      * 
-     * @throws IOException
-     * @throws ReportException
+     * @param location
+     * @param resources 
      */
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        
-        
+    public void initialize(final URL location, final ResourceBundle resources) {
                 
 	tipoReportList.add(new TipoReporte(Constants.FIST_SELECTION, "ES"));
 	tipoReportList.add(new TipoReporte(Constants.SECOND_SELECTION, "EN"));
@@ -159,17 +157,18 @@ public class PdesReportController implements Initializable, ControlledScreen {
                 Date endReport=getDateReport(urlPd);
                 ReportContext context = new ReportContext(endReport);
                 File dirToReport=context.getOutputFile();
-                File index=new File(dirToReport,"index.html");
+                File index=new File(dirToReport,Constants.PAGE_PLANNING);
                 boolean edit=false;
                 if(index.exists())
                 {
                     Alert alert = new Alert(AlertType.CONFIRMATION);
                     alert.setTitle("Editar Reporte");
                     String dateToShow=DateUtils.convertDateToString(endReport);
-                    alert.setHeaderText("Ya existe un reporte anterior para la semana que termina el "+dateToShow);
-                    alert.setContentText("Desea editar el reporte actual creado para el "+dateToShow+"?");                                        
-                    ButtonType editButton = new ButtonType("Editar");
-                    ButtonType generateButton = new ButtonType("Sobreescribir reporte");
+                    String initDate=DateUtils.convertDateToString(DateUtils.getDateInit(endReport));
+                    alert.setHeaderText("Ya existe un reporte para la semana del "+initDate+" al "+dateToShow+"\r\nEl reporte se encuentra en la ruta "+index.getAbsolutePath());
+                    alert.setContentText("Desea editar este reporte?");                                        
+                    ButtonType editButton = new ButtonType("Editar reporte");
+                    ButtonType generateButton = new ButtonType("Volver a generar reporte");
                     ButtonType buttonTypeCancel = new ButtonType("Cancelar", ButtonData.CANCEL_CLOSE);
                     alert.getButtonTypes().setAll(editButton, generateButton, buttonTypeCancel);
                     Optional<ButtonType> result = alert.showAndWait();                    
@@ -182,7 +181,7 @@ public class PdesReportController implements Initializable, ControlledScreen {
                         Alert alertconfirm = new Alert(AlertType.CONFIRMATION);
                         alertconfirm.setTitle("PDES Reporter");
                         alertconfirm.setHeaderText("Reporte Semanal");
-                        alertconfirm.setContentText("¿Esta opción borrará el reporte existente?");
+                        alertconfirm.setContentText("¿Esta opción reemplazará el reporte existente?");
                         Optional<ButtonType> resultConfirm =alertconfirm.showAndWait();
                         if (resultConfirm.get() == ButtonType.OK)
                         {
@@ -208,7 +207,7 @@ public class PdesReportController implements Initializable, ControlledScreen {
             {
                 ContextUtil.saveExceptionToDisk(e, Constants.FILE_ERROR_TXT, new File("./"));
                 Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("PDES Reporter");
+                alert.setTitle(PDES__REPORTER);
                 alert.setHeaderText("Reporte Semanal");
                 alert.setContentText("¡No se puede conectar con el Dashboard, favor de verificar si esta abierto e intente de nuevo!");
                 alert.showAndWait();
@@ -241,4 +240,5 @@ public class PdesReportController implements Initializable, ControlledScreen {
 	    messageLabel.setText("¡Gracias por Utilizar Brain!");
 	});
     }
+    
 }
