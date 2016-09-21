@@ -42,6 +42,8 @@ import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 import org.jsoup.Connection;
 import mx.infotec.dads.insight.util.TaskWithProblemComparator;
 import static mx.infotec.dads.insight.util.ConnectionUtil.getConnection;
+import static mx.infotec.dads.insight.util.Constants.NO_SE_PUEDE_CALCULAR;
+import org.apache.commons.lang3.math.NumberUtils;
 /**
  * WeekReportService
  * 
@@ -596,10 +598,18 @@ public class WeekReportService {
     }
 
     public static String computeVg(final WeekReportTable table) {
+        if(Double.isNaN(table.getDoubleProperty(1, 4)))
+        {
+            return NO_SE_PUEDE_CALCULAR;
+        }
 	return DoubleUtils.formatToDigits(table.getDoubleProperty(1, 4));
     }
 
     public static String computeVgDiff(final WeekReportTable table) {
+        if(Double.isNaN(table.getDoubleProperty(1, 4)) || Double.isNaN(table.getDoubleProperty(1, 3)))
+        {
+            return NO_SE_PUEDE_CALCULAR;
+        }
 	return DoubleUtils.formatToDigits(table.getDoubleProperty(1, 4) - table.getDoubleProperty(1, 3));
     }
 
@@ -624,14 +634,26 @@ public class WeekReportService {
     }
 
     public static double computeVgXh(final WeekReportTable table) {
+        if(table.getDoubleProperty(3, 1)==0)
+        {
+            return Double.NaN;
+        }
 	return table.getDoubleProperty(1, 4) / table.getDoubleProperty(3, 1);
     }
 
     public static String computeEvNotPerformed(final double vhxH, final double hsTareasTerm) {
+        if(Double.isNaN(vhxH) || Double.isNaN(hsTareasTerm))
+        {
+            return NO_SE_PUEDE_CALCULAR;
+        }
 	return DoubleUtils.formatToDigits(vhxH * hsTareasTerm);
     }
 
     public static String computeRecoveryWeeks(final WeekReportTable table) {
+        if(table.getDoubleProperty(2, 4)==0 || Double.isNaN(table.getDoubleProperty(1, 3)) || Double.isNaN(table.getDoubleProperty(1, 4)) || Double.isNaN(table.getDoubleProperty(2, 4)))
+        {
+            return "No se puede calcular";
+        }
         double weeks=(table.getDoubleProperty(1, 3) - table.getDoubleProperty(1, 4)) / table.getDoubleProperty(2, 4);
         weeks*=-1;        
 	return weeks>0 ? "+"+DoubleUtils.formatToDigits(weeks): DoubleUtils.formatToDigits(weeks);
@@ -642,9 +664,14 @@ public class WeekReportService {
         return actualVsPlan>1 ? "+"+DoubleUtils.formatToDigits((Math.abs(1-actualVsPlan))*100) : "-"+DoubleUtils.formatToDigits((1-actualVsPlan)*100);
     }
     public static String computeRecoveryHr(final WeekReportTable table,final String weeks) {
+        if(!NumberUtils.isNumber(weeks))
+        {
+            return NO_SE_PUEDE_CALCULAR;
+        }
         double averagePerWeekToDate=table.getDoubleProperty(2, 1);
         double dWeeks=Double.parseDouble(weeks);
         double hr=averagePerWeekToDate * dWeeks;
         return hr>0 ? "+"+DoubleUtils.formatToDigits(hr) : DoubleUtils.formatToDigits(hr);
     }
+    
 }

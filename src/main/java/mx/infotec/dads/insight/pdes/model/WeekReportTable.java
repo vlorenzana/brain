@@ -95,6 +95,10 @@ public class WeekReportTable implements Serializable {
 	    nbsp = cadVal.charAt(0);
 	}
 
+        if ("#VALUE!".equals(cadVal))
+        {
+            return Double.NaN;
+        }
 	if ("".equals(cadVal) || cadVal.isEmpty() || nbsp == 160) {
 	    return 0.0;
 	}

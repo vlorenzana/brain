@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import mx.infotec.dads.insight.pdes.exceptions.ReportException;
 import mx.infotec.dads.insight.pdes.service.context.ReportContext;
 import com.google.gson.Gson;
+import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * Clase util para manejar el contexto del sistema
@@ -102,6 +103,10 @@ public class ContextUtil {
     }
 
     public static String computeStatus(String vgDiffs) {
+        if(!NumberUtils.isNumber(vgDiffs))
+        {
+            return Constants.NO_SE_PUEDE_CALCULAR;
+        }
 	int vgDiff = new Double(vgDiffs).intValue();
 	if (vgDiff == 0) {
 	    return "En Tiempo";

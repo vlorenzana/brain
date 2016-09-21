@@ -8,6 +8,7 @@ package mx.infotec.dads.insight.util;
  */
 public class Constants {
     
+    public static final String NO_SE_PUEDE_CALCULAR = "No se puede calcular";
     public static final String PDES__REPORTER = "PDES Reporter";    
     public static final String WIZARD = "/fxml/wizard.fxml";
     public static final String ICON = "images/monkey.png";

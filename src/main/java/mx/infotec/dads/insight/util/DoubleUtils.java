@@ -17,6 +17,10 @@ public class DoubleUtils {
     
     public static String formatToDigits(double value)
     {
+        if(Double.isNaN(value))
+        {
+            return Constants.NO_SE_PUEDE_CALCULAR;
+        }
         return formatter.format(value);
     }
 }
