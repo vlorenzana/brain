@@ -8,12 +8,11 @@ mx.infotec.dads.insight.pdes.exceptions.ReportException: createWeekReport
 	at javafx.concurrent.Task$TaskCallable.call(Task.java:1423)
 	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
 	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.NumberFormatException: For input string: "No se puede calcular"
+Caused by: java.lang.NumberFormatException: For input string: "27:50"
 	at sun.misc.FloatingDecimal.readJavaFormatString(FloatingDecimal.java:2043)
 	at sun.misc.FloatingDecimal.parseDouble(FloatingDecimal.java:110)
 	at java.lang.Double.parseDouble(Double.java:538)
-	at java.lang.Double.<init>(Double.java:608)
-	at mx.infotec.dads.insight.util.ContextUtil.computeStatus(ContextUtil.java:105)
-	at mx.infotec.dads.insight.pdes.service.WeekReportService.createReport(WeekReportService.java:95)
+	at mx.infotec.dads.insight.pdes.service.WeekReportService.getTimeTableFinished(WeekReportService.java:181)
+	at mx.infotec.dads.insight.pdes.service.WeekReportService.createReport(WeekReportService.java:97)
 	at mx.infotec.dads.insight.pdes.service.PersonalReportService.createWeekReport(PersonalReportService.java:50)
 	... 6 more

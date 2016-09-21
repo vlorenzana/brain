@@ -2,9 +2,10 @@ package mx.infotec.dads.insight.pdes.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import mx.infotec.dads.insight.util.HTMLUtils;
+import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
+
 /**
- * Clase que encapsulta todo el reporte
+ * Clase que encapsula todo el reporte
  * 
  * @author Daniel Cortes Pichardo
  *
@@ -104,7 +105,7 @@ public class Report {
         List<String> tasks=new ArrayList<String>();
         for(String task : tasksInProgress)
         {
-            tasks.add(HTMLUtils.escapeHTML(task));
+            tasks.add(escapeHtml4(task));
         }
         return tasks;
     }
@@ -116,7 +117,7 @@ public class Report {
         List<String> tasks=new ArrayList<String>();
         for(String task : tasksCompleted)
         {
-            tasks.add(HTMLUtils.escapeHTML(task));
+            tasks.add(escapeHtml4(task));
         }
         return tasks;
     }
@@ -128,7 +129,7 @@ public class Report {
         List<String> tasks=new ArrayList<String>();
         for(String task : tasksNextWeek)
         {
-            tasks.add(HTMLUtils.escapeHTML(task));
+            tasks.add(escapeHtml4(task));
         }
         return tasks;
     }

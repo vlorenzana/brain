@@ -135,21 +135,56 @@ public class WeekReportService {
         try
         {         
           Document document=connection.get();
+          Connection connectionToPlanSummary=getConnection(urlPd.getOveralMetricsUrl());
+          Document docPlanSummary=connectionToPlanSummary.get();
           Element table=document.select("table").get(0);        
           Elements rows=table.select("tr");
+          double totalPlanned=0,totalActual=0;
           for(int i=1 ; i<rows.size();i++)
           {
               Element row=rows.get(i);
               String phaseName=row.child(0).ownText();
+              String attName=phaseName+"/Estimated Time";
+              String xpathQuery="input[name="+attName+"]";            
+              Elements inputs=docPlanSummary.select(xpathQuery);
+              if(inputs.size()>0 
+                      && inputs.get(0)!=null && inputs.get(0).parent()!=null 
+                      && inputs.get(0).parent().previousElementSibling()!=null 
+                      && inputs.get(0).parent().previousElementSibling().text()!=null
+                      )
+              {
+                  phaseName=inputs.get(0).parent().previousElementSibling().text();
+                  
+              }
+              
               String timeActual=row.child(1).ownText();
               String timePlanned=row.child(2).ownText();
+              if(NumberUtils.isNumber(timeActual))
+              {
+                  totalActual+=Double.parseDouble(timeActual);
+              }
+              if(NumberUtils.isNumber(timePlanned))
+              {
+                  totalPlanned+=Double.parseDouble(timePlanned);
+              }
               PhaseTime phase=new PhaseTime();
               phase.setName(phaseName);
               phase.setActualTime(DateUtils.convertDecimalToTime(timeActual));
               phase.setPlannedTime(DateUtils.convertDecimalToTime(timePlanned));
-              phase.setPercentActual(timePlanned.isEmpty() || timePlanned.equals("0")? "0%":((Double.parseDouble(timeActual)-Double.parseDouble(timePlanned))/Double.parseDouble(timeActual))+"%");
+              phase.setPercentActual(timePlanned.isEmpty() || timePlanned.equals("0") || timeActual.equals("0") ? "0%":DoubleUtils.formatToDigits((((Double.parseDouble(timeActual)-Double.parseDouble(timePlanned))/Double.parseDouble(timeActual))*100))+"%");
               getTimeTableFinished.add(phase);
           }
+            PhaseTime phase=new PhaseTime();
+            phase.setName("Total");
+            phase.setActualTime(DateUtils.convertDecimalToTime(String.valueOf(totalActual)));
+            phase.setPlannedTime(DateUtils.convertDecimalToTime(String.valueOf(totalPlanned)));
+            double percent=0;
+            if(totalActual!=0)
+            {
+                percent=((totalActual-totalPlanned)/totalActual)*100;
+            }           
+            phase.setPercentActual(DoubleUtils.formatToDigits(percent)+"%");
+            getTimeTableFinished.add(phase);
 
         }
         catch(IOException ioe)
